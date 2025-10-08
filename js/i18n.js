@@ -1,0 +1,55 @@
+window.NT_I18N=(function(){
+  var dict={
+    es:{
+      "nav.home":"Inicio","nav.tours":"Tours","nav.gallery":"Galería","cta.contact":"Contácto",
+      "hero.title":"Un Paraíso En Salento","hero.tag":"Tu aventura, diseñada para dejar recuerdos inolvidables",
+      "section.experiences":"( Experiencias )","section.upcoming":"( Próximas Salidas)",
+      "section.services":"( Servicios )","section.comments":"( Comentarios )",
+      "section.faq":"( Preguntas Frecuentes )","footer.madeby":"Hecho por Christian Sandoval","footer.copy":"© 2025 Nevado Trek",
+      "btn.viewTours":"Ver Tours","btn.viewOnGoogle":"Ver en Google","cta.contactus":"Contáctanos",
+      "misc.rnt":"RNT: 05645453",
+      "intro.t1":"como el Sentido de la VidaViajar","intro.t2":"Conócete a ti mismo a través del viaje",
+      "experiences.lead":"No importa la ruta que elijas, lo más valioso es como la vives y quien te acompaña.",
+      "about.title":"( Nosotros )",
+      "services.lead":"Traemos nuevas emociones y descubrimientos a tu vida, incluso en lugares conocidos, con nosotros ahorras tu valioso tiempo en la planificación.",
+      "service.tag1":"+ 150 Expediciones Exitosas","service.tag2":"Guías certificados","service.tag3":"Equipos de alta calidad","service.h1":"Seguridad primero","service.p1":"Nuestros guías están certificados, usamos equipos de primeras marcas y seguimos protocolos de seguridad en cada expedición.",
+      "service2.tag1":"Conocimiento cultural","service2.tag2":"Experiencia en montaña","service2.tag3":"Atención cercana","service2.h1":"Guías locales expertos","service2.p1":"Más que acompañantes, son conocedores del territorio, su cultura y sus senderos, garantizando experiencias auténticas.",
+      "service3.tag1":"Turismo responsable","service3.tag2":"Conexión con la naturaleza","service3.tag3":"Apoyo a comunidades","service3.h1":"Experiencias auténticas","service3.p1":"Diseñamos rutas responsables que respetan la naturaleza y apoyan a las comunidades locales.",
+      "service4.tag1":"Itinerarios flexibles","service4.tag2":"Seguro contra todo riesgo","service4.tag3":"Soporte 24/7","service4.h1":"Confianza y respaldo","service4.p1":"Nos adaptamos a tus tiempos y necesidades, con cobertura integral y acompañamiento antes, durante y después de tu aventura.",
+      "comments.heading":"Opiniones de Aventureros",
+      "about.p1":"Nevado Trek nace en Salento, corazón del Eje Cafetero. Nuestra misión es llevar a cada viajero a descubrir la grandeza de los Andes colombianos. Somos guías locales apasionados por la montaña y comprometidos con un turismo auténtico y responsable.",
+      "about.p2":"Caminar estas montañas es entrar en un universo natural que cambia a cada paso. Los senderos cruzan bosques de niebla, donde crecen orquídeas y musgos, hasta llegar a páramos cubiertos de frailejones. Allí, el silencio, el viento y el agua revelan la fuerza viva de la montaña.",
+      "about.p3":"En el camino, la fauna aparece con sutileza y asombro. Vuelan cóndores, colibríes y mariposas que iluminan el sendero. Cada especie nos recuerda que viajar también es cuidar.",
+      "about.last":"Salento, Quindìo 2025",
+      "mg.last":"Donde el frailejón guarda silencio y el páramo te desafía, allí comienza tu mejor historia. ¿Subimos?",
+      "footer.lang":"Eng / Esp",
+      "footer.link1":"Empleos","footer.link2":"Prensa y medios","footer.link3":"Explorar trabajos","footer.link4":"Soporte a empleadores"
+    },
+    en:{
+      "nav.home":"Home","nav.tours":"Tours","nav.gallery":"Gallery","cta.contact":"Contact",
+      "hero.title":"A Paradise In Salento","hero.tag":"Your adventure, designed to leave unforgettable memories",
+      "section.experiences":"( Experiences )","section.upcoming":"( Upcoming Departures )",
+      "section.services":"( Services )","section.comments":"( Comments )",
+      "section.faq":"( Frequently Asked Questions )","footer.madeby":"Made by Christian Sandoval","footer.copy":"© 2025 Nevado Trek",
+      "btn.viewTours":"View Tours","btn.viewOnGoogle":"View on Google","cta.contactus":"Contact us",
+      "misc.rnt":"RNT: 05645453",
+      "intro.t1":"as the Meaning of LifeTravel","intro.t2":"Know yourself through travel",
+      "experiences.lead":"No matter the route you choose, what matters most is how you live it and who accompanies you.",
+      "about.title":"( About )",
+      "services.lead":"We bring new emotions and discoveries to your life, even in familiar places, saving you valuable time on planning.",
+      "service.tag1":"+ 150 Successful Expeditions","service.tag2":"Certified guides","service.tag3":"High‑quality gear","service.h1":"Safety first","service.p1":"Our guides are certified, we use top‑brand equipment and follow safety protocols on every expedition.",
+      "service2.tag1":"Cultural knowledge","service2.tag2":"Mountain experience","service2.tag3":"Close attention","service2.h1":"Local expert guides","service2.p1":"More than companions, they know the land, its culture and trails, ensuring authentic experiences.",
+      "service3.tag1":"Responsible tourism","service3.tag2":"Nature connection","service3.tag3":"Community support","service3.h1":"Authentic experiences","service3.p1":"We design responsible routes that respect nature and support local communities.",
+      "service4.tag1":"Flexible itineraries","service4.tag2":"All‑risk insurance","service4.tag3":"24/7 support","service4.h1":"Trust and support","service4.p1":"We adapt to your time and needs, with comprehensive coverage and support before, during and after your adventure.",
+      "comments.heading":"Adventurers’ reviews",
+      "about.p1":"Nevado Trek was born in Salento, heart of the Coffee Axis. Our mission is to lead every traveler to discover the greatness of the Colombian Andes. We are local guides passionate about the mountains and committed to authentic, responsible tourism.",
+      "about.p2":"Walking these mountains is entering a natural universe that changes at every step. Trails cross cloud forests, where orchids and mosses grow, until reaching páramos covered with frailejones. There, silence, wind and water reveal the mountain’s living force.",
+      "about.p3":"Along the way, wildlife appears with subtlety and wonder. Condors, hummingbirds and butterflies brighten the path. Each species reminds us that traveling is also caring.",
+      "about.last":"Salento, Quindío 2025",
+      "mg.last":"Where the frailejón keeps silence and the páramo challenges you, your best story begins. Shall we climb?",
+      "footer.lang":"EN / ES",
+      "footer.link1":"Careers","footer.link2":"Press & media","footer.link3":"Browse jobs","footer.link4":"Employer support"
+    }
+  };
+  return {dict:dict};
+})();
