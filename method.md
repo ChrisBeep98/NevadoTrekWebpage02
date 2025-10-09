@@ -121,6 +121,7 @@ Apply the same CDN localization process (steps 1.1-1.4) to the new HTML file:
 1. **Mark Translatable Content**: Add `data-i18n` attributes to all text elements
 2. **Update Translation Files**: Add new content to `en.json` and `es.json`
 3. **Test Language Switching**: Verify bilingual functionality works on the new page
+4. **Mobile Comments Note**: If the mobile comments heading is not keyable, ensure the selector `.mobile-comments .heading_wrap-2.comments .split-lines_large` is covered in `apply(lang)` and maps to `comments.heading`.
 
 ### 2.3 Enhanced Language System
 

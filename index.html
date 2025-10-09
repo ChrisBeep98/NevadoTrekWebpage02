@@ -1950,6 +1950,7 @@
         var upHead=document.querySelector('.home-tour-card .h-5.italic'); if(upHead) upHead.textContent=dict['section.upcoming'];
         var servHead=document.querySelector('.section_text-scroll .h-5.italic'); if(servHead) servHead.textContent=dict['section.services'];
         var faqHead=document.querySelector('.h-5.italic.f-light'); if(faqHead) faqHead.textContent=dict['section.faq'];
+        var mobComments=document.querySelector('.mobile-comments .heading_wrap-2.comments .split-lines_large'); if(mobComments&&dict['comments.heading']) mobComments.textContent=dict['comments.heading'];
         var heroTitle=document.querySelector('.main-heading .italic-text-4'); if(heroTitle&&dict['hero.title']) heroTitle.innerHTML='<br>'+dict['hero.title'].replace(/ /g,' <br> ');
         var heroTag=document.querySelector('.h-5.medium.italic.f-white.text-shadow-1'); if(heroTag&&dict['hero.tag']) heroTag.textContent=dict['hero.tag'];
         document.querySelectorAll('.button-6 .body-medium').forEach(function(b){ var t1=b.textContent.trim(); if(/Ver Tours/i.test(t1)&&dict['btn.viewTours']) b.textContent=dict['btn.viewTours']; if(/Ver en Google/i.test(t1)&&dict['btn.viewOnGoogle']) b.textContent=dict['btn.viewOnGoogle']; if(/Contáctanos/i.test(t1)&&dict['cta.contactus']) b.textContent=dict['cta.contactus']; if(/Contact us/i.test(t1)&&dict['cta.contactus']) b.textContent=dict['cta.contactus']; });

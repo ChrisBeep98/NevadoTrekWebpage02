@@ -73,6 +73,7 @@
 - Other texts updated by selectors in apply(lang):
   - Hero title and tag
   - Section headings (Experiencias, Servicios, Comentarios, FAQ)
+  - Mobile comments heading (mobile-comments) via selector .mobile-comments .heading_wrap-2.comments .split-lines_large using key comments.heading
   - Intro tickers (intro.t1, intro.t2)
   - About paragraphs and last line
   - Moving gallery last heading
