@@ -68,14 +68,14 @@
 - Elements with data-i18n-key are auto-updated
   - nav links: data-i18n-key="nav.home", "nav.tours", "nav.gallery"
   - header CTA: data-i18n-key="cta.contact"
+  - services cards: titles and paragraphs data-i18n-key (service.h1/service.p1, service2.h1/service2.p1, service3.h1/service3.p1, service4.h1/service4.p1)
+  - buttons in cards/sections: data-i18n-key on btn.viewTours, btn.viewOnGoogle, cta.contactus
 - Other texts updated by selectors in apply(lang):
   - Hero title and tag
   - Section headings (Experiencias, Servicios, Comentarios, FAQ)
-  - Services slider tags and paragraphs
   - Intro tickers (intro.t1, intro.t2)
   - About paragraphs and last line
   - Moving gallery last heading
-  - Buttons .button-6 .body-medium: Ver Tours, Ver en Google, Contáctanos
   - Footer: copy, made by, language badge, footer links
 
 ## Units and time translations
@@ -92,4 +92,4 @@
 - Selected language saved to localStorage("lang") and applied on next visit
 
 ## File touched
-- index.html: header select, data-i18n-key attributes, inline i18n script
+- index.html: header select, data-i18n-key attributes added to services and buttons, inline i18n script
