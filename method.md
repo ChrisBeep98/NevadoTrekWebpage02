@@ -125,6 +125,11 @@ Apply the same CDN localization process (steps 1.1-1.4) to the new HTML file:
 
 ### 2.3 Enhanced Language System
 
+### 2.2.5 Comments Data Population
+- Desktop and mobile comments sections contain 12 cards each.
+- Content is populated at runtime from the first 12 entries in `comments.md` via a small script that updates text nodes and avatars only.
+- This approach preserves the exported Webflow structure and CSS; to change content, update `comments.md`.
+
 #### 2.3.1 Multi-Page Language Support
 Update the language switching system to work across all pages:
 
