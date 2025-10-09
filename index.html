@@ -2088,12 +2088,23 @@
   </script>
   <script>
     (function(){
-      if(typeof gsap!=='undefined' && typeof SplitText!=='undefined' && typeof ScrollTrigger!=='undefined'){
+      if(typeof gsap!=='undefined' && typeof ScrollTrigger!=='undefined'){
         gsap.registerPlugin(ScrollTrigger);
         var el=document.querySelector('[data-i18n-key="experiences.lead"]');
         if(el){
-          var split=new SplitText(el,{type:'words'});
-          gsap.fromTo(split.words,{opacity:0},{opacity:1,stagger:0.08,duration:0.6,ease:'power2.out',
+          var orig=getComputedStyle(el).color;
+          el.style.color='#9aa0a6';
+          el.style.position='relative';
+          var overlay=el.cloneNode(true);
+          overlay.style.position='absolute';
+          overlay.style.left='0';
+          overlay.style.top='0';
+          overlay.style.color=orig;
+          overlay.style.pointerEvents='none';
+          overlay.style.whiteSpace='pre-wrap';
+          overlay.style.clipPath='inset(0 100% 0 0)';
+          el.appendChild(overlay);
+          gsap.to(overlay,{clipPath:'inset(0 0% 0 0)',duration:1.2,ease:'power2.out',
             scrollTrigger:{trigger:el,start:'top 80%',toggleActions:'play none none reverse'}});
         }
       }
