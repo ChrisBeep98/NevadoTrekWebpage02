@@ -23,7 +23,17 @@ window.NT_I18N=(function(){
       "about.last":"Salento, Quindìo 2025",
       "mg.last":"Donde el frailejón guarda silencio y el páramo te desafía, allí comienza tu mejor historia. ¿Subimos?",
       "footer.lang":"Eng / Esp",
-      "footer.link1":"Empleos","footer.link2":"Prensa y medios","footer.link3":"Explorar trabajos","footer.link4":"Soporte a empleadores"
+      "footer.link1":"Empleos","footer.link2":"Prensa y medios","footer.link3":"Explorar trabajos","footer.link4":"Soporte a empleadores",
+      "faq.q1":"¿Qué métodos de pago aceptan?",
+      "faq.a1":"Aceptamos todas las tarjetas principales para pagar tus reservas.",
+      "faq.q2":"¿Puedo cambiar la fecha de mi reserva?",
+      "faq.a2":"Sí, somos flexibles con cambios de fecha. Contáctanos con tu referencia para reprogramar según disponibilidad.",
+      "faq.q3":"¿Cómo me uno a un evento público?",
+      "faq.a3":"Desde el calendario, selecciona un evento público con cupos y únete en pocos pasos.",
+      "faq.q4":"¿Qué es mi código de referencia y cómo reviso el estado?",
+      "faq.a4":"Tu referencia ‘BK-YYYYMMDD-XXX’ te permite consultar estado: pendiente, confirmada, pagada o cancelada.",
+      "faq.q5":"¿Qué incluye el tour y qué no?",
+      "faq.a5":"Incluye guía certificado y equipo básico; extras como seguros especiales o gastos personales no están incluidos."
     },
     en:{
       "nav.home":"Home","nav.tours":"Tours","nav.gallery":"Gallery","cta.contact":"Contact",
@@ -48,7 +58,17 @@ window.NT_I18N=(function(){
       "about.last":"Salento, Quindío 2025",
       "mg.last":"Where the frailejón keeps silence and the páramo challenges you, your best story begins. Shall we climb?",
       "footer.lang":"EN / ES",
-      "footer.link1":"Careers","footer.link2":"Press & media","footer.link3":"Browse jobs","footer.link4":"Employer support"
+      "footer.link1":"Careers","footer.link2":"Press & media","footer.link3":"Browse jobs","footer.link4":"Employer support",
+      "faq.q1":"What payment methods do you accept?",
+      "faq.a1":"We accept all major cards for tour bookings.",
+      "faq.q2":"Can I change my tour date after booking?",
+      "faq.a2":"Yes, we’re flexible with date changes. Contact us with your reference to reschedule based on availability.",
+      "faq.q3":"How do I join a public event?",
+      "faq.a3":"Use the calendar to pick a public event with available slots and join in a few steps.",
+      "faq.q4":"What is my booking reference and how do I check status?",
+      "faq.a4":"Your ‘BK-YYYYMMDD-XXX’ reference lets you check status: pending, confirmed, paid or cancelled.",
+      "faq.q5":"What’s included in the tour and what isn’t?",
+      "faq.a5":"Includes a certified guide and basic gear; extras like special insurance or personal expenses aren’t included."
     }
   };
   return {dict:dict};
