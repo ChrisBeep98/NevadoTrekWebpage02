@@ -1944,7 +1944,7 @@
       }
       function apply(l){
         var dict=t[l]||t.es;
-        document.querySelectorAll('[data-i18n-key]').forEach(function(n){var k=n.getAttribute('data-i18n-key'); if(dict[k]) n.textContent=dict[k];});
+        document.querySelectorAll('[data-i18n-key]').forEach(function(n){var k=n.getAttribute('data-i18n-key'); if(dict[k]) n.textContent=dict[k];}); if(window.initExpReveal) window.initExpReveal();
         setTxt('.rnt',dict['misc.rnt']);
         var expHead=document.querySelector('.heading_wrap-2.vertical .h-5.italic'); if(expHead) expHead.textContent=dict['section.experiences'];
         var upHead=document.querySelector('.home-tour-card .h-5.italic'); if(upHead) upHead.textContent=dict['section.upcoming'];
@@ -2088,20 +2088,18 @@
   </script>
   <script>
     (function(){
-      if(typeof gsap!=='undefined' && typeof ScrollTrigger!=='undefined'){
+      if(typeof gsap!=='undefined' && typeof SplitText!=='undefined' && typeof ScrollTrigger!=='undefined'){
         gsap.registerPlugin(ScrollTrigger);
-        var el=document.querySelector('[data-i18n-key="experiences.lead"]');
-        if(el){
-          var orig=getComputedStyle(el).color;
-          el.style.color='transparent';
-          el.style.backgroundImage='linear-gradient('+orig+','+orig+')';
-          el.style.backgroundRepeat='no-repeat';
-          el.style.backgroundSize='0% 100%';
-          el.style.webkitBackgroundClip='text';
-          el.style.backgroundClip='text';
-          gsap.to(el,{backgroundSize:'100% 100%',duration:1.2,ease:'power2.out',
-            scrollTrigger:{trigger:el,start:'top 80%',toggleActions:'play none none reverse'}});
+        function initExpReveal(){
+          var el=document.querySelector('[data-i18n-key="experiences.lead"]');
+          if(!el) return;
+          var split=new SplitText(el,{type:'chars'});
+          gsap.set(split.chars,{opacity:0,rotateX:-90,transformOrigin:'50% 50% -10px'});
+          gsap.to(split.chars,{opacity:1,rotateX:0,stagger:0.02,ease:'back.out(1.7)',
+            scrollTrigger:{trigger:el,start:'top 70%',end:'bottom 80%',scrub:true}});
         }
+        window.initExpReveal=initExpReveal;
+        initExpReveal();
       }
     })();
   </script>
