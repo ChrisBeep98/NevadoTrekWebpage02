@@ -95,3 +95,4 @@
 ## File touched
 - index.html: header select, data-i18n-key attributes added to services and buttons, inline i18n script
 - index.html: comments sections (mobile and desktop) are populated at runtime from the first 12 entries in comments.md via a non-destructive DOM fill script (titles, subtitles, rating, avatar, review); no structural or CSS changes
+- Sections/TourPage.html: New tour page template created. All external CSS and JS assets (Webflow, GSAP, jQuery) have been localized to `css/` and `js/` directories. Links updated to relative paths `../css/` and `../js/`.
