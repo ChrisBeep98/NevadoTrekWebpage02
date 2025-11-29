@@ -1925,6 +1925,34 @@
   <script src="js/i18n.js"></script>
   <script>
     (function(){
+      var header=document.querySelector('.nav-component.w-nav');
+      if(header){
+        header.style.position='fixed';
+        header.style.top='0';
+        header.style.left='0';
+        header.style.right='0';
+        header.style.zIndex='9999';
+        header.style.willChange='transform';
+        header.style.transition='transform 220ms ease-in-out';
+        var lastY=window.pageYOffset||document.documentElement.scrollTop||0;
+        var pinned=true;
+        var offset=80;
+        var tol=6;
+        var ticking=false;
+        function pin(){ if(!pinned){ header.style.transform='translateY(0)'; pinned=true; } }
+        function unpin(){ if(pinned){ header.style.transform='translateY(-100%)'; pinned=false; } }
+        function onScroll(){
+          if(ticking) return; ticking=true;
+          requestAnimationFrame(function(){
+            var y=window.pageYOffset||document.documentElement.scrollTop||0;
+            if(y<=offset){ pin(); }
+            else if(y>lastY+tol){ unpin(); }
+            else if(y<lastY-tol){ pin(); }
+            lastY=y; ticking=false;
+          });
+        }
+        window.addEventListener('scroll',onScroll,{passive:true});
+      }
       var t=(window.NT_I18N&&window.NT_I18N.dict)||{};
       var sel=document.getElementById('lang-switch');
       var lang=(localStorage.getItem('lang')||'es');
