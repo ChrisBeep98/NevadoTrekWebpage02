@@ -44,6 +44,25 @@
   opacity: 0;
 }
 
+/* ===================================
+   MAIN IMAGE SCROLL ZOOM ANIMATION
+   Starts at 70vw, grows to 100vw on scroll
+   =================================== */
+
+.scroll-zoom-image {
+  width: 60vw;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  transition: width 0.1s linear;
+  will-change: width;
+}
+
+/* Full width state when scrolled */
+.scroll-zoom-image.full-width {
+  width: 100vw;
+}
+
 /* Subtitle fade in */
 .tour-subtitle.reveal {
   animation: fadeInUp 0.68s cubic-bezier(0.22, 0.9, 0.26, 1) forwards;

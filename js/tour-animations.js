@@ -13,7 +13,6 @@
     init();
   }
 
-  // Wait for DOM to be fully loaded with multiple checks
   function init() {
     console.log('Tour animations initializing...');
     
@@ -21,7 +20,44 @@
     setTimeout(() => {
       initTitleLetterReveal();
       initScrollReveal();
+      initImageScrollZoom();
     }, 100);
+  }
+
+  /**
+   * Initialize image scroll zoom animation using GSAP ScrollTrigger
+   */
+  function initImageScrollZoom() {
+    const mainImage = document.querySelector('#main-tour-image');
+    
+    if (!mainImage) {
+      console.warn('Main tour image not found');
+      return;
+    }
+
+    // Check if GSAP and ScrollTrigger are available
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      console.warn('GSAP or ScrollTrigger not loaded');
+      return;
+    }
+
+    console.log('Initializing image scroll zoom');
+
+    // Register ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Create smooth scroll animation from 70vw to 100vw
+    gsap.to(mainImage, {
+      width: '100vw',
+      ease: 'none',
+     scrollTrigger: {
+        trigger: mainImage,
+        start: 'top bottom',      // Start when image enters viewport
+        end: 'center center',      // End when image center reaches viewport center
+        scrub: 1,                  // Smooth scrubbing (1 second lag)
+        markers: false             // Set to true for debugging
+      }
+    });
   }
 
   /**
