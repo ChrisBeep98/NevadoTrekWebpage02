@@ -226,6 +226,25 @@
     });
 
     console.log('✅ Curtain reveal configured');
+
+    // Add Parallax Effect to the WRAPPER (moves image + curtain together)
+    const parallaxWrapper = document.querySelector('.parallax-wrapper');
+    if (parallaxWrapper) {
+      // Ensure initial state matches CSS
+      gsap.set(parallaxWrapper, { yPercent: -10 });
+      
+      gsap.to(parallaxWrapper, {
+        yPercent: 10,    // Move down to +10%
+        ease: 'none',
+        scrollTrigger: {
+          trigger: curtainOverlay.parentElement.parentElement, // Use the mask container
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+      console.log('✅ Parallax wrapper configured (yPercent: -10 to 10)');
+    }
   }
 
   /**

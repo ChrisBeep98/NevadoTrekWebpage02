@@ -177,6 +177,185 @@
   /* Optimización de rendimiento para animaciones suaves */
   will-change: clip-path, opacity, transform, filter;
 }
+/* ===================================
+   TOUR PAGE HERO ANIMATIONS
+   Letter-by-letter reveal with arch mask
+   =================================== */
+
+/* Title letter container - Keep title visible until letters are ready */
+.h-1 {
+  position: relative;
+  overflow: visible;
+  opacity: 1 !important; /* Override any hiding */
+}
+
+/* Individual letters - professional smooth reveal */
+.h-1 .letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  filter: blur(8px);
+  animation: letterRevealSmooth 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  will-change: transform, opacity, filter;
+}
+
+/* Premium smooth reveal animation - Blur + Fade + Gentle Slide */
+@keyframes letterRevealSmooth {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Hide other elements initially */
+.tour-subtitle,
+.chip-tour-info-wrapper {
+  opacity: 0;
+}
+
+/* ===================================
+   MAIN IMAGE SCROLL ZOOM ANIMATION
+   Starts at 70vw, grows to 100vw on scroll
+   =================================== */
+
+.scroll-zoom-image {
+  width: 60vw;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  transition: width 0.1s linear;
+  will-change: width;
+}
+
+/* Full width state when scrolled */
+.scroll-zoom-image.full-width {
+  width: 100vw;
+}
+
+/* Subtitle fade in */
+.tour-subtitle.reveal {
+  animation: fadeInUp 0.68s cubic-bezier(0.22, 0.9, 0.26, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chips reveal animation */
+.chip-tour-info-wrapper.reveal {
+  animation: chipReveal 0.6s cubic-bezier(0.22, 0.9, 0.26, 1) forwards;
+}
+
+@keyframes chipReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Stagger delays for chips */
+.chip-tour-info-wrapper:nth-child(1).reveal {
+  animation-delay: 0ms;
+}
+
+.chip-tour-info-wrapper:nth-child(2).reveal {
+  animation-delay: 100ms;
+}
+
+.chip-tour-info-wrapper:nth-child(3).reveal {
+  animation-delay: 200ms;
+}
+
+/* Accessibility: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .h-1 .letter,
+  .tour-subtitle.reveal,
+  .chip-tour-info-wrapper.reveal {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Enhanced hover states for chips after reveal */
+.chip-tour-info-wrapper.reveal:hover {
+  transform: translateY(-2px) scale(1.05);
+  transition: transform 0.25s cubic-bezier(0.22, 0.9, 0.26, 1);
+}
+
+/* Subtle shadow for chips */
+.chip-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ===================================
+   ANIMACIONES DE LA SECCIÓN DE DESCRIPCIÓN
+   Revelaciones premium sincronizadas con el scroll usando GSAP
+   Estados iniciales dramáticos para efectos VISIBLES
+   =================================== */
+
+/* 
+   Título de Descripción - Contenedor 
+   Mantiene la visibilidad del contenedor para evitar saltos de layout
+*/
+.div-block-131 h1.h-5 {
+  position: relative;
+  overflow: visible;
+  opacity: 1 !important;
+}
+
+/* 
+   Título de Descripción - Letras Individuales (Estado Inicial)
+   Estas propiedades son animadas por GSAP en tour-animations.js
+*/
+.div-block-131 h1.h-5 .letter {
+  display: inline-block;
+  opacity: 0;                          /* Empieza invisible */
+  
+  /* Recorte vertical: oculta la letra desde abajo (inset 100% bottom) */
+  clip-path: inset(0 0 100% 0);
+  
+  /* Posición y Escala inicial:
+     - translateY(-40px): Empieza 40px arriba de su posición final
+     - scale(0.85): Empieza al 85% de su tamaño original
+  */
+  transform: translateY(-40px) scale(0.85);
+  
+  /* Desenfoque inicial fuerte para efecto de "enfoque" al revelarse */
+  filter: blur(15px);
+  
+  /* Optimización de rendimiento para animaciones suaves */
+  will-change: clip-path, opacity, transform, filter;
+}
 
 /* 
    Párrafos de Descripción (Estado Inicial)
@@ -195,14 +374,46 @@
 }
 
 /* 
+   Parallax Mask Container
+   Recorta la imagen escalada para que el movimiento ocurra "dentro"
+   Usamos Flexbox para alinear la imagen al fondo (bottom).
+   isolation: isolate crea un nuevo contexto de apilamiento para manejar z-index localmente.
+*/
+.image-parallax-mask {
+  position: relative;
+  overflow: hidden;
+  display: flex;             /* Enable flexbox for alignment */
+  align-items: flex-end;     /* Align image to the bottom */
+  width: 100%;
+  height: 100%;
+  isolation: isolate;        /* Force new stacking context */
+}
+
+/* 
+   Parallax Wrapper
+   Contiene la imagen y la cortina.
+   Se escala y se mueve (paralaje) como una unidad.
+*/
+.parallax-wrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+  transform: scale(1.2);           /* Scale the whole wrapper */
+  transform-origin: bottom center; /* Grow from bottom */
+  will-change: transform;
+}
+
+/* 
    Imagen Principal (.image-14)
-   Estado base simple, sin transformaciones.
-   La animación ahora ocurre en el overlay (.image-curtain-overlay)
+   Ya no necesita escala porque el wrapper lo hace.
 */
 .image-14 {
   display: block;
   width: 100%;
-  height: auto;
+  height: auto;              /* Restore natural height */
+  /* transform: scale(1.2);  <-- REMOVED, handled by wrapper */
+  position: relative;        /* Required for z-index */
+  z-index: 1;                /* Lower z-index than overlay */
 }
 
 /* 
@@ -211,10 +422,11 @@
 */
 .image-curtain-overlay {
   position: absolute;
-  top: 0;
+  top: auto;            /* Don't anchor to top */
+  bottom: 0;            /* Anchor to bottom to match image alignment */
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100%;         /* Covers the wrapper (which matches image height) */
   
   /* Gradiente sutil gris/azul para efecto premium */
   background: linear-gradient(
@@ -231,17 +443,6 @@
   transform: translateY(0%);
   
   will-change: transform;
-  z-index: 1; /* Asegura que esté encima de la imagen */
-}
-
-/* Accessibility: Reduced motion for description animations */
-@media (prefers-reduced-motion: reduce) {
-  .div-block-131 h1.h-5 .letter,
-  .div-block-131 p.h-5,
-  .image-curtain-overlay {
-    transform: none !important;
-    filter: none !important;
-    opacity: 1 !important;
-    will-change: auto !important;
-  }
+  z-index: 10;          /* Much higher z-index to guarantee visibility */
+  pointer-events: none; /* Ensure clicks pass through to image if needed */
 }
