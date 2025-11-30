@@ -21,7 +21,211 @@
       initTitleLetterReveal();
       initScrollReveal();
       initImageScrollZoom();
+      initDescriptionTitleReveal();
+      initDescriptionTextReveal();
+      initDescriptionImageReveal();
     }, 100);
+  }
+
+  /**
+   * Initialize description title letter-by-letter reveal - VISIBLE AND SLOW
+   * DRAMATICALLY increased timing and effects for visibility
+   */
+  function initDescriptionTitleReveal() {
+    const descriptionTitle = document.querySelector('.div-block-131 h1.h-5');
+    
+    if (!descriptionTitle) {
+      console.warn('Description title not found');
+      return;
+    }
+
+    const titleText = descriptionTitle.textContent.trim();
+    
+    if (!titleText || titleText.length === 0) {
+      console.warn('Description title is empty');
+      return;
+    }
+    
+    console.log(`🎨 Splitting description title: "${titleText}"`);
+    
+    // Clear the element
+    descriptionTitle.innerHTML = '';
+    
+    // Split text into letters and wrap each in a span
+    const letters = titleText.split('');
+    
+    letters.forEach((letter, index) => {
+      const span = document.createElement('span');
+      span.className = 'letter';
+      
+      // Preserve spaces and special characters
+      if (letter === ' ') {
+        span.innerHTML = '&nbsp;';
+        span.style.marginRight = '0.3em';
+      } else {
+        span.textContent = letter;
+      }
+      
+      descriptionTitle.appendChild(span);
+    });
+
+    // Check if GSAP is available
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      console.warn('⚠️ GSAP not loaded, showing title immediately');
+      const letterSpans = descriptionTitle.querySelectorAll('.letter');
+      letterSpans.forEach(span => {
+        span.style.opacity = '1';
+        span.style.clipPath = 'inset(0 0 0% 0)';
+        span.style.transform = 'translateY(0) scale(1)';
+        span.style.filter = 'blur(0)';
+      });
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Get all letter spans
+    const letterSpans = descriptionTitle.querySelectorAll('.letter');
+
+    console.log(`✅ Creating SLOW letter-by-letter animation for ${letterSpans.length} letters`);
+
+    // Create staggered scroll-synced animation for each letter
+    // MUCH SLOWER and MORE VISIBLE
+    letterSpans.forEach((letter, index) => {
+      gsap.to(letter, {
+        opacity: 1,
+        clipPath: 'inset(0 0 0% 0)',
+        y: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        ease: 'power2.out',
+        delay: 0.05, // Added 50ms latency
+        scrollTrigger: {
+          trigger: descriptionTitle,
+          start: `top 65%-=${index * 5}px`,  // Start when well visible
+          end: 'top 35%',
+          scrub: 2.5,
+          markers: false,
+          onUpdate: (self) => {
+            if (index === 0) {
+              console.log(`📊 Title reveal progress: ${(self.progress * 100).toFixed(0)}%`);
+            }
+          }
+        }
+      });
+    });
+
+    console.log(`🎭 Title animation ready - SLOW reveal with ${(letterSpans.length * 5)}px wave`);
+  }
+
+  /**
+   * Initialize description paragraph VISIBLE scroll-synced reveals
+   * DRAMATICALLY slower and more noticeable
+   */
+  function initDescriptionTextReveal() {
+    // Check if GSAP is available
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      console.warn('GSAP not loaded for paragraph reveals');
+      revealDescriptionTextFallback();
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Get all description paragraphs
+    const descriptionParagraphs = document.querySelectorAll('.div-block-131 p.h-5');
+    
+    if (descriptionParagraphs.length === 0) {
+      console.warn('No description paragraphs found');
+      return;
+    }
+
+    console.log(`📝 Setting up SLOW reveal for ${descriptionParagraphs.length} paragraphs`);
+
+    // Animate each paragraph with SLOW scroll-sync
+    descriptionParagraphs.forEach((paragraph, index) => {
+      gsap.to(paragraph, {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        ease: 'power2.out',
+        delay: 0.05, // Added 50ms latency
+        scrollTrigger: {
+          trigger: paragraph,
+          start: 'top 65%',              // Start when well visible  
+          end: 'top 40%',
+          scrub: 3,
+          markers: false,
+          onEnter: () => console.log(`📄 Revealing paragraph ${index + 1}`),
+          onLeave: () => console.log(`📄 Paragraph ${index + 1} fully visible`),
+        }
+      });
+    });
+
+    console.log(`✅ Paragraphs configured with SLOW 5s scrub`);
+  }
+
+  /**
+   * Fallback for description text reveal
+   */
+  function revealDescriptionTextFallback() {
+    const paragraphs = document.querySelectorAll('.div-block-131 p.h-5');
+    
+    paragraphs.forEach((paragraph, index) => {
+      setTimeout(() => {
+        paragraph.style.opacity = '1';
+        paragraph.style.transform = 'translateY(0)';
+        paragraph.style.filter = 'blur(0)';
+      }, index * 200);
+    });
+  }
+
+  /**
+   * Initialize description image curtain reveal - OVERLAY rises up
+   * Curtain overlay with subtle color that rises revealing the image
+   */
+  function initDescriptionImageReveal() {
+    const curtainOverlay = document.querySelector('.image-curtain-overlay');
+    
+    if (!curtainOverlay) {
+      console.warn('Curtain overlay (.image-curtain-overlay) not found');
+      return;
+    }
+
+    // Check if GSAP and ScrollTrigger are available
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      console.warn('GSAP or ScrollTrigger not loaded for curtain reveal');
+      // Fallback - just hide the curtain
+      curtainOverlay.style.transform = 'translateY(-100%)';
+      return;
+    }
+
+    console.log('🎬 Initializing image curtain reveal (rises up from bottom)');
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Animate curtain rising up to reveal image
+    gsap.to(curtainOverlay, {
+      y: '-100%',  // Rise up completely off the image
+      ease: 'power2.inOut',
+      delay: 0.05, // Added 50ms latency
+      scrollTrigger: {
+        trigger: curtainOverlay,
+        start: 'top 70%',          // Start when element is well visible
+        end: 'center 40%',         // Complete when centered
+        scrub: 2.5,                // Smooth balanced speed
+        markers: false,
+        onEnter: () => console.log('🎭 Curtain starting to rise'),
+        onUpdate: (self) => {
+          if (self.progress > 0.1 && self.progress < 0.9) {
+            console.log(`📊 Curtain reveal: ${(self.progress * 100).toFixed(0)}%`);
+          }
+        },
+        onComplete: () => console.log('✅ Image fully revealed')
+      }
+    });
+
+    console.log('✅ Curtain reveal configured');
   }
 
   /**

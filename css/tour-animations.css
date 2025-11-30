@@ -137,3 +137,111 @@
 .chip-shadow {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+
+/* ===================================
+   ANIMACIONES DE LA SECCIÓN DE DESCRIPCIÓN
+   Revelaciones premium sincronizadas con el scroll usando GSAP
+   Estados iniciales dramáticos para efectos VISIBLES
+   =================================== */
+
+/* 
+   Título de Descripción - Contenedor 
+   Mantiene la visibilidad del contenedor para evitar saltos de layout
+*/
+.div-block-131 h1.h-5 {
+  position: relative;
+  overflow: visible;
+  opacity: 1 !important;
+}
+
+/* 
+   Título de Descripción - Letras Individuales (Estado Inicial)
+   Estas propiedades son animadas por GSAP en tour-animations.js
+*/
+.div-block-131 h1.h-5 .letter {
+  display: inline-block;
+  opacity: 0;                          /* Empieza invisible */
+  
+  /* Recorte vertical: oculta la letra desde abajo (inset 100% bottom) */
+  clip-path: inset(0 0 100% 0);
+  
+  /* Posición y Escala inicial:
+     - translateY(-40px): Empieza 40px arriba de su posición final
+     - scale(0.85): Empieza al 85% de su tamaño original
+  */
+  transform: translateY(-40px) scale(0.85);
+  
+  /* Desenfoque inicial fuerte para efecto de "enfoque" al revelarse */
+  filter: blur(15px);
+  
+  /* Optimización de rendimiento para animaciones suaves */
+  will-change: clip-path, opacity, transform, filter;
+}
+
+/* 
+   Párrafos de Descripción (Estado Inicial)
+   Efecto de deslizamiento dramático desde abajo
+*/
+.div-block-131 p.h-5 {
+  opacity: 0;                          /* Empieza invisible */
+  
+  /* Empieza 80px más abajo de su posición final */
+  transform: translateY(80px);
+  
+  /* Desenfoque medio para suavizar la entrada */
+  filter: blur(10px);
+  
+  will-change: opacity, transform, filter;
+}
+
+/* 
+   Imagen Principal (.image-14)
+   Estado base simple, sin transformaciones.
+   La animación ahora ocurre en el overlay (.image-curtain-overlay)
+*/
+.image-14 {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 
+   Curtain Overlay (La Cortina)
+   Div que cubre la imagen y sube para revelarla
+*/
+.image-curtain-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* Gradiente sutil gris/azul para efecto premium */
+  background: linear-gradient(
+    to bottom, 
+    rgba(200, 210, 220, 0.85) 0%,    /* Parte superior más opaca */
+    rgba(180, 195, 210, 0.75) 100%   /* Parte inferior ligeramente más transparente */
+  );
+  
+  /* Efecto de vidrio esmerilado (glassmorphism) */
+  backdrop-filter: blur(2px);
+  
+  /* Estado inicial: posición original (cubriendo la imagen)
+     GSAP animará esto a translateY(-100%) para subir la cortina */
+  transform: translateY(0%);
+  
+  will-change: transform;
+  z-index: 1; /* Asegura que esté encima de la imagen */
+}
+
+/* Accessibility: Reduced motion for description animations */
+@media (prefers-reduced-motion: reduce) {
+  .div-block-131 h1.h-5 .letter,
+  .div-block-131 p.h-5,
+  .image-curtain-overlay {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    will-change: auto !important;
+  }
+}
