@@ -1,0 +1,115 @@
+/* ===================================
+   TOUR PAGE HERO ANIMATIONS
+   Letter-by-letter reveal with arch mask
+   =================================== */
+
+/* Title letter container - Keep title visible until letters are ready */
+.h-1 {
+  position: relative;
+  overflow: visible;
+  opacity: 1 !important; /* Override any hiding */
+}
+
+/* Individual letters - professional smooth reveal */
+.h-1 .letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  filter: blur(8px);
+  animation: letterRevealSmooth 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  will-change: transform, opacity, filter;
+}
+
+/* Premium smooth reveal animation - Blur + Fade + Gentle Slide */
+@keyframes letterRevealSmooth {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Hide other elements initially */
+.tour-subtitle,
+.chip-tour-info-wrapper {
+  opacity: 0;
+}
+
+/* Subtitle fade in */
+.tour-subtitle.reveal {
+  animation: fadeInUp 0.68s cubic-bezier(0.22, 0.9, 0.26, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chips reveal animation */
+.chip-tour-info-wrapper.reveal {
+  animation: chipReveal 0.6s cubic-bezier(0.22, 0.9, 0.26, 1) forwards;
+}
+
+@keyframes chipReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Stagger delays for chips */
+.chip-tour-info-wrapper:nth-child(1).reveal {
+  animation-delay: 0ms;
+}
+
+.chip-tour-info-wrapper:nth-child(2).reveal {
+  animation-delay: 100ms;
+}
+
+.chip-tour-info-wrapper:nth-child(3).reveal {
+  animation-delay: 200ms;
+}
+
+/* Accessibility: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .h-1 .letter,
+  .tour-subtitle.reveal,
+  .chip-tour-info-wrapper.reveal {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Enhanced hover states for chips after reveal */
+.chip-tour-info-wrapper.reveal:hover {
+  transform: translateY(-2px) scale(1.05);
+  transition: transform 0.25s cubic-bezier(0.22, 0.9, 0.26, 1);
+}
