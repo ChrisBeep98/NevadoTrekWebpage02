@@ -24,6 +24,7 @@
       initDescriptionTitleReveal();
       initDescriptionTextReveal();
       initCurtainReveals();
+      initMediumParallax();
     }, 100);
   }
 
@@ -255,8 +256,73 @@
         }
       });
       
-      console.log(`  ✅ Curtain #${index + 1} (${mask.id || 'unknown'}) configured: ${config.start} -> ${config.end}`);
+     
     });
+  }
+
+  /**
+   * Initialize medium parallax image and text reveal
+   * Image moves slower than scroll (parallax)
+   * Text reveals with slide-up and fade-in
+   */
+  function initMediumParallax() {
+    const mediumImage = document.querySelector('.parallax-image-medium');
+    const textSection = document.querySelector('.short-message-animated-scroll');
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ========================================================
+    // CONFIGURACIÓN DE DISTANCIAS (en Píxeles)
+    // Modifica estos valores para ajustar la distancia del movimiento
+    // ========================================================
+    const imageStartY = -250; // Imagen empieza 150px ARRIBA (y baja a 0)
+    const textStartY = 350;   // Texto empieza 100px ABAJO (y sube a 0) -> SENTIDO CONTRARIO
+    
+    // 1. Image Parallax (Downward movement: -px -> 0)
+    if (mediumImage) {
+      gsap.fromTo(mediumImage, 
+        { y: imageStartY }, // Usa píxeles en lugar de porcentaje
+        {
+          y: 0,
+          ease: 'power2.in', // Easing suave
+          scrollTrigger: {
+            trigger: mediumImage,
+            start: 'top bottom',
+            end: 'bottom top ',
+            scrub: 2, // Suavidad ajustada
+            markers: false
+          }
+        }
+      );
+   
+    }
+
+    // 2. Text Reveal (Upward movement: +px -> 0)
+    if (textSection) {
+      // Set initial state
+      gsap.set(textSection, { 
+        y: textStartY, 
+        opacity: 0 
+      });
+
+      gsap.to(textSection, {
+        y: 0,
+        opacity: 1,
+        ease: 'power2.in',
+        scrollTrigger: {
+          trigger: textSection,
+          start: 'top bottom',
+          end: 'bottom top',    
+          scrub: 2.5,          
+          markers: false
+        }
+      });
+    
+    }
   }
 
   /**
