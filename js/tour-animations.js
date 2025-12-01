@@ -249,6 +249,7 @@
 
   /**
    * Initialize image scroll zoom animation using GSAP ScrollTrigger
+   * Configurations separated for easy editing
    */
   function initImageScrollZoom() {
     const zoomImages = document.querySelectorAll('.scroll-zoom-image');
@@ -265,24 +266,59 @@
     }
 
     console.log(`Initializing scroll zoom for ${zoomImages.length} images`);
+    
+    // Debug: Log which images were found
+    zoomImages.forEach((img, i) => {
+      console.log(`  Image ${i + 1}: id="${img.id}", classes="${img.className}"`);
+    });
 
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
+    // ====================================
+    // CONFIGURACIÓN PARA CADA IMAGEN
+    // Edita estos valores para controlar el zoom
+    // ====================================
+    const imageConfigs = {
+      'main-tour-image': {
+        start: 'top bottom',      // Cuándo empieza
+        end: 'center center',     // Cuándo termina
+        scrub: 0.5                // Suavidad (menor = más responsive)
+      },
+      'fullscreen-img2': {
+        start: 'top bottom',
+        end: 'bottom bottom',
+        scrub: 0.5
+      },
+      'big-image-03': {
+        start: 'top bottom',
+        end: 'bottom bottom',
+        scrub: 0.5
+      }
+    };
+
     // Apply scroll zoom effect to each image
     zoomImages.forEach((image, index) => {
+      // Get configuration for this image (or use default)
+      const config = imageConfigs[image.id] || {
+        start: 'top bottom',
+        end: 'center center',
+        scrub: 0.5
+      };
+      
       gsap.to(image, {
         width: '100vw',
         ease: 'none',
         scrollTrigger: {
           trigger: image,
-          start: 'top bottom',      // Start when image enters viewport
-          end: 'bottom center',      // End when image center reaches viewport center
-          scrub: 1,                  // Smooth scrubbing (1 second lag)
-          markers: false             // Set to true for debugging
+          start: config.start,
+          end: config.end,
+          scrub: config.scrub,
+          markers: false  // Cambia a true para debugging
         }
       });
-      console.log(`✅ Scroll zoom configured for image ${index + 1}`);
+      
+      console.log(`✅ Zoom configured for #${image.id}: ${config.start} → ${config.end} (scrub: ${config.scrub})`);
     });
   }
 

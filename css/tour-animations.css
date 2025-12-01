@@ -54,13 +54,9 @@
   max-width: 100%;
   display: block;
   margin: 0 auto;
-  transition: width 0.1s linear;
+  /* Performance optimizations */
   will-change: width;
-}
-
-/* Full width state when scrolled */
-.scroll-zoom-image.full-width {
-  width: 100vw;
+  contain: layout;  /* Isolate layout calculations */
 }
 
 /* Subtitle fade in */
