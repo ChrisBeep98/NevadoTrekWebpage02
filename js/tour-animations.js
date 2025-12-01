@@ -23,7 +23,7 @@
       initImageScrollZoom();
       initDescriptionTitleReveal();
       initDescriptionTextReveal();
-      initDescriptionImageReveal();
+      initCurtainReveals();
     }, 100);
   }
 
@@ -177,70 +177,86 @@
   }
 
   /**
-   * Initialize description image curtain reveal - OVERLAY rises up
-   * Curtain overlay with subtle color that rises revealing the image
+   * Initialize curtain reveal for ALL images with the curtain structure
+   * Iterates through all .image-parallax-mask containers to apply effects
    */
-  function initDescriptionImageReveal() {
-    const curtainOverlay = document.querySelector('.image-curtain-overlay');
+  function initCurtainReveals() {
+    const masks = document.querySelectorAll('.image-parallax-mask');
     
-    if (!curtainOverlay) {
-      console.warn('Curtain overlay (.image-curtain-overlay) not found');
+    if (masks.length === 0) {
+      console.warn('No curtain reveal masks found');
       return;
     }
 
-    // Check if GSAP and ScrollTrigger are available
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.warn('GSAP or ScrollTrigger not loaded for curtain reveal');
-      // Fallback - just hide the curtain
-      curtainOverlay.style.transform = 'translateY(-100%)';
+      // Fallback: hide all curtains
+      masks.forEach(mask => {
+        const curtain = mask.querySelector('.image-curtain-overlay');
+        if (curtain) curtain.style.transform = 'translateY(-100%)';
+      });
       return;
     }
 
-    console.log('🎬 Initializing image curtain reveal (rises up from bottom)');
-
+    console.log(`🎬 Initializing curtain reveal for ${masks.length} images`);
     gsap.registerPlugin(ScrollTrigger);
 
-    // Animate curtain rising up to reveal image
-    gsap.to(curtainOverlay, {
-      y: '-100%',  // Rise up completely off the image
-      ease: 'power2.inOut',
-      delay: 0.05, // Added 50ms latency
-      scrollTrigger: {
-        trigger: curtainOverlay,
-        start: 'top 70%',          // Start when element is well visible
-        end: 'center 40%',         // Complete when centered
-        scrub: 2.5,                // Smooth balanced speed
-        markers: false,
-        onEnter: () => console.log('🎭 Curtain starting to rise'),
-        onUpdate: (self) => {
-          if (self.progress > 0.1 && self.progress < 0.9) {
-            console.log(`📊 Curtain reveal: ${(self.progress * 100).toFixed(0)}%`);
-          }
-        },
-        onComplete: () => console.log('✅ Image fully revealed')
+    // Configuration for each curtain based on ID
+    const curtainConfigs = {
+      'mini-curtain-1': {
+        start: 'top 75%',
+        end: 'center 45%',
+        scrub: 2.5
+      },
+      'mini-curtain-2': {
+        start: 'top center',
+        end: 'bottom top',
+        scrub: 3.5
       }
-    });
+    };
 
-    console.log('✅ Curtain reveal configured');
-
-    // Add Parallax Effect to the WRAPPER (moves image + curtain together)
-    const parallaxWrapper = document.querySelector('.parallax-wrapper');
-    if (parallaxWrapper) {
-      // Ensure initial state matches CSS
-      gsap.set(parallaxWrapper, { yPercent: -10 });
+    masks.forEach((mask, index) => {
+      const curtain = mask.querySelector('.image-curtain-overlay');
+      const wrapper = mask.querySelector('.parallax-wrapper');
       
-      gsap.to(parallaxWrapper, {
-        yPercent: 10,    // Move down to +10%
+      if (!curtain || !wrapper) return;
+
+      // Get config for this mask or use default
+      const config = curtainConfigs[mask.id] || {
+        start: 'top 75%',
+        end: 'center 45%',
+        scrub: 2.5
+      };
+
+      // 1. Animate Curtain (Rise up)
+      gsap.to(curtain, {
+        y: '-100%',
+        ease: 'power2.inOut',
+        scrollTrigger: {
+          trigger: mask, // Trigger based on the container
+          start: config.start,
+          end: config.end,
+          scrub: config.scrub,
+          markers: false
+        }
+      });
+
+      // 2. Animate Parallax (Move image)
+      // Ensure initial state
+      gsap.set(wrapper, { yPercent: -10 });
+      
+      gsap.to(wrapper, {
+        yPercent: 10,
         ease: 'none',
         scrollTrigger: {
-          trigger: curtainOverlay.parentElement.parentElement, // Use the mask container
+          trigger: mask,
           start: 'top bottom',
           end: 'bottom top',
           scrub: true
         }
       });
-      console.log('✅ Parallax wrapper configured (yPercent: -10 to 10)');
-    }
+      
+      console.log(`  ✅ Curtain #${index + 1} (${mask.id || 'unknown'}) configured: ${config.start} -> ${config.end}`);
+    });
   }
 
   /**
