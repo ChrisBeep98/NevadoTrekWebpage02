@@ -14,7 +14,7 @@
   }
 
   function init() {
-    console.log('Tour animations initializing...');
+
     
     // Add small delay to ensure all styles are loaded
     setTimeout(() => {
@@ -25,6 +25,7 @@
       initDescriptionTextReveal();
       initCurtainReveals();
       initMediumParallax();
+      initFeatureListReveal();
     }, 100);
   }
 
@@ -47,7 +48,7 @@
       return;
     }
     
-    console.log(`🎨 Splitting description title: "${titleText}"`);
+
     
     // Clear the element
     descriptionTitle.innerHTML = '';
@@ -72,7 +73,7 @@
 
     // Check if GSAP is available
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.warn('⚠️ GSAP not loaded, showing title immediately');
+     
       const letterSpans = descriptionTitle.querySelectorAll('.letter');
       letterSpans.forEach(span => {
         span.style.opacity = '1';
@@ -88,7 +89,7 @@
     // Get all letter spans
     const letterSpans = descriptionTitle.querySelectorAll('.letter');
 
-    console.log(`✅ Creating OPTIMIZED letter-by-letter animation for ${letterSpans.length} letters`);
+  
 
     // ⚡ OPTIMIZACIÓN: Un solo ScrollTrigger para todas las letras
     // En lugar de crear un ScrollTrigger por letra (muy costoso)
@@ -114,7 +115,6 @@
       duration: 0.6
     });
 
-    console.log(`🚀 Optimized title animation - 1 ScrollTrigger for ${letterSpans.length} letters`);
   }
 
   /**
@@ -124,7 +124,7 @@
   function initDescriptionTextReveal() {
     // Check if GSAP is available
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.warn('GSAP not loaded for paragraph reveals');
+     
       revealDescriptionTextFallback();
       return;
     }
@@ -135,11 +135,11 @@
     const descriptionParagraphs = document.querySelectorAll('.div-block-131 p.h-5');
     
     if (descriptionParagraphs.length === 0) {
-      console.warn('No description paragraphs found');
+    
       return;
     }
 
-    console.log(`📝 Setting up optimized reveal for ${descriptionParagraphs.length} paragraphs`);
+   
 
     // Animate each paragraph - OPTIMIZADO con blur + slide desde abajo
     descriptionParagraphs.forEach((paragraph, index) => {
@@ -159,7 +159,7 @@
       });
     });
 
-    console.log(`✅ Paragraphs optimized with blur + Y slide animation`);
+
   }
 
   /**
@@ -185,7 +185,7 @@
     const masks = document.querySelectorAll('.image-parallax-mask');
     
     if (masks.length === 0) {
-      console.warn('No curtain reveal masks found');
+      
       return;
     }
 
@@ -198,7 +198,7 @@
       return;
     }
 
-    console.log(`🎬 Initializing curtain reveal for ${masks.length} images`);
+
     gsap.registerPlugin(ScrollTrigger);
 
     // Configuration for each curtain based on ID
@@ -298,7 +298,6 @@
           }
         }
       );
-   
     }
 
     // 2. Text Reveal (Upward movement: +px -> 0)
@@ -321,8 +320,60 @@
           markers: false
         }
       });
-    
     }
+  }
+
+  /**
+   * Initialize feature list staggered reveal (Apple Style)
+   * Targets .div-block-40 (container) and .div-block-41 (items)
+   */
+  function initFeatureListReveal() {
+    const featureLists = document.querySelectorAll('.div-block-40');
+
+    if (featureLists.length === 0) return;
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      // Fallback: ensure visible if GSAP missing
+      const items = document.querySelectorAll('.div-block-41');
+      items.forEach(item => {
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+      });
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    featureLists.forEach(list => {
+      const items = list.querySelectorAll('.div-block-41');
+      
+      if (items.length === 0) return;
+
+      // Set initial state
+      gsap.set(items, { 
+        opacity: 0, 
+        y: 60, 
+        scale: 0.95,
+        filter: 'blur(10px)'
+      });
+
+      // Animate
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        duration: 0.9,
+        stagger: 0.3, // Cascade effect
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: list,
+          start: 'top center', // Trigger when top of list hits 80% of viewport
+          end: 'bottom top',
+          toggleActions: 'play none none reverse'
+        }
+      });
+    });
   }
 
   /**
@@ -343,12 +394,10 @@
       return;
     }
 
-    console.log(`Initializing scroll zoom for ${zoomImages.length} images`);
+
     
     // Debug: Log which images were found
-    zoomImages.forEach((img, i) => {
-      console.log(`  Image ${i + 1}: id="${img.id}", classes="${img.className}"`);
-    });
+
 
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
@@ -396,7 +445,7 @@
         }
       });
       
-      console.log(`✅ Zoom configured for #${image.id}: ${config.start} → ${config.end} (scrub: ${config.scrub})`);
+
     });
   }
 
@@ -418,7 +467,7 @@
       return;
     }
     
-    console.log(`Splitting title: "${titleText}" into letters`);
+  
     
     // Clear the element
     titleElement.innerHTML = '';
@@ -452,7 +501,7 @@
   function initScrollReveal() {
     // Check if IntersectionObserver is supported
     if (!('IntersectionObserver' in window)) {
-      console.warn('IntersectionObserver not supported, revealing all elements immediately');
+     
       revealAllElements();
       return;
     }
