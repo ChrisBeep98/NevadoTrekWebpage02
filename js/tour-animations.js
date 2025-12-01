@@ -251,10 +251,10 @@
    * Initialize image scroll zoom animation using GSAP ScrollTrigger
    */
   function initImageScrollZoom() {
-    const mainImage = document.querySelector('#main-tour-image');
+    const zoomImages = document.querySelectorAll('.scroll-zoom-image');
     
-    if (!mainImage) {
-      console.warn('Main tour image not found');
+    if (zoomImages.length === 0) {
+      console.warn('No scroll-zoom-image elements found');
       return;
     }
 
@@ -264,22 +264,25 @@
       return;
     }
 
-    console.log('Initializing image scroll zoom');
+    console.log(`Initializing scroll zoom for ${zoomImages.length} images`);
 
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
-    // Create smooth scroll animation from 70vw to 100vw
-    gsap.to(mainImage, {
-      width: '100vw',
-      ease: 'none',
-     scrollTrigger: {
-        trigger: mainImage,
-        start: 'top bottom',      // Start when image enters viewport
-        end: 'center center',      // End when image center reaches viewport center
-        scrub: 1,                  // Smooth scrubbing (1 second lag)
-        markers: false             // Set to true for debugging
-      }
+    // Apply scroll zoom effect to each image
+    zoomImages.forEach((image, index) => {
+      gsap.to(image, {
+        width: '100vw',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: image,
+          start: 'top bottom',      // Start when image enters viewport
+          end: 'bottom center',      // End when image center reaches viewport center
+          scrub: 1,                  // Smooth scrubbing (1 second lag)
+          markers: false             // Set to true for debugging
+        }
+      });
+      console.log(`✅ Scroll zoom configured for image ${index + 1}`);
     });
   }
 
