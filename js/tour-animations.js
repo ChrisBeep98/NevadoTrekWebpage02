@@ -87,35 +87,33 @@
     // Get all letter spans
     const letterSpans = descriptionTitle.querySelectorAll('.letter');
 
-    console.log(`✅ Creating SLOW letter-by-letter animation for ${letterSpans.length} letters`);
+    console.log(`✅ Creating OPTIMIZED letter-by-letter animation for ${letterSpans.length} letters`);
 
-    // Create staggered scroll-synced animation for each letter
-    // MUCH SLOWER and MORE VISIBLE
-    letterSpans.forEach((letter, index) => {
-      gsap.to(letter, {
-        opacity: 1,
-        clipPath: 'inset(0 0 0% 0)',
-        y: 0,
-        scale: 1,
-        filter: 'blur(0px)',
-        ease: 'power2.out',
-        delay: 0.05, // Added 50ms latency
-        scrollTrigger: {
-          trigger: descriptionTitle,
-          start: `top 65%-=${index * 5}px`,  // Start when well visible
-          end: 'top 35%',
-          scrub: 2.5,
-          markers: false,
-          onUpdate: (self) => {
-            if (index === 0) {
-              console.log(`📊 Title reveal progress: ${(self.progress * 100).toFixed(0)}%`);
-            }
-          }
-        }
-      });
+    // ⚡ OPTIMIZACIÓN: Un solo ScrollTrigger para todas las letras
+    // En lugar de crear un ScrollTrigger por letra (muy costoso)
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: descriptionTitle,
+        start: 'top 70%',
+        end: 'top 30%',
+        scrub: 1.5,  // Reducido para mejor performance
+        markers: false
+      }
     });
 
-    console.log(`🎭 Title animation ready - SLOW reveal with ${(letterSpans.length * 5)}px wave`);
+    // Anima todas las letras en un solo timeline con stagger
+    tl.to(letterSpans, {
+      opacity: 1,
+      clipPath: 'inset(0 0 0% 0)',
+      y: 0,
+      scale: 1,
+      filter: 'blur(0px)',
+      ease: 'power2.out',
+      stagger: 0.02,  // Delay entre letras (más eficiente que ScrollTriggers individuales)
+      duration: 0.6
+    });
+
+    console.log(`🚀 Optimized title animation - 1 ScrollTrigger for ${letterSpans.length} letters`);
   }
 
   /**
@@ -140,29 +138,27 @@
       return;
     }
 
-    console.log(`📝 Setting up SLOW reveal for ${descriptionParagraphs.length} paragraphs`);
+    console.log(`📝 Setting up optimized reveal for ${descriptionParagraphs.length} paragraphs`);
 
-    // Animate each paragraph with SLOW scroll-sync
+    // Animate each paragraph - OPTIMIZADO con blur + slide desde abajo
     descriptionParagraphs.forEach((paragraph, index) => {
       gsap.to(paragraph, {
         opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
+        y: 0,                    // Desde translateY(80px) → 0
+        filter: 'blur(0px)',     // Desde blur(10px) → 0
         ease: 'power2.out',
-        delay: 0.05, // Added 50ms latency
+        duration: 1.8,           // Duración para que sea más visible
         scrollTrigger: {
           trigger: paragraph,
-          start: 'top 65%',              // Start when well visible  
-          end: 'top 40%',
-          scrub: 3,
-          markers: false,
-          onEnter: () => console.log(`📄 Revealing paragraph ${index + 1}`),
-          onLeave: () => console.log(`📄 Paragraph ${index + 1} fully visible`),
+          start: 'top center',      // Empieza un poco antes para mejor visibilidad
+          end: 'bottom center',        // Termina más arriba
+          scrub: 3.2,
+          markers: false
         }
       });
     });
 
-    console.log(`✅ Paragraphs configured with SLOW 5s scrub`);
+    console.log(`✅ Paragraphs optimized with blur + Y slide animation`);
   }
 
   /**
