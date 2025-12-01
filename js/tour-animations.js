@@ -146,13 +146,13 @@
         opacity: 1,
         y: 0,                    // Desde translateY(80px) → 0
         filter: 'blur(0px)',     // Desde blur(10px) → 0
-        ease: 'power2.out',
-        duration: 1.8,           // Duración para que sea más visible
+        ease: 'power2.in',
+        duration: .8,           // Duración para que sea más visible
         scrollTrigger: {
           trigger: paragraph,
           start: 'top center',      // Empieza un poco antes para mejor visibilidad
           end: 'bottom center',        // Termina más arriba
-          scrub: 3.2,
+          scrub: 1,
           markers: false
         }
       });
