@@ -26,6 +26,7 @@
       initCurtainReveals();
       initMediumParallax();
       initFeatureListReveal();
+      initFAQReveal();
     }, 100);
   }
 
@@ -347,6 +348,7 @@
     featureLists.forEach(list => {
       const items = list.querySelectorAll('.div-block-41');
       
+      
       if (items.length === 0) return;
 
       // Set initial state
@@ -363,14 +365,67 @@
         y: 0,
         scale: 1,
         filter: 'blur(0px)',
-        duration: 0.9,
-        stagger: 0.3, // Cascade effect
-        ease: 'power2.out',
+        duration: 0.7,
+        stagger: 0.2,
+        ease: 'power2.in',
         scrollTrigger: {
           trigger: list,
-          start: 'top center', // Trigger when top of list hits 80% of viewport
-          end: 'bottom top',
-          toggleActions: 'play none none reverse'
+          start: 'top center',
+          toggleActions: 'restart none none none' // Restart animation every time it enters viewport
+        }
+      });
+    });
+  }
+
+  /**
+   * Initialize FAQ staggered reveal (Apple Style)
+   * Targets .div-block-136 (container) and .accordion-item-wrapper.v2 (items)
+   */
+  function initFAQReveal() {
+    const faqContainers = document.querySelectorAll('.div-block-136');
+
+    if (faqContainers.length === 0) return;
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      // Fallback: ensure visible if GSAP missing
+      const items = document.querySelectorAll('.accordion-item-wrapper.v2');
+      items.forEach(item => {
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+      });
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    faqContainers.forEach(container => {
+      const items = container.querySelectorAll('.accordion-item-wrapper.v2');
+      
+      if (items.length === 0) return;
+
+      // Set initial state
+      gsap.set(items, { 
+        opacity: 0, 
+        x: 50, 
+        scale: 0.92,
+        filter: 'blur(15px)'
+      });
+
+      // Animate
+      gsap.to(items, {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        duration: 1,
+        stagger: 0.25, // Slightly slower cascade for FAQs
+        ease: 'power2.in',
+        scrollTrigger: {
+          trigger: container,
+          start: 'top 10%',
+          end: 'center center',
+          markers: true,
+          toggleActions: 'restart none none none' // Restart animation every time it enters viewport
         }
       });
     });
