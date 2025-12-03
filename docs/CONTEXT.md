@@ -95,3 +95,14 @@
 ## File touched
 - index.html: header select, data-i18n-key attributes added to services and buttons, inline i18n script
 - index.html: comments sections (mobile and desktop) are populated at runtime from the first 12 entries in comments.md via a non-destructive DOM fill script (titles, subtitles, rating, avatar, review); no structural or CSS changes
+
+## Dynamic Content i18n (Tours)
+- The tour cards on the home page and the tour detail page are populated dynamically via JavaScript (`home-loader.js`, `tour-loader.js`).
+- **Mechanism**:
+  - Elements receive `data-i18n-es` and `data-i18n-en` attributes during data injection.
+  - A helper function `applyLanguageToDynamicElements(lang)` (exposed as `window.updateDynamicContent`) is called on load and on language switch.
+  - This function iterates over all elements with class `.dynamic-i18n` and updates their `textContent` based on the current language.
+- **Integration**:
+  - `home-loader.js` listens to the `#lang-switch` change event to trigger updates immediately.
+  - It also checks `localStorage` before the initial render to ensure cards load in the correct language immediately.
+
