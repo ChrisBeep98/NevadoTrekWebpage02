@@ -78,7 +78,7 @@ html {
   right: 0 !important;
   width: 100% !important;
   z-index: 99999 !important;
-  padding: 1em var(--base--section-padding-large);
+  padding: 1em 0;
   pointer-events: auto;
   /* SIN fondo - completamente transparente */
   background: transparent;
