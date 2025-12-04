@@ -102,7 +102,9 @@
         contain: none !important;
         padding: 0 0 !important;
         background: transparent;
+        border-radius: 1000px !important;
         pointer-events: auto;
+        align-items: center;
         height: 92px;
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
@@ -113,16 +115,18 @@
         left: 0 !important;
         right: 0 !important;
         width: fit-content !important;
-        max-width: 90% !important;
+        max-width: 84% !important;
         margin-left: auto !important;
         margin-right: auto !important;
         transform: none !important;
-        border-radius: 50px !important;
+        border-radius: 1000px !important;
         padding: 0 !important;
+        align-items: center;
         margin-top: 8px !important;
         background: rgba(255, 255, 255, 0.6) !important;
-        backdrop-filter: blur(20px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        backdrop-filter: blur(15px) saturate(180%) !important;
+        filter: exclude;
+        -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
           0 2px 8px rgba(0, 0, 0, 0.08),
@@ -134,6 +138,14 @@
         justify-content: space-between !important;
         align-items: center !important;
         width: 100% !important;
+        height: 100% !important; /* Ocupa toda la altura del header */
+        padding: 0 2em !important; /* Padding horizontal */
+      }
+
+      /* El navbar también debe centrar su contenido */
+      #navbar-exclusion {
+        display: flex !important;
+        align-items: center !important;
       }
     </style>
   </head>
