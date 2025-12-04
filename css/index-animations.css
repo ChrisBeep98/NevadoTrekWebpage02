@@ -253,6 +253,12 @@ html {
   mix-blend-mode: normal !important;
 }
 
+/* Cuando es PILL (scrolled): language switcher oscuro */
+#navbar-exclusion.scrolled .lang-btn,
+#navbar-exclusion.navbar-fixed.scrolled .lang-btn {
+  color: #042e4d !important; /* Texto oscuro */
+}
+
 /* ===== NAVBAR ACTIONS ===== */
 .navbar-actions {
   display: flex;
@@ -260,27 +266,88 @@ html {
   gap: 16px;
 }
 
-/* Language Switch */
+/* Language Switch - Custom Dropdown con Banderas */
 .lang-switch-exclusion {
   position: relative;
 }
 
-.lang-switch-exclusion select {
+.lang-dropdown {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
   font-family: Inter, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  cursor: pointer;
-  padding: 8px 4px;
-  appearance: none;
-  -webkit-appearance: none;
-  outline: none;
+  color: white; /* Texto blanco */
+  transition: all 0.25s ease;
 }
 
-.lang-switch-exclusion select option {
-  background: #1a1a1a;
-  color: white;
+.lang-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.lang-flag {
+  width: 18px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.lang-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 4px;
+  min-width: 100px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.lang-dropdown:hover .lang-options,
+.lang-dropdown.open .lang-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  color: #333;
+  transition: background 0.2s ease;
+}
+
+.lang-option:hover {
+  background: #f0f0f0;
+}
+
+.lang-option.active {
+  background: #e8f0fe;
+  color: #2563eb;
 }
 
 /* Contact Button */
@@ -300,13 +367,26 @@ html {
   cursor: pointer;
 }
 
+/* Hover: fondo azul con texto blanco */
 .btn-contact-exclusion:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff !important;
   transform: scale(1.02);
+}
+
+.btn-contact-exclusion:hover span {
+  color: #ffffff !important;
+}
+
+.btn-contact-exclusion:hover svg {
+  filter: brightness(0) invert(1) !important;
 }
 
 .btn-contact-exclusion svg {
   width: 18px;
   height: 18px;
+  transition: filter 0.3s ease;
 }
 
 /* Menu Toggle (Mobile) */
