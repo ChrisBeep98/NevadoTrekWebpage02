@@ -60,3 +60,269 @@
   display: block; /* Each word on a new line */
   line-height: 1.1em; /* Compact line height */
 }
+
+/* =====================================================
+   NAVBAR FIXED CON EFECTO EXCLUSIÓN
+   El texto cambia de color automáticamente según el fondo
+   ===================================================== */
+
+/* Asegurar que el body no tenga transform que rompa fixed positioning */
+html {
+  scroll-behavior: smooth;
+}
+
+#navbar-exclusion.navbar-fixed {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 99999 !important;
+  padding: 1em var(--base--section-padding-large);
+  pointer-events: auto;
+  /* SIN fondo - completamente transparente */
+  background: transparent;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ===== EFECTO EXCLUSIÓN GLOBAL ===== */
+/* El mix-blend-mode: difference invierte los colores del texto
+   según el fondo: sobre fondo oscuro = texto blanco,
+   sobre fondo claro = texto oscuro */
+
+.navbar-fixed .navbar-brand,
+.navbar-fixed .navbar-title,
+.navbar-fixed .nav-link-exclusion,
+.navbar-fixed .btn-contact-exclusion,
+.navbar-fixed .btn-contact-exclusion span,
+.navbar-fixed .lang-switch-exclusion select,
+.navbar-fixed .menu-toggle-exclusion {
+  color: white;
+  mix-blend-mode: difference;
+}
+
+.navbar-fixed .navbar-logo,
+.navbar-fixed .btn-contact-exclusion svg,
+.navbar-fixed .menu-toggle-exclusion svg {
+  filter: brightness(0) invert(1);
+  mix-blend-mode: difference;
+}
+
+/* ===== BRAND / LOGO ===== */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  width: 42px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+  transform: scale(1.05);
+}
+
+.navbar-title {
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.navbar-title em {
+  font-style: italic;
+}
+
+/* ===== NAVIGATION LINKS ===== */
+.navbar-links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-link-exclusion {
+  padding: 10px 16px;
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.nav-link-exclusion:hover {
+  transform: translateY(-1px);
+}
+
+.nav-link-exclusion.active {
+  font-weight: 500;
+}
+
+.nav-link-exclusion.active::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: currentColor;
+  mix-blend-mode: difference;
+}
+
+/* ===== NAVBAR ACTIONS ===== */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Language Switch */
+.lang-switch-exclusion {
+  position: relative;
+}
+
+.lang-switch-exclusion select {
+  background: transparent;
+  border: none;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 8px 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+.lang-switch-exclusion select option {
+  background: #1a1a1a;
+  color: white;
+}
+
+/* Contact Button */
+.btn-contact-exclusion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 50px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-contact-exclusion:hover {
+  transform: scale(1.02);
+}
+
+.btn-contact-exclusion svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Menu Toggle (Mobile) */
+.menu-toggle-exclusion {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.menu-toggle-exclusion:hover {
+  transform: scale(1.1);
+}
+
+.menu-toggle-exclusion svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 991px) {
+  .navbar-fixed {
+    padding: 1em 2.5em;
+  }
+  
+  .navbar-links {
+    display: none;
+  }
+  
+  .menu-toggle-exclusion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .btn-contact-exclusion span {
+    display: none;
+  }
+  
+  .btn-contact-exclusion {
+    padding: 10px 12px;
+    border-radius: 50%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .navbar-fixed {
+    padding: 0.8em 1.5em;
+  }
+  
+  .navbar-logo {
+    width: 36px;
+  }
+  
+  .navbar-title {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .navbar-fixed {
+    padding: 0.6em 1em;
+  }
+  
+  .navbar-logo {
+    width: 32px;
+  }
+  
+  .navbar-actions {
+    gap: 8px;
+  }
+  
+  .lang-switch-exclusion select {
+    font-size: 12px;
+    padding: 6px 2px;
+  }
+  
+  .btn-contact-exclusion {
+    padding: 8px 10px;
+  }
+  
+  .btn-contact-exclusion svg {
+    width: 16px;
+    height: 16px;
+  }
+}
