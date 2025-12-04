@@ -233,6 +233,12 @@ html {
   right: 16px;
 }
 
+/* Cuando hacemos hover en OTRO link, ocultar la barrita del active */
+.navbar-links:hover .nav-link-exclusion.active:not(:hover)::after {
+  left: 50%;
+  right: 50%;
+}
+
 /* Cuando es PILL (scrolled): quitar blend mode de los links */
 #navbar-exclusion.scrolled .nav-link-exclusion,
 #navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion {
