@@ -144,10 +144,22 @@ html {
   filter: none !important;
 }
 
-.navbar-fixed .btn-contact-exclusion svg,
+/* Solo el menu toggle tiene blend mode, no el botón de contacto */
 .navbar-fixed .menu-toggle-exclusion svg {
   filter: brightness(0) invert(1);
   mix-blend-mode: difference;
+}
+
+/* Icono del botón contacto siempre visible */
+.navbar-fixed .btn-contact-exclusion svg {
+  fill: white;
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL: icono oscuro */
+#navbar-exclusion.scrolled .btn-contact-exclusion svg,
+#navbar-exclusion.navbar-fixed.scrolled .btn-contact-exclusion svg {
+  fill: #042e4d !important;
 }
 
 /* ===== BRAND / LOGO ===== */
@@ -257,6 +269,32 @@ html {
 #navbar-exclusion.scrolled .lang-btn,
 #navbar-exclusion.navbar-fixed.scrolled .lang-btn {
   color: #042e4d !important; /* Texto oscuro */
+}
+
+/* Cuando es PILL (scrolled): botón contacto con borde oscuro */
+#navbar-exclusion.scrolled .btn-contact-exclusion,
+#navbar-exclusion.navbar-fixed.scrolled .btn-contact-exclusion {
+  color: #042e4d !important;
+  border-color: #042e4d !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL (scrolled): hover del botón contacto AZUL */
+#navbar-exclusion.scrolled .btn-contact-exclusion:hover,
+#navbar-exclusion.navbar-fixed.scrolled .btn-contact-exclusion:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+#navbar-exclusion.scrolled .btn-contact-exclusion:hover span,
+#navbar-exclusion.navbar-fixed.scrolled .btn-contact-exclusion:hover span {
+  color: #ffffff !important;
+}
+
+#navbar-exclusion.scrolled .btn-contact-exclusion:hover svg,
+#navbar-exclusion.navbar-fixed.scrolled .btn-contact-exclusion:hover svg {
+  fill: #ffffff !important;
 }
 
 /* ===== NAVBAR ACTIONS ===== */
@@ -387,6 +425,7 @@ html {
   width: 18px;
   height: 18px;
   transition: filter 0.3s ease;
+  stroke: currentColor; /* Asegurar que el trazo sea visible */
 }
 
 /* Menu Toggle (Mobile) */
