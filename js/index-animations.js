@@ -22,7 +22,51 @@
       initServicesTextReveal();
       initServicesBottomTextReveal(); // NEW: Second services text
       initFooterFinalTextReveal(); // NEW: Footer final text
+      initFloatingNavbar(); // Floating pill navbar effect
     }, 100);
+  }
+
+  /**
+   * FLOATING PILL NAVBAR
+   * Transforms the full-width navbar into a floating pill when scrolling down
+   */
+  function initFloatingNavbar() {
+    const navbar = document.getElementById('navbar-exclusion');
+    if (!navbar) {
+      console.warn('Navbar element not found');
+      return;
+    }
+
+    const SCROLL_THRESHOLD = 80; // Pixels to scroll before activating
+    let isScrolled = false;
+    let ticking = false;
+
+    function updateNavbar() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      
+      if (scrollY > SCROLL_THRESHOLD && !isScrolled) {
+        navbar.classList.add('scrolled');
+        isScrolled = true;
+      } else if (scrollY <= SCROLL_THRESHOLD && isScrolled) {
+        navbar.classList.remove('scrolled');
+        isScrolled = false;
+      }
+      
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(updateNavbar);
+        ticking = true;
+      }
+    }
+
+    // Add scroll listener with passive option for better performance
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    // Initial check in case page loads already scrolled
+    updateNavbar();
   }
 
   /**

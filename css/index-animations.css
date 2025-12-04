@@ -73,15 +73,16 @@ html {
 
 #navbar-exclusion.navbar-fixed {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 99999 !important;
-  padding: 1em 0;
+  padding: 1em 2em;
   pointer-events: auto;
-  /* SIN fondo - completamente transparente */
+  /* Transparent at top */
   background: transparent;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .navbar-container {
@@ -90,6 +91,33 @@ html {
   align-items: center;
   width: 100%;
   max-width: 100%;
+  padding: 0 1em;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ===== FLOATING PILL SCROLLED STATE (positioning handled by inline styles) ===== */
+
+/* Adjust container when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-container {
+  max-width: 100%;
+  padding: 0.5em 1em;
+  gap: 2em;
+}
+
+/* Smaller logo when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+  width: 36px;
+}
+
+/* Adjust text size when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+  font-size: 12px;
+}
+
+/* Adjust contact button in scrolled state */
+#navbar-exclusion.navbar-fixed.scrolled .btn-contact-exclusion {
+  padding: 8px 16px;
+  font-size: 13px;
 }
 
 /* ===== EFECTO EXCLUSIÓN GLOBAL ===== */
@@ -283,6 +311,16 @@ html {
     padding: 10px 12px;
     border-radius: 50%;
   }
+  
+  /* Scrolled state adjustments for tablet */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    max-width: 70%;
+    padding: 0.5em 1.5em;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-container {
+    gap: 1.5em;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -296,6 +334,21 @@ html {
   
   .navbar-title {
     font-size: 12px;
+  }
+  
+  /* Scrolled state adjustments for mobile tablet */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    max-width: 85%;
+    padding: 0.4em 1.2em;
+    top: 0.75em !important;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+    width: 32px;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+    font-size: 11px;
   }
 }
 
@@ -324,5 +377,25 @@ html {
   .btn-contact-exclusion svg {
     width: 16px;
     height: 16px;
+  }
+  
+  /* Scrolled state adjustments for small mobile */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    max-width: 94%;
+    padding: 0.35em 0.8em;
+    top: 0.5em !important;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-container {
+    gap: 1em;
+    padding: 0.4em 0.8em;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+    width: 28px;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+    font-size: 10px;
   }
 }
