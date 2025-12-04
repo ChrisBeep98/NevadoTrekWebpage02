@@ -35,7 +35,8 @@
 /* Hide text elements initially to prevent flash before animation */
 [data-i18n-key="experiences.lead"],
 [data-i18n-key="services.lead"],
-[data-i18n-key="services.lead.bottom"] {
+[data-i18n-key="services.lead.bottom"],
+.moving-gallery .last-heading {
   opacity: 0 !important;
   /* Prevent word breaking at line ends */
   word-break: keep-all;
@@ -49,7 +50,8 @@
 /* Show container once letters are added by JS */
 [data-i18n-key="experiences.lead"].animating,
 [data-i18n-key="services.lead"].animating,
-[data-i18n-key="services.lead.bottom"].animating {
+[data-i18n-key="services.lead.bottom"].animating,
+.moving-gallery .last-heading.animating {
   opacity: 1 !important;
 }
 

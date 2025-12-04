@@ -21,6 +21,7 @@
       initExperiencesTextReveal();
       initServicesTextReveal();
       initServicesBottomTextReveal(); // NEW: Second services text
+      initFooterFinalTextReveal(); // NEW: Footer final text
     }, 100);
   }
 
@@ -153,7 +154,37 @@
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            applyLetterReveal(textEl, 15, 100); // 200ms initial delay, 25ms between letters
+            applyLetterReveal(textEl, 15, 200); // 200ms initial delay, 25ms between letters
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -20% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(textEl);
+  }
+
+  /**
+   * 5. Footer Final Text: "Where the frailejón keeps silence..."
+   * Target: .moving-gallery .last-heading (injected by i18n)
+   */
+  function initFooterFinalTextReveal() {
+    const textEl = document.querySelector('.moving-gallery .last-heading');
+    if (!textEl) {
+      console.warn('Footer final text element not found');
+      return;
+    }
+
+    // Use Intersection Observer for scroll trigger
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            applyLetterReveal(textEl, 15, 150); // 150ms initial delay, 30ms between letters
             observer.unobserve(entry.target);
           }
         });
@@ -174,7 +205,7 @@
    * @param {number} staggerMs - Delay between each letter in milliseconds
    * @param {number} initialDelayMs - Initial delay before starting animation
    */
-  function applyLetterReveal(element, staggerMs = 35, initialDelayMs = 0) {
+  function applyLetterReveal(element, staggerMs = 15, initialDelayMs = 0) {
     if (!element) return;
 
     const text = element.textContent;
