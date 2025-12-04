@@ -38,6 +38,8 @@
       rel="stylesheet"
       type="text/css"
     />
+    <!-- Custom Index Animations CSS -->
+    <link href="css/index-animations.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link
       href="https://fonts.gstatic.com"
@@ -4327,42 +4329,36 @@
       })();
     </script>
     <script>
+      // OPTIMIZED: Removed scrub (constant recalculation) and 3D transforms
+      // Uses simple fade-in that triggers once on scroll
       (function () {
         if (
           typeof gsap !== "undefined" &&
-          typeof SplitText !== "undefined" &&
           typeof ScrollTrigger !== "undefined"
         ) {
           gsap.registerPlugin(ScrollTrigger);
+
+          // Note: The letter-by-letter animation for this text is now handled
+          // by index-animations.js for better performance.
+          // This fallback just ensures the text is visible if JS fails.
           function initExpReveal() {
             var el = document.querySelector(
               '[data-i18n-key="experiences.lead"]'
             );
             if (!el) return;
-            var split = new SplitText(el, { type: "chars" });
-            gsap.set(split.chars, {
-              opacity: 0,
-              rotateX: -90,
-              transformOrigin: "50% 50% -10px",
-            });
-            gsap.to(split.chars, {
-              opacity: 1,
-              rotateX: 0,
-              stagger: 0.02,
-              ease: "back.out(1.7)",
-              scrollTrigger: {
-                trigger: el,
-                start: "top 70%",
-                end: "bottom 80%",
-                scrub: true,
-              },
-            });
+
+            // Simple fallback: just make it visible
+            // The letter animation is handled by index-animations.js
+            gsap.set(el, { opacity: 1 });
           }
+
           window.initExpReveal = initExpReveal;
           initExpReveal();
         }
       })();
     </script>
+    <!-- Custom Index Animations Script -->
+    <script src="js/index-animations.js"></script>
     <script type="module" src="js/home-loader.js"></script>
   </body>
 </html>
