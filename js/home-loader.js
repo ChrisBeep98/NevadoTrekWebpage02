@@ -3,17 +3,29 @@ import { apiService } from './services/api.js';
 document.addEventListener('DOMContentLoaded', async () => {
   
   // 1. Determine Initial Language
-  // Check localStorage first, then the select element, then default to 'es'
-  let currentLang = localStorage.getItem('language');
-  const langSwitch = document.getElementById('lang-switch');
+  // Priority: visible switch FIRST > localStorage > default 'es'
+  let currentLang = null;
   
-  if (!currentLang && langSwitch) {
-    currentLang = langSwitch.value;
+  // FIRST: Check the visible language switch (this is what user sees)
+  const visibleLang = document.getElementById('current-lang');
+  if (visibleLang) {
+    currentLang = visibleLang.textContent.trim().toLowerCase();
   }
   
+  // SECOND: If switch not found, try localStorage
   if (!currentLang) {
+    currentLang = localStorage.getItem('language');
+  }
+  
+  // THIRD: Final fallback to Spanish
+  if (!currentLang || (currentLang !== 'es' && currentLang !== 'en')) {
     currentLang = 'es';
   }
+  
+  // Sync localStorage with current choice
+  localStorage.setItem('language', currentLang);
+  
+  console.log('Home-loader using language:', currentLang);
 
   // 2. Fetch Data
   const [tours, departures] = await Promise.all([
@@ -38,11 +50,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     updateCard(wrapper, tour, departures, currentLang);
   });
-
-  // 5. Ensure UI sync
-  if (langSwitch && currentLang) {
-      langSwitch.value = currentLang;
-  }
+  
+  // 5. Apply language to dynamic elements after all cards are updated
+  // This ensures .dynamic-i18n elements show correct language
+  setTimeout(() => {
+    applyLanguageToDynamicElements(currentLang);
+  }, 100);
 });
 
 function updateCard(wrapper, tour, allDepartures, lang = 'es') {
@@ -143,33 +156,6 @@ function applyLanguageToDynamicElements(lang) {
       el.textContent = text;
     }
   });
-}
-
-// Direct integration with the specific language switcher in index.html
-const langSwitch = document.getElementById('lang-switch');
-if (langSwitch) {
-  // 1. Listen for changes
-  langSwitch.addEventListener('change', (e) => {
-    const lang = e.target.value;
-    localStorage.setItem('language', lang); // Ensure persistence if not handled elsewhere
-    applyLanguageToDynamicElements(lang);
-  });
-
-  // 2. Sync on load
-  // If there's a stored language, set the select value and update content
-  const storedLang = localStorage.getItem('language');
-  if (storedLang) {
-    langSwitch.value = storedLang;
-    applyLanguageToDynamicElements(storedLang);
-  } else {
-    // If no stored lang, use the current value of the select (default)
-    applyLanguageToDynamicElements(langSwitch.value);
-  }
-} else {
-  console.warn('Language switcher #lang-switch not found.');
-  // Fallback: try to use stored language
-  const storedLang = localStorage.getItem('language') || 'es';
-  applyLanguageToDynamicElements(storedLang);
 }
 
 // Expose for other scripts if needed
