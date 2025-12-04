@@ -166,6 +166,7 @@ html {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  flex: 1; /* Equal width as navbar-actions to center the links */
 }
 
 .navbar-logo {
@@ -300,6 +301,8 @@ html {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex: 1; /* Equal width as navbar-brand to center the links */
+  justify-content: flex-end; /* Align content to the right */
 }
 
 /* Language Switch - Custom Dropdown con Banderas */
