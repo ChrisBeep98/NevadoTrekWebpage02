@@ -20,6 +20,7 @@
       initHeroTitleReveal();
       initExperiencesTextReveal();
       initServicesTextReveal();
+      initServicesBottomTextReveal(); // NEW: Second services text
     }, 100);
   }
 
@@ -107,7 +108,7 @@
   }
 
   /**
-   * 3. Services Text: "Traemos nuevas emociones..."
+   * 3. Services Text (Top): "Traemos nuevas emociones..."
    * Target: [data-i18n-key="services.lead"]
    */
   function initServicesTextReveal() {
@@ -122,7 +123,37 @@
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            applyLetterReveal(textEl, 35, 300); // 200ms initial delay
+            applyLetterReveal(textEl, 15, 200); // 300ms initial delay
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -20% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(textEl);
+  }
+
+  /**
+   * 4. Services Text (Bottom): "Traemos nuevas emociones..." (after tours)
+   * Target: [data-i18n-key="services.lead.bottom"]
+   */
+  function initServicesBottomTextReveal() {
+    const textEl = document.querySelector('[data-i18n-key="services.lead.bottom"]');
+    if (!textEl) {
+      console.warn('Services bottom text element not found');
+      return;
+    }
+
+    // Use Intersection Observer for scroll trigger
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            applyLetterReveal(textEl, 15, 100); // 200ms initial delay, 25ms between letters
             observer.unobserve(entry.target);
           }
         });
