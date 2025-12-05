@@ -64,18 +64,12 @@
 
 /* OVERRIDE: Image 6 (Medium) specific height */
 #big-image-03 {
-  height: 600px !important;
-  min-height: 600px !important;
+  height: 1000px !important;
+  min-height: 1000px !important;
 }
 
 /* OVERRIDE: Image 5 (Medium) specific height via Class */
-.medium-height-forced {
-  width: 100% !important; /* Ensure it fills container width */
-  height: 600px !important;
-  min-height: 600px !important;
-  max-height: 600px !important;
-  object-fit: cover !important;
-}
+
 
 /* Force medium parallax image to same height */
 .parallax-image-medium {
@@ -83,6 +77,16 @@
   height: 1000px !important;
   min-height: 1000px !important;
   object-fit: cover;
+}
+
+/* OVERRIDE: Image 5 (Medium) specific height via Class */
+/* Moved strictly AFTER .parallax-image-medium to ensure it overrides */
+.medium-height-forced {
+  width: 100% !important; 
+  height: 500px !important;
+  min-height: 500px !important;
+  max-height: 500px !important;
+  object-fit: cover !important;
 }
 
 /* Subtitle fade in */
