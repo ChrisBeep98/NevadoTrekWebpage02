@@ -197,7 +197,7 @@
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: descriptionTitle,
-        start: 'top 70%',
+        start: 'top 85%',
         end: 'top 30%',
         scrub: 1.5,  // Reducido para mejor performance
         markers: false
@@ -252,9 +252,8 @@
         duration: .8,           // Duración para que sea más visible
         scrollTrigger: {
           trigger: paragraph,
-          start: 'top center',      // Empieza un poco antes para mejor visibilidad
-          end: 'bottom center',        // Termina más arriba
-          scrub: 1,
+          start: 'top 90%',      // Activates early
+          toggleActions: 'play none none reverse', // Snap animation
           markers: false
         }
       });
@@ -305,14 +304,14 @@
     // Configuration for each curtain based on ID
     const curtainConfigs = {
       'mini-curtain-1': {
-        start: 'top 75%',
-        end: 'center 45%',
-        scrub: 2.5
+        start: 'top 85%',
+        end: 'top 40%', // Finishes much faster
+        scrub: 0.5 // Almost instant response
       },
       'mini-curtain-2': {
-        start: 'top center',
-        end: 'bottom top',
-        scrub: 3.5
+        start: 'top 85%',
+        end: 'center center', // Finishes much faster (was bottom top)
+        scrub: 0.5
       }
     };
 
@@ -412,12 +411,12 @@
       gsap.to(textSection, {
         y: 0,
         opacity: 1,
-        ease: 'power2.in',
+        duration: 1,
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: textSection,
-          start: 'top bottom',
-          end: 'bottom top',    
-          scrub: 2.5,          
+          start: 'top 90%',
+          toggleActions: 'play none none reverse', // Snappy pop effect
           markers: false
         }
       });
@@ -470,7 +469,7 @@
         ease: 'power2.in',
         scrollTrigger: {
           trigger: list,
-          start: 'top center',
+          start: 'top 90%',
           toggleActions: 'restart none none none' // Restart animation every time it enters viewport
         }
       });
@@ -522,9 +521,9 @@
         ease: 'power2.in',
         scrollTrigger: {
           trigger: container,
-          start: 'top 10%',
+          start: 'top 85%',
           end: 'center center',
-          markers: true,
+          markers: false,
           toggleActions: 'restart none none none' // Restart animation every time it enters viewport
         }
       });
