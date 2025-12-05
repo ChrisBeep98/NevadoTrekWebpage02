@@ -18,6 +18,7 @@
     
     // Add small delay to ensure all styles are loaded
     setTimeout(() => {
+      initFloatingNavbar(); // Floating pill navbar effect
       initTitleLetterReveal();
       initScrollReveal();
       initImageScrollZoom();
@@ -27,7 +28,106 @@
       initMediumParallax();
       initFeatureListReveal();
       initFAQReveal();
+      initLanguageSwitcher(); // Language dropdown
     }, 100);
+  }
+
+  /**
+   * FLOATING PILL NAVBAR
+   * Transforms the full-width navbar into a floating pill when scrolling down
+   */
+  function initFloatingNavbar() {
+    const navbar = document.getElementById('navbar-exclusion');
+    if (!navbar) {
+      console.warn('Navbar element not found');
+      return;
+    }
+
+    const SCROLL_THRESHOLD = 80; // Pixels to scroll before activating
+    let isScrolled = false;
+    let ticking = false;
+
+    function updateNavbar() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      
+      if (scrollY > SCROLL_THRESHOLD && !isScrolled) {
+        navbar.classList.add('scrolled');
+        isScrolled = true;
+      } else if (scrollY <= SCROLL_THRESHOLD && isScrolled) {
+        navbar.classList.remove('scrolled');
+        isScrolled = false;
+      }
+      
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(updateNavbar);
+        ticking = true;
+      }
+    }
+
+    // Add scroll listener with passive option for better performance
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    // Initial check in case page loads already scrolled
+    updateNavbar();
+  }
+
+  /**
+   * LANGUAGE SWITCHER
+   * Handles the language dropdown interaction
+   */
+  function initLanguageSwitcher() {
+    const langBtn = document.getElementById('lang-btn');
+    const langOptions = document.getElementById('lang-options');
+    const currentLang = document.getElementById('current-lang');
+    const currentFlag = document.getElementById('current-flag');
+    
+    if (!langBtn || !langOptions) return;
+    
+    const langDropdown = langBtn.closest('.lang-dropdown');
+    
+    // Toggle dropdown on button click
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langDropdown.classList.toggle('open');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+      langDropdown.classList.remove('open');
+    });
+    
+    // Handle language selection
+    langOptions.querySelectorAll('.lang-option').forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const lang = option.dataset.lang;
+        const flag = option.dataset.flag;
+        
+        currentLang.textContent = lang.toUpperCase();
+        currentFlag.src = flag;
+        
+        // Store language preference
+        localStorage.setItem('nevado_lang', lang);
+        
+        // Close dropdown
+        langDropdown.classList.remove('open');
+        
+        // Trigger language change event (for i18n system)
+        window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+      });
+    });
+    
+    // Restore saved language on load
+    const savedLang = localStorage.getItem('nevado_lang') || 'es';
+    const savedOption = langOptions.querySelector(`[data-lang="${savedLang}"]`);
+    if (savedOption) {
+      currentLang.textContent = savedLang.toUpperCase();
+      currentFlag.src = savedOption.dataset.flag;
+    }
   }
 
   /**

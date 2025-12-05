@@ -1,127 +1,484 @@
 import { apiService } from './../js/services/api.js';
 
+/**
+ * TOUR PAGE LOADER
+ * Fetches tour data from API and injects it into TourPage.html
+ * Handles bilingual content (ES/EN)
+ */
+
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('Initializing Tour Page Loader...');
+  console.log('🚀 Initializing Tour Page Loader...');
 
   // 1. Get Tour ID from URL
   const urlParams = new URLSearchParams(window.location.search);
   const tourId = urlParams.get('id');
 
   if (!tourId) {
-   
-    // Optional: Redirect to home or show error
-    // window.location.href = '/';
+    console.error('No tour ID in URL');
+    showError('No se encontró el tour. Por favor selecciona un tour desde la página principal.');
     return;
   }
 
-  // 2. Show Loading State (Optional - if we had a spinner)
-  // document.body.classList.add('loading');
+  // 2. Fetch Data
+  try {
+    const [tours, departures] = await Promise.all([
+      apiService.getTours(),
+      apiService.getDepartures()
+    ]);
 
-  // 3. Fetch Data
-  // We fetch all tours to find the specific one. 
-  // Ideally, we'd have a getTourById endpoint, but getTours is cached and fast.
-  const [tours, departures] = await Promise.all([
-    apiService.getTours(),
-    apiService.getDepartures()
-  ]);
+    const tour = tours.find(t => t.tourId === tourId);
 
-  const tour = tours.find(t => t.tourId === tourId);
+    if (!tour) {
+      console.error(`Tour not found: ${tourId}`);
+      showError('El tour solicitado no existe.');
+      return;
+    }
 
-  if (!tour) {
-    
-    // Handle 404
-    return;
-  }
+    console.log('✅ Tour loaded:', tour.name.es);
 
-  // 4. Render Content
-  renderTourPage(tour, departures);
+    // 3. Render Content
+    renderTourPage(tour, departures);
 
-  // 5. Update Language
-  if (window.updateDynamicContent) {
-    window.updateDynamicContent(localStorage.getItem('language') || 'es');
-  } else {
-     // Fallback if global function isn't ready yet
-     const currentLang = localStorage.getItem('language') || 'es';
-     applyLanguageToDynamicElements(currentLang);
+    // 4. Listen for language changes
+    window.addEventListener('languageChange', (e) => {
+      const lang = e.detail.lang;
+      applyLanguageToDynamicElements(lang);
+    });
+
+    // 5. Apply current language
+    const currentLang = localStorage.getItem('nevado_lang') || 'es';
+    applyLanguageToDynamicElements(currentLang);
+
+  } catch (error) {
+    console.error('Error loading tour:', error);
+    showError('Error al cargar el tour.');
   }
 });
 
+/**
+ * Main render function - injects all tour data into the page
+ */
 function renderTourPage(tour, allDepartures) {
-  // --- Header Section ---
-  
-  // Title
+  // --- TITLE ---
   const titleEl = document.querySelector('.h-1');
   if (titleEl) {
     setBilingualText(titleEl, tour.name);
   }
 
-  // Subtitle
+  // --- SUBTITLE ---
   const subtitleEl = document.querySelector('.tour-subtitle');
   if (subtitleEl) {
-    // If tour has subtitle, use it. Otherwise fallback to shortDescription or empty
     const subtitle = tour.subtitle || tour.shortDescription;
-    setBilingualText(subtitleEl, subtitle);
+    if (subtitle) {
+      setBilingualText(subtitleEl, subtitle);
+    }
   }
 
-  // Chips (Info Wrapper)
-  // We need to be specific here. The HTML likely has placeholders.
-  // We can clear and rebuild, or target specific children if they have classes.
-  // Let's assume we rebuild the chips container for flexibility.
-  const chipContainer = document.querySelector('.div-block-129'); // Based on typical structure or find by class
-  // Or better, find the container that holds the chips.
-  // Looking at previous analysis: .chip-tour-info-wrapper are inside a container.
-  
-  // Let's try to update existing ones if possible to preserve layout.
-  // Chip 1: Location/Altitude?
-  // Chip 2: Duration?
-  // Chip 3: Difficulty?
-  
-  // For now, let's target generic classes if unique IDs aren't there.
-  // We'll update the "Price" if it exists in the header.
-  
-  // --- Main Image ---
-  const mainImage = document.querySelector('.scroll-zoom-image');
-  if (mainImage && tour.images && tour.images.length > 0) {
-    mainImage.src = tour.images[0];
-    mainImage.srcset = ''; // Clear hardcoded srcset
-  }
+  // --- INFO CHIPS (in .div-block-42) ---
+  renderInfoChips(tour);
 
-  // --- Description Section ---
-  const descTitle = document.querySelector('.h-2.medium'); // "Descripción"
-  // We keep the title static/translated.
-  
-  const descText = document.querySelector('.body-medium.f-grey.description-text'); // Hypothetical class
-  // If we can't find a specific class, we might need to look for the paragraph in the description section.
-  // Let's try a broad selector for the description paragraph.
-  const descSection = document.querySelector('#description'); // If it exists
-  // Or find the paragraph following the "Descripción" title.
-  
-  // --- Itinerary ---
-  // This is complex. We need to generate the accordion items.
-  const itineraryContainer = document.querySelector('.itinerary-container'); // Hypothetical
-  if (itineraryContainer && tour.itinerary) {
-    itineraryContainer.innerHTML = ''; // Clear existing
-    tour.itinerary.forEach((day, index) => {
-      const item = createItineraryItem(day, index);
-      itineraryContainer.appendChild(item);
+  // --- HERO IMAGE ---
+  const mainImages = document.querySelectorAll('.scroll-zoom-image');
+  if (mainImages.length > 0 && tour.images && tour.images.length > 0) {
+    mainImages.forEach((img, index) => {
+      if (tour.images[index]) {
+        img.src = tour.images[index];
+        img.srcset = ''; // Clear hardcoded srcset
+        img.alt = tour.name.es;
+      }
     });
   }
 
-  // --- Inclusions/Exclusions ---
-  // Similar logic...
+  // --- DESCRIPTION ---
+  renderDescription(tour);
 
-  // --- Price & Booking ---
-  // Update price in sticky header or booking section
+  // --- SECONDARY IMAGES ---
+  renderSecondaryImages(tour);
+
+  // --- ITINERARY ---
+  renderItinerary(tour);
+
+  // --- INCLUSIONS ---
+  renderInclusions(tour);
+
+  // --- RECOMMENDATIONS ---
+  renderRecommendations(tour);
+
+  // --- FAQS ---
+  renderFAQs(tour);
+
+  // --- PRICING ---
+  renderPricing(tour);
+
+  // --- PAGE TITLE (browser tab) ---
+  document.title = `${tour.name.es} | Nevado Trek`;
 }
 
+/**
+ * Render info chips (altitude, days, difficulty, etc.)
+ */
+function renderInfoChips(tour) {
+  const chipContainer = document.querySelector('.div-block-42');
+  if (!chipContainer) return;
+
+  // Clear existing chips
+  chipContainer.innerHTML = '';
+
+  // Difficulty chip (pink)
+  if (tour.difficulty) {
+    const difficultyLabels = {
+      'Easy': { es: 'Fácil', en: 'Easy' },
+      'Moderate': { es: 'Moderado', en: 'Moderate' },
+      'Moderate-Difficult': { es: 'Moderado-Difícil', en: 'Moderate-Difficult' },
+      'Difficult': { es: 'Difícil', en: 'Difficult' },
+      'Very Difficult': { es: 'Muy Difícil', en: 'Very Difficult' }
+    };
+    const label = difficultyLabels[tour.difficulty] || { es: tour.difficulty, en: tour.difficulty };
+    chipContainer.appendChild(createChip(label, 'fire', true));
+  }
+
+  // Altitude chip
+  if (tour.altitude) {
+    chipContainer.appendChild(createChip(tour.altitude, 'mountain'));
+  }
+
+  // Duration chip
+  if (tour.totalDays) {
+    const daysLabel = {
+      es: tour.totalDays === 1 ? `${tour.totalDays} Día` : `${tour.totalDays} Días`,
+      en: tour.totalDays === 1 ? `${tour.totalDays} Day` : `${tour.totalDays} Days`
+    };
+    chipContainer.appendChild(createChip(daysLabel, 'calendar'));
+  }
+
+  // Distance chip (optional)
+  if (tour.distance) {
+    chipContainer.appendChild(createChip({ es: `${tour.distance} km`, en: `${tour.distance} km` }, 'route'));
+  }
+}
+
+/**
+ * Create a single info chip
+ */
+function createChip(labelObj, iconType, isPink = false) {
+  const div = document.createElement('div');
+  div.className = `chip-tour-info-wrapper chip-shadow${isPink ? ' pink-chip' : ''}`;
+  div.style.opacity = '1'; // Override animation initial state
+
+  // Icon SVGs
+  const icons = {
+    fire: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.48 12.35C17.91 8.27 12.32 8.05 13.67 2.12C13.77 1.68 13.3 1.34 12.92 1.57C9.29 3.71 6.68 8 8.87 13.62C9.05 14.08 8.51 14.51 8.12 14.21C6.31 12.84 6.12 10.87 6.28 9.46C6.34 8.94 5.66 8.69 5.37 9.12C4.69 10.16 4 11.84 4 14.37C4.38 19.97 9.11 21.69 10.81 21.91C13.24 22.22 15.87 21.77 17.76 20.04C19.84 18.11 20.6 15.03 19.48 12.35Z"/></svg>`,
+    mountain: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z"/></svg>`,
+    calendar: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="18" height="18" viewBox="0 0 256 256"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM208,80H48V48H72v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24Z"/></svg>`,
+    route: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 15V8.5C4 6.57 5.57 5 7.5 5S11 6.57 11 8.5V15.5C11 16.33 11.67 17 12.5 17S14 16.33 14 15.5V8.5C14 5.46 11.54 3 8.5 3S3 5.46 3 8.5V15H4Z"/></svg>`
+  };
+
+  const p = document.createElement('p');
+  p.className = 'body-small dynamic-i18n';
+  p.setAttribute('data-i18n-es', labelObj.es);
+  p.setAttribute('data-i18n-en', labelObj.en);
+  p.textContent = labelObj.es;
+
+  div.innerHTML = icons[iconType] || '';
+  div.appendChild(p);
+
+  return div;
+}
+
+/**
+ * Render description section
+ */
+function renderDescription(tour) {
+  // Short description
+  const shortDescEl = document.querySelector('.short-description');
+  if (shortDescEl && tour.shortDescription) {
+    setBilingualText(shortDescEl, tour.shortDescription);
+  }
+
+  // Long description (second paragraph in .div-block-131)
+  const descParagraphs = document.querySelectorAll('.div-block-131 .h-5:not(.italic)');
+  if (descParagraphs.length > 0 && tour.description) {
+    setBilingualText(descParagraphs[0], tour.description);
+  }
+}
+
+/**
+ * Render secondary images
+ */
+function renderSecondaryImages(tour) {
+  if (!tour.images || tour.images.length < 2) return;
+
+  // Image in curtain 1
+  const img1 = document.querySelector('#mini-curtain-1 .mini-image');
+  if (img1 && tour.images[1]) {
+    img1.src = tour.images[1];
+    img1.srcset = '';
+  }
+
+  // Image in curtain 2
+  const img2 = document.querySelector('#mini-curtain-2 .mini-image');
+  if (img2 && tour.images[2]) {
+    img2.src = tour.images[2];
+    img2.srcset = '';
+  }
+
+  // Medium parallax image
+  const medImg = document.querySelector('.parallax-image-medium');
+  if (medImg && tour.images[3]) {
+    medImg.src = tour.images[3];
+    medImg.srcset = '';
+  }
+}
+
+/**
+ * Render itinerary accordion
+ */
+function renderItinerary(tour) {
+  if (!tour.itinerary || !tour.itinerary.days) return;
+
+  const container = document.querySelector('#Itinerary-container .grid-1-column');
+  if (!container) {
+    console.warn('Itinerary container not found');
+    return;
+  }
+
+  // Clear existing items
+  container.innerHTML = '';
+
+  tour.itinerary.days.forEach((day, index) => {
+    const item = createAccordionItem(day, index);
+    container.appendChild(item);
+  });
+}
+
+/**
+ * Create accordion item for itinerary
+ */
+function createAccordionItem(day, index) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'accordion-item-wrapper v2';
+  wrapper.setAttribute('data-w-id', `itinerary-day-${index + 1}`);
+
+  const dayNum = String(day.dayNumber || index + 1).padStart(2, '0');
+
+  wrapper.innerHTML = `
+    <div class="accordion-content-wrapper v2">
+      <div class="accordion-header">
+        <h3 class="h-4 italic">Día</h3>
+        <h3 class="h-4 italic">-</h3>
+        <h3 class="h-4 italic f-blue-vivid">${dayNum}</h3>
+      </div>
+      <div class="acordion-body" style="height: 0px; opacity: 0;">
+        <div class="accordion-spacer"></div>
+        <div class="div-block-59">
+          ${day.activities.map(act => `
+            <p class="mg-bottom-0 body-large dynamic-i18n" data-i18n-es="${act.es}" data-i18n-en="${act.en}">${act.es}</p>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="accordion-side right-side">
+      <div class="accordion-icon-wrapper">
+        <div class="accordion-btn-line v2 vertical" style="transform: none;"></div>
+        <div class="accordion-btn-line v2 horizontal"></div>
+      </div>
+    </div>
+  `;
+
+  // Add click handler for accordion
+  wrapper.addEventListener('click', () => toggleAccordion(wrapper));
+
+  return wrapper;
+}
+
+/**
+ * Accordion toggle logic
+ */
+function toggleAccordion(wrapper) {
+  const body = wrapper.querySelector('.acordion-body');
+  const verticalLine = wrapper.querySelector('.accordion-btn-line.vertical');
+  const isOpen = body.style.height !== '0px';
+
+  if (isOpen) {
+    body.style.height = '0px';
+    body.style.opacity = '0';
+    if (verticalLine) verticalLine.style.transform = 'none';
+  } else {
+    body.style.height = 'auto';
+    body.style.opacity = '1';
+    if (verticalLine) verticalLine.style.transform = 'rotate(90deg)';
+  }
+}
+
+/**
+ * Render inclusions list
+ */
+function renderInclusions(tour) {
+  if (!tour.inclusions || tour.inclusions.length === 0) return;
+
+  // Find the inclusions container (first .div-block-40 after "Lo que incluye")
+  const inclusionTitle = Array.from(document.querySelectorAll('.h-5.italic'))
+    .find(el => el.textContent.includes('incluye'));
+  
+  if (!inclusionTitle) return;
+  
+  const container = inclusionTitle.parentElement.querySelector('.div-block-40');
+  if (!container) return;
+
+  // Clear and rebuild
+  container.innerHTML = '';
+  
+  tour.inclusions.forEach(item => {
+    container.appendChild(createListItem(item));
+  });
+}
+
+/**
+ * Render recommendations list
+ */
+function renderRecommendations(tour) {
+  if (!tour.recommendations || tour.recommendations.length === 0) return;
+
+  // Find recommendations container
+  const recoTitle = Array.from(document.querySelectorAll('.h-5.italic'))
+    .find(el => el.textContent.includes('Recomendaciones') || el.textContent.includes('ecomend'));
+  
+  if (!recoTitle) return;
+  
+  const container = recoTitle.parentElement.querySelector('.div-block-40');
+  if (!container) return;
+
+  container.innerHTML = '';
+  
+  tour.recommendations.forEach(item => {
+    container.appendChild(createListItem(item));
+  });
+}
+
+/**
+ * Create list item with checkmark
+ */
+function createListItem(item) {
+  const div = document.createElement('div');
+  div.className = 'div-block-41 shadow-1';
+
+  const p = document.createElement('p');
+  p.className = 'body-medium dynamic-i18n';
+  p.setAttribute('data-i18n-es', item.es);
+  p.setAttribute('data-i18n-en', item.en);
+  p.textContent = item.es;
+
+  const checkDiv = document.createElement('div');
+  checkDiv.className = 'div-block-92';
+  checkDiv.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M18.0303 7.96967C18.3232 8.26256 18.3232 8.73744 18.0303 9.03033L11.0303 16.0303C10.7374 16.3232 10.2626 16.3232 9.96967 16.0303L5.96967 12.0303C5.67678 11.7374 5.67678 11.2626 5.96967 10.9697C6.26256 10.6768 6.73744 10.6768 7.03033 10.9697L10.5 14.4393L16.9697 7.96967C17.2626 7.67678 17.7374 7.67678 18.0303 7.96967Z" fill="currentColor"></path>
+    </svg>
+  `;
+
+  div.appendChild(p);
+  div.appendChild(checkDiv);
+
+  return div;
+}
+
+/**
+ * Render FAQs
+ */
+function renderFAQs(tour) {
+  if (!tour.faqs || tour.faqs.length === 0) return;
+
+  const container = document.querySelector('.div-block-136');
+  if (!container) return;
+
+  // Find existing accordion wrapper
+  const accordionContainer = container.querySelector('.grid-1-column');
+  if (!accordionContainer) return;
+
+  // Clear and rebuild
+  accordionContainer.innerHTML = '';
+
+  tour.faqs.forEach((faq, index) => {
+    const item = createFAQItem(faq, index);
+    accordionContainer.appendChild(item);
+  });
+}
+
+/**
+ * Create FAQ accordion item
+ */
+function createFAQItem(faq, index) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'accordion-item-wrapper v2';
+
+  wrapper.innerHTML = `
+    <div class="accordion-content-wrapper v2">
+      <div class="accordion-header">
+        <h3 class="h-5 italic dynamic-i18n" data-i18n-es="${faq.question.es}" data-i18n-en="${faq.question.en}">${faq.question.es}</h3>
+      </div>
+      <div class="acordion-body" style="height: 0px; opacity: 0;">
+        <div class="accordion-spacer"></div>
+        <p class="mg-bottom-0 body-large dynamic-i18n" data-i18n-es="${faq.answer.es}" data-i18n-en="${faq.answer.en}">${faq.answer.es}</p>
+      </div>
+    </div>
+    <div class="accordion-side right-side">
+      <div class="accordion-icon-wrapper">
+        <div class="accordion-btn-line v2 vertical" style="transform: none;"></div>
+        <div class="accordion-btn-line v2 horizontal"></div>
+      </div>
+    </div>
+  `;
+
+  wrapper.addEventListener('click', () => toggleAccordion(wrapper));
+
+  return wrapper;
+}
+
+/**
+ * Render pricing section
+ */
+function renderPricing(tour) {
+  if (!tour.pricingTiers || tour.pricingTiers.length === 0) return;
+
+  // Find price element (if exists in header area)
+  const priceEl = document.querySelector('.price-h') || document.querySelector('.h-6.price-h');
+  if (priceEl) {
+    // Use the lowest price tier
+    const lowestPrice = tour.pricingTiers.reduce((min, tier) => 
+      tier.priceCOP < min.priceCOP ? tier : min
+    , tour.pricingTiers[0]);
+
+    const formattedPrice = new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      maximumFractionDigits: 0
+    }).format(lowestPrice.priceCOP);
+
+    priceEl.textContent = `Desde ${formattedPrice}`;
+  }
+
+  // Update the "Reservar Tour" button link
+  const bookBtn = document.getElementById('book-tour-btn');
+  if (bookBtn) {
+    bookBtn.href = `https://wa.me/573001234567?text=Hola! Me interesa el tour: ${encodeURIComponent(tour.name.es)}`;
+  }
+}
+
+/**
+ * Set bilingual text on element
+ */
 function setBilingualText(element, dataObj) {
   if (!element || !dataObj) return;
-  element.setAttribute('data-i18n-es', dataObj.es);
-  element.setAttribute('data-i18n-en', dataObj.en);
-  element.textContent = dataObj.es; // Default
+  
+  element.setAttribute('data-i18n-es', dataObj.es || '');
+  element.setAttribute('data-i18n-en', dataObj.en || '');
+  element.textContent = dataObj.es || '';
   element.classList.add('dynamic-i18n');
 }
 
+/**
+ * Apply language to all dynamic elements
+ */
 function applyLanguageToDynamicElements(lang) {
   const elements = document.querySelectorAll('.dynamic-i18n');
   elements.forEach(el => {
@@ -130,21 +487,21 @@ function applyLanguageToDynamicElements(lang) {
       el.textContent = text;
     }
   });
+  
+  console.log(`🌐 Language applied: ${lang} (${elements.length} elements updated)`);
 }
 
-// Helper to create HTML for itinerary (simplified for now)
-function createItineraryItem(day, index) {
-  // This needs to match the exact HTML structure of the Webflow accordion
-  // For now, we might skip this or do a simple version until we analyze TourPage.html deeper
-  const div = document.createElement('div');
-  div.className = 'accordion-item'; // Placeholder
-  div.innerHTML = `
-    <div class="accordion-header">
-      <h3 class="dynamic-i18n" data-i18n-es="${day.title.es}" data-i18n-en="${day.title.en}">${day.title.es}</h3>
-    </div>
-    <div class="accordion-content">
-      <p class="dynamic-i18n" data-i18n-es="${day.description.es}" data-i18n-en="${day.description.en}">${day.description.es}</p>
-    </div>
-  `;
-  return div;
+/**
+ * Show error message
+ */
+function showError(message) {
+  const titleEl = document.querySelector('.h-1');
+  if (titleEl) {
+    titleEl.textContent = 'Error';
+  }
+  
+  const subtitleEl = document.querySelector('.tour-subtitle');
+  if (subtitleEl) {
+    subtitleEl.textContent = message;
+  }
 }

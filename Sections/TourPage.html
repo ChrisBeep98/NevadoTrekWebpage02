@@ -21,6 +21,8 @@
     />
     <!-- Custom Tour Animations -->
     <link href="../css/tour-animations.css" rel="stylesheet" type="text/css" />
+    <!-- Shared Navbar Styles from Index -->
+    <link href="../css/index-animations.css" rel="stylesheet" type="text/css" />
     <style>
       html.w-mod-js:not(.w-mod-ix3)
         :is(
@@ -51,6 +53,76 @@
           [data-wf-target*='["68cb38e0bae5b4c56edac1ae","254def60-71b1-18f5-942e-e8e7a5613ddd"]']
         ) {
         visibility: hidden !important;
+      }
+    </style>
+    <!-- CRITICAL: Navbar Fixed Styles - Must load last to override everything -->
+    <style>
+      /* Reset any transforms on ancestors that break fixed positioning */
+      html,
+      body,
+      .body,
+      .body-2 {
+        transform: none !important;
+        perspective: none !important;
+        transform-style: flat !important;
+        contain: none !important;
+        will-change: auto !important;
+      }
+
+      /* FORCE navbar to be fixed - but allow scrolled state to override positioning */
+      #navbar-exclusion {
+        position: fixed !important;
+        top: 0;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 10em) !important; /* 5em margin each side */
+        z-index: 2147483647 !important; /* Maximum z-index */
+        contain: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent;
+        border-radius: 0 !important;
+        pointer-events: auto;
+        align-items: center;
+        height: 88px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      /* Scrolled state - pill centered using same method as normal */
+      #navbar-exclusion.navbar-fixed.scrolled {
+        top: 1em !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: 84% !important;
+        max-width: 84% !important;
+        margin: 0 !important;
+        border-radius: 1000px !important;
+        padding: 0 5em !important;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(15px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(8px) saturate(180%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
+          0 2px 8px rgba(0, 0, 0, 0.08),
+          inset 0 0 0 0.5px rgba(255, 255, 255, 0.15) !important;
+      }
+
+      #navbar-exclusion .navbar-container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: 100% !important; /* Ocupa toda la altura del header */
+        padding: 0 2em !important; /* Padding horizontal */
+      }
+
+      /* El navbar también debe centrar su contenido */
+      #navbar-exclusion {
+        display: flex !important;
+        align-items: center !important;
       }
     </style>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -91,67 +163,148 @@
     />
   </head>
   <body class="body-2">
-    <section class="section-8">
-      <div class="nav-container">
-        <div
-          data-w-id="df2bf609-6f8c-124c-9fe2-42c8fa3071c7"
-          data-animation="default"
-          data-collapse="medium"
-          data-duration="400"
-          data-easing="ease"
-          data-easing2="ease"
-          role="banner"
-          class="nav-component w-nav"
-        >
-          <div class="container nav-container">
-            <div class="nav-wrap">
-              <div class="div-block-3">
+    <!-- ===== NAVBAR FIXED CON EFECTO EXCLUSIÓN ===== -->
+    <nav id="navbar-exclusion" class="navbar-fixed" role="banner">
+      <div class="navbar-container">
+        <!-- Logo y Nombre -->
+        <a href="../index.html" class="navbar-brand">
+          <img
+            src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
+            loading="lazy"
+            alt="Nevado Trek Logo"
+            class="navbar-logo"
+          />
+          <p class="navbar-title"><em>Nevado</em><br /><em>Trek</em></p>
+        </a>
+
+        <!-- Links de Navegación -->
+        <div class="navbar-links">
+          <a
+            href="../index.html"
+            class="nav-link-exclusion"
+            data-i18n-key="nav.home"
+            >Inicio</a
+          >
+          <a
+            href="../index.html#tours"
+            class="nav-link-exclusion active"
+            data-i18n-key="nav.tours"
+            >Tours</a
+          >
+          <a
+            href="../index.html#gallery"
+            class="nav-link-exclusion"
+            data-i18n-key="nav.gallery"
+            >Galería</a
+          >
+        </div>
+
+        <!-- Acciones -->
+        <div class="navbar-actions">
+          <div class="lang-switch-exclusion">
+            <!-- Dropdown personalizado con banderas -->
+            <div class="lang-dropdown">
+              <button class="lang-btn" id="lang-btn">
                 <img
-                  src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
-                  loading="lazy"
-                  alt=""
-                  class="image-9"
+                  src="https://flagcdn.com/w20/co.png"
+                  alt="Colombia"
+                  class="lang-flag"
+                  id="current-flag"
                 />
-                <p class="body-medium nt-txt-heading">
-                  <em>Nevado </em>
-                  <br />
-                  <em>Trek</em>
-                </p>
-              </div>
-              <nav role="navigation" class="nav-links-wrap w-nav-menu">
-                <div class="nav-links-bg"></div>
-                <a href="#" class="nav-links-text bottom-line w-nav-link"
-                  >Inicio</a
+                <span id="current-lang">ES</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
                 >
-                <a href="#" class="nav-links-text w-nav-link">Tours</a>
-                <a href="#" class="nav-links-text w-nav-link">Galería</a>
-              </nav>
-              <div class="div-block-126">
-                <a href="#" class="button-5 button-cta-blue w-inline-block">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="18"
-                    height="18"
-                    fill="currentColor"
-                    app="ikonik"
-                    class="ikonik-calendar"
-                  >
-                    <path
-                      d="M7 1V3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V4C22 3.44772 21.5523 3 21 3H17V1H15V3H9V1H7ZM4 9V19H20V9H4ZM6 11H8V13H6V11ZM11 11H13V13H11V11ZM16 11H18V13H16V11ZM6 15H8V17H6V15ZM11 15H13V17H11V15ZM16 15H18V17H16V15Z"
-                      app="ikonik"
-                    ></path>
-                  </svg>
-                  <div class="body-small">Reservar Tour</div>
-                </a>
-                <div class="menu-button w-nav-button">
-                  <div class="w-icon-nav-menu"></div>
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <div class="lang-options" id="lang-options">
+                <div
+                  class="lang-option"
+                  data-lang="es"
+                  data-flag="https://flagcdn.com/w20/co.png"
+                >
+                  <img
+                    src="https://flagcdn.com/w20/co.png"
+                    alt="Colombia"
+                    class="lang-flag"
+                  />
+                  <span>ES</span>
+                </div>
+                <div
+                  class="lang-option"
+                  data-lang="en"
+                  data-flag="https://flagcdn.com/w20/us.png"
+                >
+                  <img
+                    src="https://flagcdn.com/w20/us.png"
+                    alt="USA"
+                    class="lang-flag"
+                  />
+                  <span>EN</span>
                 </div>
               </div>
             </div>
           </div>
+          <a
+            href="#booking"
+            class="header-contact-btn"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 10px 20px;
+              border: 1px solid currentColor;
+              border-radius: 50px;
+              text-decoration: none;
+              font-family: Inter, sans-serif;
+              font-size: 14px;
+              transition: all 0.3s ease;
+              white-space: nowrap;
+            "
+          >
+            <span>Reservar Tour</span>
+            <svg
+              style="
+                width: 16px;
+                height: 16px;
+                fill: currentColor;
+                flex-shrink: 0;
+              "
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7 1V3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V4C22 3.44772 21.5523 3 21 3H17V1H15V3H9V1H7ZM4 9V19H20V9H4ZM6 11H8V13H6V11ZM11 11H13V13H11V11ZM16 11H18V13H16V11ZM6 15H8V17H6V15ZM11 15H13V17H11V15ZM16 15H18V17H16V15Z"
+              />
+            </svg>
+          </a>
+          <button class="menu-toggle-exclusion" aria-label="Menu">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
         </div>
       </div>
+    </nav>
+
+    <section class="section-8">
       <div class="div-block-142">
         <div class="index">
           <div class="div-block-140">
