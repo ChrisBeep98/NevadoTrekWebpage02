@@ -223,8 +223,16 @@ function initTOC() {
         item.style.color = '#042e4d';
 
         if (indicator) {
-          const itemHeight = 42;
-          const offset = activeIndex * itemHeight;
+          // Get positions relative to the index container
+          const indexContainer = document.querySelector('.index');
+          const itemRect = item.getBoundingClientRect();
+          const indexRect = indexContainer.getBoundingClientRect();
+          
+          // Calculate offset from top of index container
+          // Add half the item height to center the indicator on the text
+          const itemHeight = itemRect.height;
+          const offset = (itemRect.top - indexRect.top) + (itemHeight / 2) - (indicator.offsetHeight / 2) - 28;
+          
           indicator.style.transform = `translateY(${offset}px)`;
           indicator.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         }
