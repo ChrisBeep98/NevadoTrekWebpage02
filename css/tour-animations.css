@@ -68,6 +68,15 @@
   min-height: 600px !important;
 }
 
+/* OVERRIDE: Image 5 (Medium) specific height via Class */
+.medium-height-forced {
+  width: 100% !important; /* Ensure it fills container width */
+  height: 600px !important;
+  min-height: 600px !important;
+  max-height: 600px !important;
+  object-fit: cover !important;
+}
+
 /* Force medium parallax image to same height */
 .parallax-image-medium {
   width: 100%;
