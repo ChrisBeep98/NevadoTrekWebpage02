@@ -113,8 +113,130 @@ function renderTourPage(tour, allDepartures) {
   // --- PRICING ---
   renderPricing(tour);
 
+  // --- DYNAMIC TOC (no layout changes) ---
+  initTOC();
+
   // --- PAGE TITLE (browser tab) ---
   document.title = `${tour.name.es} | Nevado Trek`;
+}
+
+/**
+ * Initialize TOC - NO ID CHANGES, uses data attributes
+ */
+function initTOC() {
+  // We won't change IDs. Instead, we'll find sections by their existing selectors
+  // and attach data attributes for our use
+  
+  const sectionMappings = [
+    { 
+      selector: '.div-block-131', // Description section
+      name: 'description',
+      tocIndex: 0
+    },
+    { 
+      selector: '.itinerary-containe', // Itinerary (note: typo in original class)
+      name: 'itinerary',
+      tocIndex: 1
+    },
+    { 
+      selector: '.div-block-38', // Inclusions section (has "Lo que incluye")
+      name: 'inclusions',
+      tocIndex: 2
+    },
+    { 
+      selector: '.div-block-136', // FAQ section
+      name: 'faq',
+      tocIndex: 3
+    }
+  ];
+
+  // Mark sections with data attributes (doesn't affect layout/CSS)
+  sectionMappings.forEach(({ selector, name }) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.setAttribute('data-toc-section', name);
+    }
+  });
+
+  // Get TOC items
+  const indexContainer = document.querySelector('.index');
+  if (!indexContainer) return;
+
+  const tocDivs = Array.from(indexContainer.children).filter(child => {
+    return child.tagName === 'DIV' && child.querySelector('p.body-medium');
+  });
+
+  const tocItems = tocDivs.map(div => div.querySelector('p.body-medium')).filter(p => p);
+  const indicator = document.querySelector('.div-block-141');
+
+  // Add click handlers
+  tocItems.forEach((item, index) => {
+    const mapping = sectionMappings[index];
+    if (!mapping) return;
+
+    item.parentElement.style.cursor = 'pointer';
+
+    item.parentElement.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(`[data-toc-section="${mapping.name}"]`);
+      if (target) {
+        const offset = 120;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // Scroll Spy
+  const sections = sectionMappings
+    .map(({ selector }) => document.querySelector(selector))
+    .filter(el => el);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const sectionName = entry.target.getAttribute('data-toc-section');
+        const mapping = sectionMappings.find(m => m.name === sectionName);
+        if (mapping) {
+          updateActiveState(mapping.tocIndex);
+        }
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '-20% 0px -60% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+
+  function updateActiveState(activeIndex) {
+    tocItems.forEach((item, index) => {
+      if (index === activeIndex) {
+        item.classList.remove('f-grey');
+        item.style.fontWeight = '600';
+        item.style.color = '#042e4d';
+
+        if (indicator) {
+          const itemHeight = 42;
+          const offset = activeIndex * itemHeight;
+          indicator.style.transform = `translateY(${offset}px)`;
+          indicator.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }
+      } else {
+        if (!item.classList.contains('f-grey')) {
+          item.classList.add('f-grey');
+        }
+        item.style.fontWeight = '400';
+        item.style.color = '';
+      }
+    });
+  }
 }
 
 /**
