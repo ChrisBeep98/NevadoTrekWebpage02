@@ -305,13 +305,13 @@
     const curtainConfigs = {
       'mini-curtain-1': {
         start: 'top 85%',
-        end: 'top 40%', // Finishes much faster
-        scrub: 0.5 // Almost instant response
+        end: 'top 20%', // Extended duration (slower)
+        scrub: 1.2 // Smoother
       },
       'mini-curtain-2': {
         start: 'top 85%',
-        end: 'center center', // Finishes much faster (was bottom top)
-        scrub: 0.5
+        end: 'top 30%', // Extended duration
+        scrub: 1.2
       }
     };
 
