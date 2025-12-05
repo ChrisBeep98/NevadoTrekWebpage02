@@ -83,9 +83,9 @@
 /* Moved strictly AFTER .parallax-image-medium to ensure it overrides */
 .medium-height-forced {
   width: 100% !important; 
-  height: 500px !important;
-  min-height: 500px !important;
-  max-height: 500px !important;
+  height: 640px !important;
+  min-height: 640px !important;
+  max-height: 640px !important;
   object-fit: cover !important;
 }
 
