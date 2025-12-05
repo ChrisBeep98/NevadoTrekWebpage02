@@ -459,12 +459,13 @@
    Same curtain effect optimized for smaller image
    =================================== */
 
-/* Container for mini-image - AUTO height to match image */
+/* Container for mini-image - FIXED height for stability */
 .mini-image-container {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: auto;  /* AUTO - no fixed height needed */
+  height: 800px;  /* Fixed height to match layout flow */
+  min-height: 800px;
   display: block;
 }
 
@@ -472,7 +473,7 @@
 .mini-parallax-wrapper {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%; /* Fill container */
   transform: scale(1.2);
   transform-origin: bottom center;
   will-change: transform;
@@ -497,11 +498,12 @@
   pointer-events: none;
 }
 
-/* Ensure both mini-images have the same size */
+/* Ensure both mini-images have the same size and cover area */
 .mini-image {
-  max-width: 662px;  /* Match the mini-image's natural max width */
+  max-width: 100%; /* Allow full width of grid cell */
   width: 100%;
-  height: auto;
+  height: 100%;    /* Fill container */
+  object-fit: cover;
 }
 
 
