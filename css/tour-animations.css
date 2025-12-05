@@ -51,9 +51,11 @@
 
 .scroll-zoom-image {
   width: 60vw;
+  height: 1000px !important;  /* Force specific height as requested */
   max-width: 100%;
   display: block;
   margin: 0 auto;
+  object-fit: cover;          /* Prevent distortion */
   /* Performance optimizations */
   will-change: width;
   contain: layout;  /* Isolate layout calculations */
