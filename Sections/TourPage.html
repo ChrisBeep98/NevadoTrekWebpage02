@@ -518,7 +518,12 @@
             logistics so you never need to lift a finger – except to sip a
             cocktail or two, of course.
           </p>
-          <p class="h-5">
+          <p
+            id="tour-long-description"
+            class="h-5 dynamic-i18n"
+            data-i18n-es=""
+            data-i18n-en=""
+          >
             For the duration of your stay, consider our concierge as your
             personal assistant. They will take care of all the organization and
             logistics so you never need to lift a finger – except to sip a
@@ -821,7 +826,7 @@
         >
           <div class="div-block-39">
             <h1 class="h-5 italic">( Lo que incluye )</h1>
-            <div class="div-block-40">
+            <div class="div-block-40" id="tour-inclusions">
               <div class="div-block-41 shadow-1">
                 <p class="body-medium">Guías de alta montaña</p>
                 <div class="div-block-92">
@@ -1069,9 +1074,15 @@
               </div>
             </div>
           </div>
+          <div class="div-block-39 exclusions">
+            <h1 class="h-5 italic">( No incluye )</h1>
+            <div class="div-block-40" id="tour-exclusions">
+              <!-- Dynamic excluded items will be injected here -->
+            </div>
+          </div>
           <div class="div-block-39 recommendations">
             <h1 class="h-5 italic">( Recomendaciones )</h1>
-            <div class="div-block-40">
+            <div class="div-block-40" id="tour-recommendations">
               <div class="div-block-41 shadow-1">
                 <p class="body-medium">
                   Buena hidratación antes, durante y después
@@ -1250,9 +1261,12 @@
           id="w-node-_7694b81d-be8f-05a3-6149-2103870ac5f9-93ad6e2b"
           class="div-block-134 short-message-animated-scroll"
         >
-          <p class="h-5 short-description">
-            &quot;For the duration of your stay, consider our concierge as
-             finger – except to sip a cocktail or two, of course. &quot;
+          <p
+            class="h-5 short-description dynamic-i18n"
+            data-i18n-es=""
+            data-i18n-en=""
+          >
+            <!-- Dynamic content will be injected here -->
           </p>
         </div>
       </div>
@@ -1269,7 +1283,7 @@
           "
           alt=""
           id="big-image-03"
-          class="image-16 big-image-03 scroll-zoom-image"
+          class="image-16 big-image-03 scroll-zoom-image parallax-image-medium"
         />
       </div>
       <div class="a-grid">
@@ -1278,7 +1292,7 @@
           class="div-block-135"
         >
           <h1 class="h-5 italic">( Preguntas Frecuentes )</h1>
-          <div class="div-block-136">
+          <div class="div-block-136" id="faq-container">
             <div
               data-w-id="1dbe8947-0ae0-8f1a-e0dc-ff7a06668f1f"
               class="accordion-item-wrapper v2"

@@ -101,6 +101,9 @@ function renderTourPage(tour, allDepartures) {
   // --- INCLUSIONS ---
   renderInclusions(tour);
 
+  // --- EXCLUSIONS ---
+  renderExclusions(tour);
+
   // --- RECOMMENDATIONS ---
   renderRecommendations(tour);
 
@@ -189,16 +192,20 @@ function createChip(labelObj, iconType, isPink = false) {
  * Render description section
  */
 function renderDescription(tour) {
-  // Short description
-  const shortDescEl = document.querySelector('.short-description');
-  if (shortDescEl && tour.shortDescription) {
-    setBilingualText(shortDescEl, tour.shortDescription);
+  // Short description (Handle ALL occurrences)
+  const shortDescEls = document.querySelectorAll('.short-description');
+  if (shortDescEls.length > 0 && tour.shortDescription) {
+    shortDescEls.forEach(el => {
+      setBilingualText(el, tour.shortDescription);
+    });
   }
 
-  // Long description (second paragraph in .div-block-131)
-  const descParagraphs = document.querySelectorAll('.div-block-131 .h-5:not(.italic)');
-  if (descParagraphs.length > 0 && tour.description) {
-    setBilingualText(descParagraphs[0], tour.description);
+  // Long description
+  const longDescEl = document.getElementById('tour-long-description');
+  const targetEl = longDescEl || document.querySelector('.div-block-131 .h-5:not(.italic)');
+  
+  if (targetEl && tour.description) {
+    setBilingualText(targetEl, tour.description);
   }
 }
 
@@ -316,20 +323,31 @@ function toggleAccordion(wrapper) {
 function renderInclusions(tour) {
   if (!tour.inclusions || tour.inclusions.length === 0) return;
 
-  // Find the inclusions container (first .div-block-40 after "Lo que incluye")
-  const inclusionTitle = Array.from(document.querySelectorAll('.h-5.italic'))
-    .find(el => el.textContent.includes('incluye'));
-  
-  if (!inclusionTitle) return;
-  
-  const container = inclusionTitle.parentElement.querySelector('.div-block-40');
+  const container = document.getElementById('tour-inclusions');
   if (!container) return;
 
   // Clear and rebuild
   container.innerHTML = '';
   
   tour.inclusions.forEach(item => {
-    container.appendChild(createListItem(item));
+    container.appendChild(createListItem(item, 'check'));
+  });
+}
+
+/**
+ * Render exclusions list
+ */
+function renderExclusions(tour) {
+  if (!tour.exclusions || tour.exclusions.length === 0) return;
+
+  const container = document.getElementById('tour-exclusions');
+  if (!container) return;
+
+  // Clear and rebuild
+  container.innerHTML = '';
+  
+  tour.exclusions.forEach(item => {
+    container.appendChild(createListItem(item, 'cross'));
   });
 }
 
@@ -339,26 +357,20 @@ function renderInclusions(tour) {
 function renderRecommendations(tour) {
   if (!tour.recommendations || tour.recommendations.length === 0) return;
 
-  // Find recommendations container
-  const recoTitle = Array.from(document.querySelectorAll('.h-5.italic'))
-    .find(el => el.textContent.includes('Recomendaciones') || el.textContent.includes('ecomend'));
-  
-  if (!recoTitle) return;
-  
-  const container = recoTitle.parentElement.querySelector('.div-block-40');
+  const container = document.getElementById('tour-recommendations');
   if (!container) return;
 
   container.innerHTML = '';
   
   tour.recommendations.forEach(item => {
-    container.appendChild(createListItem(item));
+    container.appendChild(createListItem(item, 'check'));
   });
 }
 
 /**
- * Create list item with checkmark
+ * Create list item with checkmark or cross
  */
-function createListItem(item) {
+function createListItem(item, iconType = 'check') {
   const div = document.createElement('div');
   div.className = 'div-block-41 shadow-1';
 
@@ -368,16 +380,28 @@ function createListItem(item) {
   p.setAttribute('data-i18n-en', item.en);
   p.textContent = item.es;
 
-  const checkDiv = document.createElement('div');
-  checkDiv.className = 'div-block-92';
-  checkDiv.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M18.0303 7.96967C18.3232 8.26256 18.3232 8.73744 18.0303 9.03033L11.0303 16.0303C10.7374 16.3232 10.2626 16.3232 9.96967 16.0303L5.96967 12.0303C5.67678 11.7374 5.67678 11.2626 5.96967 10.9697C6.26256 10.6768 6.73744 10.6768 7.03033 10.9697L10.5 14.4393L16.9697 7.96967C17.2626 7.67678 17.7374 7.67678 18.0303 7.96967Z" fill="currentColor"></path>
-    </svg>
-  `;
+  const iconDiv = document.createElement('div');
+  iconDiv.className = 'div-block-92';
+
+  if (iconType === 'check') {
+    iconDiv.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M18.0303 7.96967C18.3232 8.26256 18.3232 8.73744 18.0303 9.03033L11.0303 16.0303C10.7374 16.3232 10.2626 16.3232 9.96967 16.0303L5.96967 12.0303C5.67678 11.7374 5.67678 11.2626 5.96967 10.9697C6.26256 10.6768 6.73744 10.6768 7.03033 10.9697L10.5 14.4393L16.9697 7.96967C17.2626 7.67678 17.7374 7.67678 18.0303 7.96967Z" fill="currentColor"></path>
+      </svg>
+    `;
+  } else {
+    // Cross icon for exclusions
+    iconDiv.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    `;
+    iconDiv.style.color = '#ef4444'; // Red color for exclusions
+  }
 
   div.appendChild(p);
-  div.appendChild(checkDiv);
+  div.appendChild(iconDiv);
 
   return div;
 }
@@ -386,21 +410,20 @@ function createListItem(item) {
  * Render FAQs
  */
 function renderFAQs(tour) {
-  if (!tour.faqs || tour.faqs.length === 0) return;
+  if (!tour.tour_faqs && !tour.faqs) return;
+  const faqs = tour.tour_faqs || tour.faqs; // Handle potentially different property names
 
-  const container = document.querySelector('.div-block-136');
+  if (faqs.length === 0) return;
+
+  const container = document.getElementById('faq-container');
   if (!container) return;
 
-  // Find existing accordion wrapper
-  const accordionContainer = container.querySelector('.grid-1-column');
-  if (!accordionContainer) return;
-
   // Clear and rebuild
-  accordionContainer.innerHTML = '';
+  container.innerHTML = '';
 
-  tour.faqs.forEach((faq, index) => {
+  faqs.forEach((faq, index) => {
     const item = createFAQItem(faq, index);
-    accordionContainer.appendChild(item);
+    container.appendChild(item);
   });
 }
 
@@ -410,15 +433,22 @@ function renderFAQs(tour) {
 function createFAQItem(faq, index) {
   const wrapper = document.createElement('div');
   wrapper.className = 'accordion-item-wrapper v2';
+  
+  // Format index with leading zero
+  const num = String(index + 1).padStart(2, '0');
 
   wrapper.innerHTML = `
     <div class="accordion-content-wrapper v2">
       <div class="accordion-header">
-        <h3 class="h-5 italic dynamic-i18n" data-i18n-es="${faq.question.es}" data-i18n-en="${faq.question.en}">${faq.question.es}</h3>
+        <h3 class="h-4 italic dynamic-i18n" data-i18n-es="${faq.question.es}" data-i18n-en="${faq.question.en}">${faq.question.es}</h3>
+        <h3 class="h-4 italic">-</h3>
+        <h3 class="h-4 italic f-blue-vivid">${num}</h3>
       </div>
       <div class="acordion-body" style="height: 0px; opacity: 0;">
         <div class="accordion-spacer"></div>
-        <p class="mg-bottom-0 body-large dynamic-i18n" data-i18n-es="${faq.answer.es}" data-i18n-en="${faq.answer.en}">${faq.answer.es}</p>
+        <div class="div-block-59">
+            <p class="mg-bottom-0 body-large dynamic-i18n" data-i18n-es="${faq.answer.es}" data-i18n-en="${faq.answer.en}">${faq.answer.es}</p>
+        </div>
       </div>
     </div>
     <div class="accordion-side right-side">
