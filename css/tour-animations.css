@@ -52,6 +52,7 @@
 .scroll-zoom-image {
   width: 60vw;
   height: 1000px !important;  /* Force specific height as requested */
+  min-height: 1000px !important; /* Double force */
   max-width: 100%;
   display: block;
   margin: 0 auto;
@@ -59,6 +60,14 @@
   /* Performance optimizations */
   will-change: width;
   contain: layout;  /* Isolate layout calculations */
+}
+
+/* Force medium parallax image to same height */
+.parallax-image-medium {
+  width: 100%;
+  height: 1000px !important;
+  min-height: 1000px !important;
+  object-fit: cover;
 }
 
 /* Subtitle fade in */
