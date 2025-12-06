@@ -363,16 +363,183 @@ NevadoTrekWeb01/
 
 ## Testing Checklist
 
-- [ ] Modal abre al click en "Reservar Tour"
-- [ ] Fechas públicas se muestran como cards
-- [ ] Seleccionar fecha lleva a Step 2
-- [ ] "Fecha diferente" muestra date picker
-- [ ] Date picker abre al click en todo el input
-- [ ] Validación de campos funciona
-- [ ] Step 3 muestra resumen correcto
-- [ ] Precio total se calcula bien
-- [ ] Cambio de idioma actualiza textos y precios
-- [ ] Toast verde aparece al enviar
-- [ ] Success screen muestra booking ID
-- [ ] Modal se cierra con X, overlay, o ESC
+- [x] Modal abre al click en "Reservar Tour"
+- [x] Fechas públicas se muestran como cards
+- [x] Seleccionar fecha lleva a Step 2
+- [x] Toggle switch activa/desactiva date picker
+- [x] Date picker abre al click en todo el input
+- [x] Date picker se reinicia al activar toggle
+- [x] Step 2 muestra resumen de fecha seleccionada
+- [x] Validación de campos funciona
+- [x] Step 3 muestra resumen correcto
+- [x] Precio total se calcula correctamente según tier
+- [x] Cambio de idioma actualiza textos y precios
+- [x] Toast verde aparece al enviar
+- [x] Success screen muestra booking ID
+- [x] Modal se cierra con X, overlay, o ESC
+- [x] Departures se refrescan al abrir modal
+- [x] No se muestran departures con 0 cupos
 - [ ] Responsive funciona en mobile
+
+---
+
+## Gestión de Datos y Cache
+
+### Cache Bypass para Datos Frescos
+
+El endpoint `/public/departures` tiene cache de CDN (30-60 segundos). Para obtener datos actualizados después de un booking:
+
+```javascript
+// api.js - getDepartures con forceRefresh
+async getDepartures(forceRefresh = false) {
+  let url = `${API_BASE_URL}/public/departures`;
+  
+  // Bypass cache añadiendo timestamp
+  if (forceRefresh) {
+    url += `?t=${Date.now()}`;
+    console.log('🔄 Fetching departures with cache bypass');
+  }
+  
+  const response = await fetch(url);
+  return await response.json();
+}
+```
+
+### Cuándo usar Cache Bypass
+
+| Situación | Cache |
+|-----------|-------|
+| Carga inicial de página | Normal (aprovecha cache) |
+| Abrir modal de reserva | **Bypass** (siempre datos frescos) |
+| Después de booking exitoso | **Bypass** |
+| Polling automático | Normal |
+
+### Filtrado de Departures
+
+El filtrado se aplica en **dos capas**:
+
+```mermaid
+flowchart LR
+    A[API Response] --> B{Backend Filter}
+    B --> |currentPax < maxPax| C[Departures con cupos]
+    C --> D{Frontend Filter}
+    D --> |available > 0| E[Date Cards]
+```
+
+**Backend** (defensivo primario):
+```javascript
+// Solo retorna departures con cupos disponibles
+.filter((dep) => dep.currentPax < dep.maxPax)
+```
+
+**Frontend** (defensivo secundario):
+```javascript
+// Filtro adicional por si acaso
+currentDepartures = freshDepartures.filter(d => {
+  const available = (d.maxPax || 8) - (d.currentPax || 0);
+  return d.tourId === currentTour.tourId && 
+    d.status === 'open' &&
+    new Date(d.date._seconds * 1000) >= new Date() &&
+    available > 0;
+});
+```
+
+---
+
+## Componentes Nuevos
+
+### Toggle Switch para Fecha Privada
+
+Reemplazó el botón clickeable por un switch on/off:
+
+```html
+<div class="private-date-toggle">
+  <div class="toggle-left">
+    <svg><!-- calendar icon --></svg>
+    <span>Solicitar una fecha diferente</span>
+  </div>
+  <label class="toggle-switch">
+    <input type="checkbox" id="private-date-checkbox">
+    <span class="toggle-slider"></span>
+  </label>
+</div>
+```
+
+**Comportamiento:**
+- Al activar: Muestra date picker, deselecciona date cards, resetea valor del picker
+- Al desactivar: Oculta date picker
+
+### Resumen de Fecha en Step 2
+
+Muestra la fecha seleccionada en el paso anterior:
+
+```html
+<div class="selected-date-summary">
+  <div class="summary-date-info">
+    <span class="summary-date-label">Tu fecha seleccionada</span>
+    <span class="summary-date-value" id="step2-date-display">
+      domingo, 15 de diciembre de 2025
+    </span>
+  </div>
+  <button class="change-date-btn">Cambiar</button>
+</div>
+```
+
+---
+
+## Cálculo de Precios
+
+### Lógica de Pricing Tiers
+
+El precio mostrado en las tarjetas de fecha se calcula basado en el **total de personas después de unirse**:
+
+```javascript
+// IMPORTANTE: Precio basado en currentPax + 1 (mínimo)
+const totalPeopleAfterBooking = currentPax + 1;
+const price = getFormattedPrice(pricingTiers, totalPeopleAfterBooking);
+```
+
+**Ejemplo:**
+| currentPax | Tier Aplicado | Precio Mostrado |
+|------------|---------------|-----------------|
+| 0 | 1 persona | $98,000 |
+| 1 | 2 personas | $72,000 |
+| 2 | 3 personas | $80,000 |
+| 3+ | 4-8 personas | $54,000 |
+
+### Función getFormattedPrice
+
+```javascript
+function getFormattedPrice(pricingTiers, currentPax = 1) {
+  // Encontrar tier correspondiente
+  const tier = pricingTiers.find(t => 
+    currentPax >= t.minPax && currentPax <= t.maxPax
+  ) || pricingTiers[pricingTiers.length - 1];
+
+  return currentLang === 'en' 
+    ? formatUSD(tier.priceUSD) 
+    : formatCOP(tier.priceCOP);
+}
+```
+
+---
+
+## Changelog
+
+### v1.1.0 (2025-12-06)
+- ✅ Implementado cache bypass con `?t=Date.now()`
+- ✅ Backend filtra departures llenas (`currentPax < maxPax`)
+- ✅ Frontend con filtro defensivo adicional
+- ✅ Toggle switch para fecha privada
+- ✅ Reset automático del date picker
+- ✅ Resumen de fecha en Step 2
+- ✅ Precio calculado según currentPax + 1
+- ✅ Datos se refrescan al abrir modal
+
+### v1.0.0 (2025-12-05)
+- ✅ Modal de reserva funcional
+- ✅ 3 pasos: Fecha → Datos → Resumen
+- ✅ Integración con API (join + private)
+- ✅ i18n (ES/EN) con monedas (COP/USD)
+- ✅ Toast de éxito
+- ✅ Pantalla de confirmación
