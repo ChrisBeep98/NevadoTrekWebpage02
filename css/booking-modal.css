@@ -259,7 +259,7 @@
 .booking-step.active {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .date-cards-container {
@@ -898,7 +898,7 @@
   color: rgba(255, 255, 255, 0.7);
   font-family: Inter, sans-serif;
   font-size: 0.95em;
-  margin: 0 0 16px 0;
+  margin: 0;
   line-height: 1.4;
 }
 
