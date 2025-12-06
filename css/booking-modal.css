@@ -98,9 +98,9 @@
 .booking-modal-title {
   color: var(--color--light, white);
   font-family: Inter, sans-serif;
-  font-size: 24px;
+  font-size: 38px;
   font-weight: 700;
-  line-height: 30px;
+  line-height: 44px;
   margin: 0 0 12px 0;
   text-transform: uppercase;
 }
