@@ -427,31 +427,28 @@
   display: block;
 }
 
-/* ===== SELECTED DATE SUMMARY (Step 2) ===== */
+/* ===== SELECTED DATE SUMMARY (Left Column) ===== */
 .selected-date-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background: rgba(37, 99, 235, 0.1);
   border: 1px solid rgba(37, 99, 235, 0.3);
-  border-radius: 10px;
-  padding: 16px 20px;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  padding: 20px;
 }
 
-.summary-date-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.summary-date-label {
+.selected-date-summary h4 {
   color: var(--color--blue-dark, #8fbbd3);
   font-family: Inter, sans-serif;
   font-size: 0.8em;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.15em;
+  margin: 0 0 12px 0;
+}
+
+.selected-date-display {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .summary-date-value {
@@ -460,19 +457,27 @@
   font-size: 1em;
   font-weight: 500;
   text-transform: capitalize;
+  line-height: 1.4;
+}
+
+.spots-info {
+  color: #10b981;
+  font-size: 0.9em;
+  font-weight: 500;
 }
 
 .change-date-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 6px;
-  padding: 8px 16px;
+  padding: 10px 16px;
   color: white;
   font-family: Inter, sans-serif;
   font-size: 0.85em;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
 }
 
 .change-date-btn:hover {

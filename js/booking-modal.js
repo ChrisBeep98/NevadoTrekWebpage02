@@ -56,7 +56,9 @@ const translations = {
     closeModal: 'Cerrar',
     newBooking: 'Nueva reserva',
     yourSelectedDate: 'Tu fecha seleccionada',
-    changeDate: 'Cambiar'
+    changeDate: 'Cambiar',
+    availableSpots: 'Cupos disponibles',
+    groupSize: 'Tamaño del grupo después de tu reserva'
   },
   en: {
     title: 'BOOK TOUR',
@@ -106,7 +108,9 @@ const translations = {
     closeModal: 'Close',
     newBooking: 'New booking',
     yourSelectedDate: 'Your selected date',
-    changeDate: 'Change'
+    changeDate: 'Change',
+    availableSpots: 'Available spots',
+    groupSize: 'Group size after your booking'
   }
 };
 
@@ -175,6 +179,15 @@ function createModalHTML() {
             <div class="booking-info-section pricing-tiers-section" id="pricing-tiers">
               <h4 data-i18n="pricingTitle">${t.pricingTitle}</h4>
               <div id="pricing-tiers-list"></div>
+            </div>
+            
+            <!-- Selected Date Summary (shown when date is selected) -->
+            <div class="booking-info-section selected-date-summary" id="selected-date-summary" style="display: none;">
+              <h4 data-i18n="yourSelectedDate">${t.yourSelectedDate}</h4>
+              <div class="selected-date-display">
+                <span class="summary-date-value" id="step2-date-display"></span>
+                <button type="button" class="change-date-btn" id="change-date-btn" data-i18n="changeDate">${t.changeDate}</button>
+              </div>
             </div>
             
             <div class="booking-info-section">
@@ -265,15 +278,6 @@ function createModalHTML() {
                 </svg>
                 <span data-i18n="back">${t.back}</span>
               </button>
-
-              <!-- Selected Date Summary -->
-              <div class="selected-date-summary" id="selected-date-summary">
-                <div class="summary-date-info">
-                  <span class="summary-date-label" data-i18n="yourSelectedDate">${t.yourSelectedDate}</span>
-                  <span class="summary-date-value" id="step2-date-display"></span>
-                </div>
-                <button type="button" class="change-date-btn" id="change-date-btn" data-i18n="changeDate">${t.changeDate}</button>
-              </div>
 
               <div class="form-group">
                 <label data-i18n="fullName">${t.fullName} *</label>
@@ -679,9 +683,12 @@ function goToStep(stepNum) {
 function updateStep2DateDisplay() {
   const t = translations[currentLang];
   const displayEl = document.getElementById('step2-date-display');
+  const summaryContainer = document.getElementById('selected-date-summary');
   if (!displayEl) return;
 
   let dateText = '';
+  let spotsText = '';
+  
   if (isPrivateBooking && selectedDate) {
     const date = new Date(selectedDate + 'T12:00:00');
     dateText = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', {
@@ -701,9 +708,28 @@ function updateStep2DateDisplay() {
         month: 'long',
         year: 'numeric'
       }).format(date);
+      
+      // Add available spots info
+      const available = (dep.maxPax || 8) - (dep.currentPax || 0);
+      spotsText = `${available} ${t.availableSpots.toLowerCase()}`;
     }
   }
-  displayEl.textContent = dateText || '-';
+  
+  // Build display HTML
+  let displayHTML = dateText || '-';
+  if (spotsText) {
+    displayHTML += `<br><span class="spots-info">${spotsText}</span>`;
+  }
+  displayEl.innerHTML = displayHTML;
+  
+  // Show/hide the summary container in left column
+  if (summaryContainer) {
+    if (dateText) {
+      summaryContainer.style.display = 'block';
+    } else {
+      summaryContainer.style.display = 'none';
+    }
+  }
 }
 
 function continueToSummary() {
@@ -735,8 +761,11 @@ function updateSummary() {
   // Tour name
   document.getElementById('summary-tour').textContent = currentTour.name[currentLang];
 
-  // Date
+  // Date and spots info
   let dateText;
+  let currentPaxInDeparture = 0;
+  let availableSpots = 0;
+  
   if (isPrivateBooking && selectedDate) {
     const date = new Date(selectedDate + 'T12:00:00');
     dateText = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', {
@@ -754,6 +783,11 @@ function updateSummary() {
         month: 'long',
         year: 'numeric'
       }).format(date);
+      currentPaxInDeparture = dep.currentPax || 0;
+      availableSpots = (dep.maxPax || 8) - currentPaxInDeparture;
+      
+      // Add spots info to date
+      dateText += ` (${availableSpots} ${t.availableSpots.toLowerCase()})`;
     }
   }
   document.getElementById('summary-date').textContent = dateText || '-';
@@ -761,9 +795,20 @@ function updateSummary() {
   // Pax
   document.getElementById('summary-pax').textContent = `${pax} ${pax === 1 ? t.person : t.persons}`;
 
-  // Price calculation
+  // Price calculation - based on TOTAL group size (currentPax + new pax)
   const pricingTiers = currentTour.pricingTiers;
-  const tier = pricingTiers.find(t => pax >= t.minPax && pax <= t.maxPax) || pricingTiers[pricingTiers.length - 1];
+  let totalGroupSize;
+  
+  if (isPrivateBooking) {
+    // Private booking: price based on user's pax only
+    totalGroupSize = pax;
+  } else {
+    // Public departure: price based on existing pax + user's pax
+    totalGroupSize = currentPaxInDeparture + pax;
+  }
+  
+  const tier = pricingTiers.find(t => totalGroupSize >= t.minPax && totalGroupSize <= t.maxPax) 
+    || pricingTiers[pricingTiers.length - 1];
   
   const pricePerPerson = currentLang === 'en' ? tier.priceUSD : tier.priceCOP;
   const total = pricePerPerson * pax;
