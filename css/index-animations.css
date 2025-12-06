@@ -1,0 +1,543 @@
+/* ===================================
+   INDEX PAGE LETTER ANIMATIONS
+   Premium letter-by-letter reveal with BLUR
+   Exact same effect as TourPage
+   =================================== */
+
+/* Letter Reveal Animation - SAME AS TOUR PAGE */
+.letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  filter: blur(8px);
+  animation: letterRevealSmooth 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  will-change: transform, opacity, filter;
+}
+
+/* Premium smooth reveal animation - Blur + Fade + Gentle Slide */
+@keyframes letterRevealSmooth {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Hide text elements initially to prevent flash before animation */
+[data-i18n-key="experiences.lead"],
+[data-i18n-key="services.lead"],
+[data-i18n-key="services.lead.bottom"],
+.moving-gallery .last-heading {
+  opacity: 0 !important;
+  /* Prevent word breaking at line ends */
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+}
+
+/* Show container once letters are added by JS */
+[data-i18n-key="experiences.lead"].animating,
+[data-i18n-key="services.lead"].animating,
+[data-i18n-key="services.lead.bottom"].animating,
+.moving-gallery .last-heading.animating {
+  opacity: 1 !important;
+}
+
+/* Word wrapper for hero title - each word on its own line */
+.italic-text-4 .word-wrapper {
+  display: block; /* Each word on a new line */
+  line-height: 1.1em; /* Compact line height */
+}
+
+/* =====================================================
+   NAVBAR FIXED CON EFECTO EXCLUSIÓN
+   El texto cambia de color automáticamente según el fondo
+   ===================================================== */
+
+/* Asegurar que el body no tenga transform que rompa fixed positioning */
+html {
+  scroll-behavior: smooth;
+}
+
+#navbar-exclusion.navbar-fixed {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 99999 !important;
+  padding: 1em 2em;
+  pointer-events: auto;
+  /* Transparent at top */
+  background: transparent;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1em;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ===== FLOATING PILL SCROLLED STATE (positioning handled by inline styles) ===== */
+
+/* Adjust container when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-container {
+  max-width: 100%;
+  padding: 0.5em 1em;
+  gap: 2em;
+}
+
+/* Smaller logo when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+  width: 36px;
+}
+
+/* Adjust text size when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+  font-size: 12px;
+}
+
+/* Adjust CTA button in scrolled state */
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* ===== EFECTO EXCLUSIÓN GLOBAL ===== */
+/* El mix-blend-mode: difference invierte los colores del texto
+   según el fondo: sobre fondo oscuro = texto blanco,
+   sobre fondo claro = texto oscuro */
+
+.navbar-fixed .navbar-title,
+.navbar-fixed .nav-link-exclusion,
+.navbar-fixed .header-contact-btn,
+.navbar-fixed .lang-switch-exclusion select,
+.navbar-fixed .menu-toggle-exclusion {
+  color: white;
+  mix-blend-mode: difference;
+}
+
+.navbar-fixed .navbar-logo,
+#navbar-exclusion .navbar-logo,
+#navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+  /* Logo NUNCA debe tener blend mode ni filter */
+  mix-blend-mode: normal !important;
+  filter: none !important;
+}
+
+/* Solo el menu toggle tiene blend mode, no el botón de contacto */
+.navbar-fixed .menu-toggle-exclusion svg {
+  filter: brightness(0) invert(1);
+  mix-blend-mode: difference;
+}
+
+/* Icono del botón CTA siempre visible */
+.navbar-fixed .header-contact-btn svg {
+  fill: white !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL: icono oscuro */
+#navbar-exclusion.scrolled .header-contact-btn svg,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn svg {
+  fill: #042e4d !important;
+}
+
+/* ===== BRAND / LOGO ===== */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex: 1; /* Equal width as navbar-actions to center the links */
+}
+
+.navbar-logo {
+  width: 42px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+  transform: scale(1.05);
+}
+
+.navbar-title {
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.navbar-title em {
+  font-style: italic;
+}
+
+/* ===== NAVIGATION LINKS ===== */
+.navbar-links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-link-exclusion {
+  padding: 10px 16px;
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+/* Barrita base (invisible por defecto) - BLANCA arriba */
+.nav-link-exclusion::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  right: 50%;
+  height: 2px;
+  background: #ffffff; /* Blanca cuando está arriba */
+  border-radius: 2px;
+  transition: left 0.3s ease, right 0.3s ease, background 0.3s ease;
+}
+
+/* Hover: la barrita crece desde el centro */
+.nav-link-exclusion:hover::after {
+  left: 16px;
+  right: 16px;
+}
+
+.nav-link-exclusion:hover {
+  transform: translateY(-1px);
+}
+
+.nav-link-exclusion.active {
+  font-weight: 500;
+}
+
+/* Active: barrita siempre visible */
+.nav-link-exclusion.active::after {
+  left: 16px;
+  right: 16px;
+}
+
+/* Cuando hacemos hover en OTRO link, ocultar la barrita del active */
+.navbar-links:hover .nav-link-exclusion.active:not(:hover)::after {
+  left: 50%;
+  right: 50%;
+}
+
+/* Cuando es PILL (scrolled): quitar blend mode de los links */
+#navbar-exclusion.scrolled .nav-link-exclusion,
+#navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion {
+  mix-blend-mode: normal !important;
+  color: #042e4d !important; /* Texto oscuro */
+}
+
+/* Cuando es PILL (scrolled): barrita AZUL */
+#navbar-exclusion.scrolled .nav-link-exclusion::after,
+#navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion::after {
+  background: #2563eb !important; /* Azul cuando es pill */
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL (scrolled): language switcher oscuro */
+#navbar-exclusion.scrolled .lang-btn,
+#navbar-exclusion.navbar-fixed.scrolled .lang-btn {
+  color: #042e4d !important; /* Texto oscuro */
+}
+
+/* Cuando es PILL (scrolled): botón CTA con borde oscuro */
+#navbar-exclusion.scrolled .header-contact-btn,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn {
+  color: #042e4d !important;
+  border-color: #042e4d !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL (scrolled): hover del botón CTA AZUL */
+#navbar-exclusion.scrolled .header-contact-btn:hover,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+#navbar-exclusion.scrolled .header-contact-btn:hover span,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover span {
+  color: #ffffff !important;
+}
+
+#navbar-exclusion.scrolled .header-contact-btn:hover svg,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover svg {
+  fill: #ffffff !important;
+}
+
+/* ===== NAVBAR ACTIONS ===== */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1; /* Equal width as navbar-brand to center the links */
+  justify-content: flex-end; /* Align content to the right */
+}
+
+/* Language Switch - Custom Dropdown con Banderas */
+.lang-switch-exclusion {
+  position: relative;
+}
+
+.lang-dropdown {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: white; /* Texto blanco */
+  transition: all 0.25s ease;
+}
+
+.lang-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.lang-flag {
+  width: 18px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.lang-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 4px;
+  min-width: 100px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.lang-dropdown:hover .lang-options,
+.lang-dropdown.open .lang-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  color: #333;
+  transition: background 0.2s ease;
+}
+
+.lang-option:hover {
+  background: #f0f0f0;
+}
+
+.lang-option.active {
+  background: #e8f0fe;
+  color: #2563eb;
+}
+
+/* ===== HEADER CONTACT BUTTON ===== */
+.header-contact-btn {
+  color: inherit;
+}
+
+/* Hover: fondo azul con texto blanco */
+.header-contact-btn:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+  transform: scale(1.02);
+}
+
+.header-contact-btn:hover svg {
+  fill: #ffffff !important;
+}
+
+.header-contact-btn:hover span {
+  color: #ffffff !important;
+}
+
+/* Menu Toggle (Mobile) */
+.menu-toggle-exclusion {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.menu-toggle-exclusion:hover {
+  transform: scale(1.1);
+}
+
+.menu-toggle-exclusion svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 991px) {
+  .navbar-fixed {
+    padding: 1em 2.5em;
+  }
+  
+  .navbar-links {
+    display: none;
+  }
+  
+  .menu-toggle-exclusion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header-contact-btn span {
+    display: none;
+  }
+  
+  .header-contact-btn {
+    padding: 10px 12px !important;
+    border-radius: 50% !important;
+  }
+  
+  /* Scrolled state adjustments for tablet */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    max-width: 70%;
+    padding: 0.5em 1.5em;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-container {
+    gap: 1.5em;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .navbar-fixed {
+    padding: 0.8em 1.5em;
+  }
+  
+  .navbar-logo {
+    width: 36px;
+  }
+  
+  .navbar-title {
+    font-size: 12px;
+  }
+  
+  /* Scrolled state adjustments for mobile tablet */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    max-width: 85%;
+    padding: 0.4em 1.2em;
+    top: 0.75em !important;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+    width: 32px;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+    font-size: 11px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .navbar-fixed {
+    padding: 0.6em 1em;
+  }
+  
+  .navbar-logo {
+    width: 32px;
+  }
+  
+  .navbar-actions {
+    gap: 8px;
+  }
+  
+  .lang-switch-exclusion select {
+    font-size: 12px;
+    padding: 6px 2px;
+  }
+  
+  .header-contact-btn {
+    padding: 8px 10px !important;
+  }
+  
+  .header-contact-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  /* Scrolled state adjustments for small mobile */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    max-width: 94%;
+    padding: 0.35em 0.8em;
+    top: 0.5em !important;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-container {
+    gap: 1em;
+    padding: 0.4em 0.8em;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+    width: 28px;
+  }
+  
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+    font-size: 10px;
+  }
+}

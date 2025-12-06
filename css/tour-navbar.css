@@ -1,0 +1,419 @@
+/* =====================================================
+   TOUR PAGE NAVBAR STYLES
+   Estilos separados del navbar para TourPage
+   Puedes modificar tamaños, márgenes y gaps aquí
+   ===================================================== */
+
+/* Asegurar que el body no tenga transform que rompa fixed positioning */
+html {
+  scroll-behavior: smooth;
+}
+
+#navbar-exclusion.navbar-fixed {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 5em !important;
+  padding-right: 5em !important;
+  box-sizing: border-box !important;
+  z-index: 99999 !important;
+  margin: 0 !important;
+  pointer-events: auto;
+  background: transparent;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1em;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ===== FLOATING PILL SCROLLED STATE ===== */
+/* MODIFICA ESTOS VALORES PARA AJUSTAR EL TAMAÑO DEL PILL */
+
+/* Adjust container when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-container {
+  max-width: 100%;
+  padding: 0.5em 1em;
+  gap: 2em; /* <-- Espacio entre logo, links y acciones */
+}
+
+/* Smaller logo when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+  width: 36px;
+}
+
+/* Adjust text size when scrolled */
+#navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+  font-size: 12px;
+}
+
+/* Adjust CTA button in scrolled state */
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* ===== COLORES DEL NAVBAR - SIEMPRE OSCUROS ===== */
+/* En TourPage el texto es oscuro arriba y en la pill */
+
+.navbar-fixed .navbar-title,
+.navbar-fixed .nav-link-exclusion,
+.navbar-fixed .header-contact-btn,
+.navbar-fixed .lang-switch-exclusion select,
+.navbar-fixed .menu-toggle-exclusion {
+  color: #042e4d !important; /* Texto oscuro siempre */
+  mix-blend-mode: normal !important; /* Sin efecto de inversión */
+}
+
+.navbar-fixed .navbar-logo,
+#navbar-exclusion .navbar-logo,
+#navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+  /* Logo NUNCA debe tener blend mode ni filter */
+  mix-blend-mode: normal !important;
+  filter: none !important;
+}
+
+/* Menu toggle oscuro */
+.navbar-fixed .menu-toggle-exclusion svg {
+  stroke: #042e4d !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Icono del botón CTA oscuro */
+.navbar-fixed .header-contact-btn svg {
+  fill: #042e4d !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL: icono sigue oscuro */
+#navbar-exclusion.scrolled .header-contact-btn svg,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn svg {
+  fill: #042e4d !important;
+}
+
+/* ===== BRAND / LOGO ===== */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex: 1; /* Equal width as navbar-actions to center the links */
+}
+
+.navbar-logo {
+  width: 42px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+  transform: scale(1.05);
+}
+
+.navbar-title {
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.navbar-title em {
+  font-style: italic;
+}
+
+/* ===== NAVIGATION LINKS ===== */
+/* MODIFICA ESTOS VALORES PARA AJUSTAR LOS LINKS */
+.navbar-links {
+  display: flex;
+  gap: 8px; /* <-- Espacio entre links */
+  align-items: center;
+}
+
+.nav-link-exclusion {
+  padding: 10px 16px; /* <-- Padding de los links */
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+/* Barrita base (invisible por defecto) - AZUL siempre */
+.nav-link-exclusion::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  right: 50%;
+  height: 2px;
+  background: #2563eb; /* Azul siempre en TourPage */
+  border-radius: 2px;
+  transition: left 0.3s ease, right 0.3s ease, background 0.3s ease;
+}
+
+/* Hover: la barrita crece desde el centro */
+.nav-link-exclusion:hover::after {
+  left: 16px;
+  right: 16px;
+}
+
+.nav-link-exclusion:hover {
+  transform: translateY(-1px);
+}
+
+.nav-link-exclusion.active {
+  font-weight: 500;
+}
+
+/* Active: barrita siempre visible */
+.nav-link-exclusion.active::after {
+  left: 16px;
+  right: 16px;
+}
+
+/* Cuando hacemos hover en OTRO link, ocultar la barrita del active */
+.navbar-links:hover .nav-link-exclusion.active:not(:hover)::after {
+  left: 50%;
+  right: 50%;
+}
+
+/* Cuando es PILL (scrolled): quitar blend mode de los links */
+#navbar-exclusion.scrolled .nav-link-exclusion,
+#navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion {
+  mix-blend-mode: normal !important;
+  color: #042e4d !important; /* Texto oscuro */
+}
+
+/* Cuando es PILL (scrolled): barrita AZUL */
+#navbar-exclusion.scrolled .nav-link-exclusion::after,
+#navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion::after {
+  background: #2563eb !important; /* Azul cuando es pill */
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL (scrolled): language switcher oscuro */
+#navbar-exclusion.scrolled .lang-btn,
+#navbar-exclusion.navbar-fixed.scrolled .lang-btn {
+  color: #042e4d !important; /* Texto oscuro */
+}
+
+/* Cuando es PILL (scrolled): botón CTA con borde oscuro */
+#navbar-exclusion.scrolled .header-contact-btn,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn {
+  color: #042e4d !important;
+  border-color: #042e4d !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Cuando es PILL (scrolled): hover del botón CTA AZUL */
+#navbar-exclusion.scrolled .header-contact-btn:hover,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+#navbar-exclusion.scrolled .header-contact-btn:hover span,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover span {
+  color: #ffffff !important;
+}
+
+#navbar-exclusion.scrolled .header-contact-btn:hover svg,
+#navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover svg {
+  fill: #ffffff !important;
+}
+
+/* ===== NAVBAR ACTIONS ===== */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* <-- Espacio entre language switch y botón */
+  flex: 1; /* Equal width as navbar-brand to center the links */
+  justify-content: flex-end; /* Align content to the right */
+}
+
+/* Language Switch - Custom Dropdown con Banderas */
+.lang-switch-exclusion {
+  position: relative;
+}
+
+.lang-dropdown {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #042e4d !important; /* Texto oscuro siempre */
+  transition: all 0.25s ease;
+}
+
+.lang-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.lang-flag {
+  width: 18px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.lang-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 4px;
+  min-width: 100px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.lang-dropdown:hover .lang-options,
+.lang-dropdown.open .lang-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  color: #333;
+  transition: background 0.2s ease;
+}
+
+.lang-option:hover {
+  background: #f0f0f0;
+}
+
+.lang-option.active {
+  background: #e8f0fe;
+  color: #2563eb;
+}
+
+/* ===== HEADER CONTACT BUTTON ===== */
+.header-contact-btn {
+  color: inherit;
+}
+
+/* Hover: fondo azul con texto blanco */
+.header-contact-btn:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+  transform: scale(1.02);
+}
+
+.header-contact-btn:hover svg {
+  fill: #ffffff !important;
+}
+
+.header-contact-btn:hover span {
+  color: #ffffff !important;
+}
+
+/* Menu Toggle (Mobile) */
+.menu-toggle-exclusion {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.menu-toggle-exclusion:hover {
+  transform: scale(1.1);
+}
+
+.menu-toggle-exclusion svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 991px) {
+  .navbar-fixed {
+    padding: 1em 2.5em;
+  }
+  
+  .navbar-links {
+    display: none;
+  }
+  
+  .menu-toggle-exclusion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header-contact-btn span {
+    display: none;
+  }
+  
+  .header-contact-btn {
+    padding: 8px 12px !important;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .navbar-fixed {
+    padding: 0.8em 1em;
+  }
+  
+  .navbar-logo {
+    width: 32px;
+  }
+  
+  .navbar-title {
+    font-size: 12px;
+  }
+  
+  .lang-btn span {
+    display: none;
+  }
+  
+  .lang-btn svg {
+    display: none;
+  }
+}
