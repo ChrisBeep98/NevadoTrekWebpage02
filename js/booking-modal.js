@@ -256,22 +256,6 @@ function createModalHTML() {
 
               <p class="step-explanation" id="private-dates-explanation" data-i18n="privateDateExplain">${t.privateDateExplain}</p>
 
-              <div class="private-date-toggle" id="private-date-toggle">
-                <div class="toggle-left">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                  </svg>
-                  <span data-i18n="requestDifferentDate">${t.requestDifferentDate}</span>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="private-date-checkbox" checked>
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-
               <div class="private-date-input" id="private-date-input" style="display: block;">
                 <div class="form-group">
                   <label data-i18n="selectDate">${t.selectDate}</label>
@@ -442,14 +426,6 @@ function bindEvents() {
     if (e.key === 'Escape') closeModal();
   });
 
-  // Private date toggle switch
-  const privateToggle = document.getElementById('private-date-checkbox');
-  if (privateToggle) {
-    privateToggle.addEventListener('change', (e) => {
-      togglePrivateDateInput(e.target.checked);
-    });
-  }
-
   // Private date input change
   const privateDateInput = document.getElementById('booking-private-date');
   if (privateDateInput) {
@@ -522,17 +498,6 @@ async function openModal() {
   // Render date cards with fresh data
   renderDateCards();
 
-  // Set toggle switch to checked by default (show private date option)
-  const toggleSwitch = document.getElementById('private-date-checkbox');
-  if (toggleSwitch) {
-    toggleSwitch.checked = true;
-  }
-  // Show the private date input by default
-  const privateDateInput = document.getElementById('private-date-input');
-  if (privateDateInput) {
-    privateDateInput.style.display = 'block';
-  }
-
   // Reset to step 1
   goToStep(1);
   resetForm();
@@ -584,14 +549,12 @@ function renderDateCards() {
   // If no public departures
   if (currentDepartures.length === 0) {
     container.innerHTML = `<p class="no-dates-message" data-i18n="noPublicDates">${t.noPublicDates}</p>`;
-    // Hide toggle switch, divider, and public explanation
-    const toggleEl = document.getElementById('private-date-toggle');
+    // Hide divider and explanation texts
     const dividerEl = document.querySelector('.booking-divider');
     const inputEl = document.getElementById('private-date-input');
     const publicExplainEl = document.getElementById('public-dates-explanation');
     const privateExplainEl = document.getElementById('private-dates-explanation');
     
-    if (toggleEl) toggleEl.style.display = 'none';
     if (dividerEl) dividerEl.style.display = 'none';
     if (publicExplainEl) publicExplainEl.style.display = 'none';
     if (privateExplainEl) privateExplainEl.style.display = 'none';
@@ -602,27 +565,19 @@ function renderDateCards() {
     return;
   }
   
-  // Show toggle, divider, and explanation texts when there are departures
-  const toggleEl = document.getElementById('private-date-toggle');
+  // Show divider and explanation texts when there are departures
   const dividerEl = document.querySelector('.booking-divider');
   const inputEl = document.getElementById('private-date-input');
   const publicExplainEl = document.getElementById('public-dates-explanation');
   const privateExplainEl = document.getElementById('private-dates-explanation');
   
-  if (toggleEl) toggleEl.style.display = 'flex';
   if (dividerEl) dividerEl.style.display = 'flex';
   if (publicExplainEl) publicExplainEl.style.display = 'block';
   if (privateExplainEl) privateExplainEl.style.display = 'block';
-  
-  // Toggle is checked by default (set in HTML), so show the input
   if (inputEl) {
     inputEl.style.display = 'block';
     inputEl.style.marginTop = '16px';
   }
-  
-  // Ensure toggle checkbox stays checked
-  const checkbox = document.getElementById('private-date-checkbox');
-  if (checkbox) checkbox.checked = true;
 
   // Render up to 4 date cards
   const displayDates = currentDepartures.slice(0, 4);
@@ -638,7 +593,7 @@ function renderDateCards() {
     const spotsText = available === 1 ? t.spotAvailable : t.spotsAvailable;
     const isLow = available <= 3;
 
-    // IMPORTANT: Price is based on TOTAL people after user joins (currentPax + 1 minimum)
+    // Price is based on TOTAL people after user joins (currentPax + 1 minimum)
     const totalPeopleAfterBooking = currentPax + 1;
     const price = getFormattedPrice(dep.pricingSnapshot || currentTour.pricingTiers, totalPeopleAfterBooking);
 
