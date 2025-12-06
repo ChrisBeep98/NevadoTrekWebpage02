@@ -113,11 +113,228 @@ function renderTourPage(tour, allDepartures) {
   // --- PRICING ---
   renderPricing(tour);
 
+  // --- DEPARTURE DATES (Apple-style cards) ---
+  renderDates(tour, allDepartures);
+
   // --- DYNAMIC TOC (no layout changes) ---
   initTOC();
 
   // --- PAGE TITLE (browser tab) ---
   document.title = `${tour.name.es} | Nevado Trek`;
+}
+
+/**
+ * Render Apple-style departure date cards
+ */
+function renderDates(tour, departures) {
+  if (!departures || departures.length === 0) return;
+
+  // Filter: this tour + open status + future dates
+  const now = new Date();
+  const upcomingDates = departures.filter(d => 
+    d.tourId === tour.tourId && 
+    d.status === 'open' &&
+    new Date(d.date._seconds * 1000) >= now
+  );
+
+  // Sort by date (soonest first)
+  upcomingDates.sort((a, b) => a.date._seconds - b.date._seconds);
+
+  // If no dates, hide section
+  if (upcomingDates.length === 0) return;
+
+  // Find insertion point (after FAQ section)
+  const faqSection = document.querySelector('.div-block-136');
+  if (!faqSection) {
+    console.warn('⚠️ FAQ section not found for dates insertion');
+    return;
+  }
+
+  const parentGrid = faqSection.closest('.a-grid');
+  if (!parentGrid) return;
+
+  // Create dates section
+  const datesSection = document.createElement('section');
+  datesSection.className = 'a-grid mt-20';
+  datesSection.setAttribute('data-toc-section', 'fechas');
+
+  // Build HTML
+  const displayDates = upcomingDates.slice(0, 4); // Max 4 cards
+
+  let html = `
+    <div style="grid-column: 2 / 12;">
+      <h1 class="h-5 italic" style="margin-bottom: 48px;">( Próximas Salidas )</h1>
+    </div>
+    <div style="
+      grid-column: 2 / 12;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    ">
+  `;
+
+  displayDates.forEach((dateObj, index) => {
+    const date = new Date(dateObj.date._seconds * 1000);
+    
+    // Format date parts
+    const dayNumber = date.getDate();
+    const month = new Intl.DateTimeFormat('es-CO', { month: 'long' }).format(date);
+    const year = date.getFullYear();
+    const weekday = new Intl.DateTimeFormat('es-CO', { weekday: 'long' }).format(date);
+
+    // Calculate availability
+    const total = dateObj.maxCapacity || 8;
+    const booked = dateObj.bookedSlots || 0;
+    const available = total - booked;
+
+    // Get price
+    const price = dateObj.price || tour.price || 0;
+    const formattedPrice = new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(price);
+
+    // Status color
+    let statusColor = available <= 3 ? '#f59e0b' : '#10b981';
+
+    html += `
+      <div style="
+        border: 1px solid var(--stroke-light);
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition: all 0.3s ease;
+      " 
+      onmouseover="
+        this.style.borderColor='#042e4d';
+        this.style.transform='translateY(-4px)';
+        this.style.boxShadow='0 12px 24px rgba(0,0,0,0.08)';
+      "
+      onmouseout="
+        this.style.borderColor='var(--stroke-light)';
+        this.style.transform='translateY(0)';
+        this.style.boxShadow='none';
+      ">
+        
+        <!-- Date Header -->
+        <div style="display: flex; align-items: baseline; justify-content: space-between;">
+          <div style="display: flex; align-items: baseline; gap: 8px;">
+            <span class="h-5" style="font-weight: 700;">${dayNumber}</span>
+            <span class="body-medium" style="color: #6b7280; text-transform: capitalize;">${month}</span>
+          </div>
+          <span class="body-medium" style="color: #9ca3af;">${year}</span>
+        </div>
+
+        <!-- Weekday -->
+        <p class="body-medium" style="color: #6b7280; text-transform: capitalize; margin: 0;">${weekday}</p>
+
+        <!-- Price -->
+        <p class="h-5" style="font-weight: 700; margin: 0;">${formattedPrice}</p>
+
+        <!-- Availability -->
+        <div style="
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 12px;
+          background: ${statusColor}15;
+          border-radius: 6px;
+        ">
+          <div style="
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: ${statusColor};
+          "></div>
+          <span class="body-medium" style="color: ${statusColor}; font-weight: 500; margin: 0;">
+            ${available} cupos disponibles
+          </span>
+        </div>
+
+        <!-- Button -->
+        <a href="https://wa.me/573001234567?text=${encodeURIComponent(`Hola! Me interesa reservar cupo para ${tour.name.es} el ${dayNumber} de ${month}`)}"
+           target="_blank"
+           class="body-medium"
+           style="
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             gap: 6px;
+             padding: 12px 20px;
+             background: #042e4d;
+             color: white;
+             border-radius: 8px;
+             text-decoration: none;
+             font-weight: 600;
+             transition: background 0.2s ease;
+           "
+           onmouseover="this.style.background='#065a82'"
+           onmouseout="this.style.background='#042e4d'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Unirte
+        </a>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  datesSection.innerHTML = html;
+
+  // Insert after itinerary section
+  parentGrid.parentNode.insertBefore(datesSection, parentGrid.nextSibling);
+
+  // Add "Fechas" to TOC
+  addFechasToTOC();
+}
+
+/**
+ * Add "Fechas" item to TOC
+ */
+function addFechasToTOC() {
+  const indexContainer = document.querySelector('.index');
+  if (!indexContainer) return;
+
+  // Check if already added
+  if (document.querySelector('[data-toc-target="fechas"]')) return;
+
+  // Get all TOC items
+  const tocItems = Array.from(indexContainer.querySelectorAll('a.toc-link, div > p.body-medium')).map(el => 
+    el.tagName === 'A' ? el : el.parentElement
+  );
+
+  if (tocItems.length === 0) return;
+
+  // Create new "Fechas" link (at the END, after Preguntas)
+  const fechasLink = document.createElement('a');
+  fechasLink.href = '#fechas';
+  fechasLink.className = 'toc-link w-inline-block';
+  fechasLink.setAttribute('data-target', 'fechas');
+  fechasLink.setAttribute('data-toc-target', 'fechas');
+  fechasLink.style.cursor = 'pointer';
+  
+  const p = document.createElement('p');
+  p.className = 'body-medium f-grey';
+  p.textContent = 'Fechas';
+  
+  fechasLink.appendChild(p);
+
+  // Insert at the END (append as last child)
+  indexContainer.appendChild(fechasLink);
+  
+  // OLD CODE - would insert after itinerario
+  /*const itinerarioItem = tocItems[1];
+  if (itinerarioItem && itinerarioItem.parentNode) {
+    itinerarioItem.parentNode.insertBefore(fechasLink, itinerarioItem.nextSibling);
+  }*/
+
+  // Re-initialize TOC to include new item
+  initTOC();
 }
 
 /**
@@ -147,6 +364,11 @@ function initTOC() {
       selector: '.div-block-136', // FAQ section
       name: 'faq',
       tocIndex: 3
+    },
+    {
+      selector: '[data-toc-section="fechas"]', // Dates section (dynamic)
+      name: 'fechas',
+      tocIndex: 4
     }
   ];
 
@@ -231,7 +453,7 @@ function initTOC() {
           // Calculate offset from top of index container
           // Add half the item height to center the indicator on the text
           const itemHeight = itemRect.height;
-          const offset = (itemRect.top - indexRect.top) + (itemHeight / 2) - (indicator.offsetHeight / 2) - 28;
+          const offset = (itemRect.top - indexRect.top) + (itemHeight / 2) - (indicator.offsetHeight / 2) - 32;
           
           indicator.style.transform = `translateY(${offset}px)`;
           indicator.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
