@@ -195,7 +195,6 @@ function createModalHTML() {
                 <button type="button" class="change-date-btn" id="change-date-btn" data-i18n="changeDate">${t.changeDate}</button>
               </div>
             </div>
-            
             <div class="booking-info-section">
               <h4 data-i18n="whyBook">${t.whyBook}</h4>
               <ul>
@@ -203,13 +202,6 @@ function createModalHTML() {
                 <li data-i18n-key="booking.benefit2">Atención personalizada</li>
                 <li data-i18n-key="booking.benefit3">Flexibilidad en cambios</li>
                 <li data-i18n-key="booking.benefit4">Soporte 24/7</li>
-              </ul>
-            </div>
-            <div class="booking-info-section">
-              <h4 data-i18n="important">${t.important}</h4>
-              <ul>
-                <li data-i18n-key="booking.note1">Confirmación en 24 horas</li>
-                <li data-i18n-key="booking.note2">Pago al confirmar</li>
               </ul>
             </div>
           </div>
