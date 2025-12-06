@@ -1066,6 +1066,23 @@ function updateModalLanguage() {
     }
   });
 
+  // Update elements with data-i18n-key using translations lookup
+  const i18nKeyTranslations = {
+    'booking.benefit1': currentLang === 'en' ? 'Best price guaranteed' : 'Mejor precio garantizado',
+    'booking.benefit2': currentLang === 'en' ? 'Personalized attention' : 'Atención personalizada',
+    'booking.benefit3': currentLang === 'en' ? 'Flexibility in changes' : 'Flexibilidad en cambios',
+    'booking.benefit4': currentLang === 'en' ? '24/7 Support' : 'Soporte 24/7',
+    'booking.note1': currentLang === 'en' ? 'Confirmation in 24 hours' : 'Confirmación en 24 horas',
+    'booking.note2': currentLang === 'en' ? 'Pay upon confirmation' : 'Pago al confirmar'
+  };
+  
+  document.querySelectorAll('[data-i18n-key]').forEach(el => {
+    const key = el.dataset.i18nKey;
+    if (i18nKeyTranslations[key]) {
+      el.textContent = i18nKeyTranslations[key];
+    }
+  });
+
   // Update tour name
   if (currentTour) {
     const tourNameEl = document.getElementById('booking-tour-name');
@@ -1079,6 +1096,9 @@ function updateModalLanguage() {
 
   // Re-render date cards with new language/currency
   renderDateCards();
+
+  // Update date summary display (left column)
+  updateStep2DateDisplay();
 
   // Update summary if visible
   updateSummaryIfVisible();
