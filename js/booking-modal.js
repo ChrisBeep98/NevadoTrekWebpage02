@@ -553,11 +553,37 @@ function renderDateCards() {
   // If no public departures
   if (currentDepartures.length === 0) {
     container.innerHTML = `<p class="no-dates-message" data-i18n="noPublicDates">${t.noPublicDates}</p>`;
-    // Auto show private date input
-    document.getElementById('private-date-input')?.classList.add('active');
-    document.querySelector('.booking-divider')?.style.setProperty('display', 'none');
+    // Hide toggle switch and divider, show private date input directly
+    const toggleEl = document.getElementById('private-date-toggle');
+    const dividerEl = document.querySelector('.booking-divider');
+    const inputEl = document.getElementById('private-date-input');
+    
+    console.log('No departures - showing private date input:', inputEl);
+    
+    if (toggleEl) toggleEl.style.display = 'none';
+    if (dividerEl) dividerEl.style.display = 'none';
+    if (inputEl) {
+      inputEl.style.display = 'block'; // Force display
+      inputEl.style.marginTop = '16px';
+    }
     return;
   }
+  
+  // Show toggle and divider when there are departures
+  const toggleEl = document.getElementById('private-date-toggle');
+  const dividerEl = document.querySelector('.booking-divider');
+  const inputEl = document.getElementById('private-date-input');
+  
+  if (toggleEl) toggleEl.style.display = 'flex';
+  if (dividerEl) dividerEl.style.display = 'flex';
+  if (inputEl) {
+    inputEl.style.display = 'none'; // Hide, toggle will control
+    inputEl.style.marginTop = '16px';
+  }
+  
+  // Reset toggle checkbox
+  const checkbox = document.getElementById('private-date-checkbox');
+  if (checkbox) checkbox.checked = false;
 
   // Render up to 4 date cards
   const displayDates = currentDepartures.slice(0, 4);
@@ -621,7 +647,7 @@ function togglePrivateDateInput(isActive) {
   const dateInput = document.getElementById('booking-private-date');
   
   if (isActive) {
-    input?.classList.add('active');
+    if (input) input.style.display = 'block';
     // Reset date picker value each time it's shown
     if (dateInput) {
       dateInput.value = '';
@@ -632,7 +658,7 @@ function togglePrivateDateInput(isActive) {
     selectedDate = null;
     isPrivateBooking = false;
   } else {
-    input?.classList.remove('active');
+    if (input) input.style.display = 'none';
   }
 }
 
