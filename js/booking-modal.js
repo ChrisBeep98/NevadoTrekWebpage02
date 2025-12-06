@@ -473,11 +473,14 @@ async function openModal() {
     const freshDepartures = await apiService.getDepartures(true); // Always bypass cache when opening modal
     
     // Update currentDepartures with fresh data for this tour
-    currentDepartures = freshDepartures.filter(d => 
-      d.tourId === currentTour.tourId && 
-      d.status === 'open' &&
-      new Date(d.date._seconds * 1000) >= new Date()
-    ).sort((a, b) => a.date._seconds - b.date._seconds);
+    // Filter: matching tour, open status, future date, AND has available spots
+    currentDepartures = freshDepartures.filter(d => {
+      const available = (d.maxPax || 8) - (d.currentPax || 0);
+      return d.tourId === currentTour.tourId && 
+        d.status === 'open' &&
+        new Date(d.date._seconds * 1000) >= new Date() &&
+        available > 0; // Only show departures with available spots
+    }).sort((a, b) => a.date._seconds - b.date._seconds);
     
     console.log('✅ Departures refreshed:', currentDepartures.length, 'available');
     needsForceRefresh = false; // Reset flag
