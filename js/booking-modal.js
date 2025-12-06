@@ -54,7 +54,9 @@ const translations = {
     totalPrice: 'Total estimado',
     toastSuccess: '¡Reserva enviada correctamente!',
     closeModal: 'Cerrar',
-    newBooking: 'Nueva reserva'
+    newBooking: 'Nueva reserva',
+    yourSelectedDate: 'Tu fecha seleccionada',
+    changeDate: 'Cambiar'
   },
   en: {
     title: 'BOOK TOUR',
@@ -102,7 +104,9 @@ const translations = {
     totalPrice: 'Estimated total',
     toastSuccess: 'Booking submitted successfully!',
     closeModal: 'Close',
-    newBooking: 'New booking'
+    newBooking: 'New booking',
+    yourSelectedDate: 'Your selected date',
+    changeDate: 'Change'
   }
 };
 
@@ -228,14 +232,20 @@ function createModalHTML() {
                 <span data-i18n="or">${t.or}</span>
               </div>
 
-              <div class="private-date-option" id="private-date-trigger">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <span data-i18n="requestDifferentDate">${t.requestDifferentDate}</span>
+              <div class="private-date-toggle" id="private-date-toggle">
+                <div class="toggle-left">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span data-i18n="requestDifferentDate">${t.requestDifferentDate}</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="private-date-checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
               </div>
 
               <div class="private-date-input" id="private-date-input">
@@ -254,6 +264,15 @@ function createModalHTML() {
                 </svg>
                 <span data-i18n="back">${t.back}</span>
               </button>
+
+              <!-- Selected Date Summary -->
+              <div class="selected-date-summary" id="selected-date-summary">
+                <div class="summary-date-info">
+                  <span class="summary-date-label" data-i18n="yourSelectedDate">${t.yourSelectedDate}</span>
+                  <span class="summary-date-value" id="step2-date-display"></span>
+                </div>
+                <button type="button" class="change-date-btn" id="change-date-btn" data-i18n="changeDate">${t.changeDate}</button>
+              </div>
 
               <div class="form-group">
                 <label data-i18n="fullName">${t.fullName} *</label>
@@ -391,10 +410,12 @@ function bindEvents() {
     if (e.key === 'Escape') closeModal();
   });
 
-  // Private date trigger
-  const privateTrigger = document.getElementById('private-date-trigger');
-  if (privateTrigger) {
-    privateTrigger.addEventListener('click', togglePrivateDateInput);
+  // Private date toggle switch
+  const privateToggle = document.getElementById('private-date-checkbox');
+  if (privateToggle) {
+    privateToggle.addEventListener('change', (e) => {
+      togglePrivateDateInput(e.target.checked);
+    });
   }
 
   // Private date input change
@@ -402,6 +423,9 @@ function bindEvents() {
   if (privateDateInput) {
     privateDateInput.addEventListener('change', handlePrivateDateSelect);
   }
+
+  // Change date button in Step 2
+  document.getElementById('change-date-btn')?.addEventListener('click', () => goToStep(1));
 
   // Back buttons
   document.getElementById('back-to-step-1')?.addEventListener('click', () => goToStep(1));
@@ -509,12 +533,16 @@ function renderDateCards() {
     const day = date.getDate();
     const month = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', { month: 'long' }).format(date);
     
-    const available = (dep.maxPax || 8) - (dep.currentPax || 0);
+    const maxPax = dep.maxPax || 8;
+    const currentPax = dep.currentPax || 0;
+    const available = maxPax - currentPax;
     const spotsText = available === 1 ? t.spotAvailable : t.spotsAvailable;
     const isLow = available <= 3;
 
-    // Get price based on language/currency
-    const price = getFormattedPrice(dep.pricingSnapshot || currentTour.pricingTiers, available);
+    // IMPORTANT: Price is based on TOTAL people after user joins (currentPax + 1 minimum)
+    // If there are already 7 people booked, the next person pays the 4-8 tier price
+    const totalPeopleAfterBooking = currentPax + 1;
+    const price = getFormattedPrice(dep.pricingSnapshot || currentTour.pricingTiers, totalPeopleAfterBooking);
 
     return `
       <div class="date-card" data-departure-id="${dep.departureId}">
@@ -554,13 +582,24 @@ function selectDateCard(card) {
   setTimeout(() => goToStep(2), 300);
 }
 
-function togglePrivateDateInput() {
+function togglePrivateDateInput(isActive) {
   const input = document.getElementById('private-date-input');
-  input?.classList.toggle('active');
+  const dateInput = document.getElementById('booking-private-date');
   
-  // Deselect date cards
-  document.querySelectorAll('.date-card').forEach(c => c.classList.remove('selected'));
-  selectedDepartureId = null;
+  if (isActive) {
+    input?.classList.add('active');
+    // Reset date picker value each time it's shown
+    if (dateInput) {
+      dateInput.value = '';
+    }
+    // Deselect date cards
+    document.querySelectorAll('.date-card').forEach(c => c.classList.remove('selected'));
+    selectedDepartureId = null;
+    selectedDate = null;
+    isPrivateBooking = false;
+  } else {
+    input?.classList.remove('active');
+  }
 }
 
 function handlePrivateDateSelect(e) {
@@ -600,6 +639,41 @@ function goToStep(stepNum) {
 
   // Hide success
   document.getElementById('booking-success')?.classList.remove('active');
+
+  // If going to step 2, update the date summary display
+  if (stepNum === 2) {
+    updateStep2DateDisplay();
+  }
+}
+
+function updateStep2DateDisplay() {
+  const t = translations[currentLang];
+  const displayEl = document.getElementById('step2-date-display');
+  if (!displayEl) return;
+
+  let dateText = '';
+  if (isPrivateBooking && selectedDate) {
+    const date = new Date(selectedDate + 'T12:00:00');
+    dateText = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(date);
+    dateText += ` (${t.privateDate})`;
+  } else if (selectedDepartureId) {
+    const dep = currentDepartures.find(d => d.departureId === selectedDepartureId);
+    if (dep) {
+      const date = new Date(dep.date._seconds * 1000);
+      dateText = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }).format(date);
+    }
+  }
+  displayEl.textContent = dateText || '-';
 }
 
 function continueToSummary() {
