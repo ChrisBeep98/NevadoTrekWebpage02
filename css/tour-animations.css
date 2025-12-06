@@ -537,3 +537,30 @@
   pointer-events: none !important;
   visibility: hidden !important;
 }
+
+/* ===================================
+   HERO SECTION SPACING FIXES
+   =================================== */
+
+/* Container for title, subtitle, and chips */
+.div-block-130 {
+  gap: 16px;
+}
+
+/* Title - prevent word breaking */
+.div-block-130 .h-1 {
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
+  margin-bottom: 8px;
+}
+
+/* Subtitle spacing */
+.div-block-130 .tour-subtitle {
+  margin-bottom: 8px;
+}
+
+/* Chips container spacing */
+.div-block-130 .div-block-42 {
+  margin-top: 8px;
+}
