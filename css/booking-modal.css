@@ -844,6 +844,62 @@
   gap: 16px;
 }
 
+/* Success Booking Summary */
+.success-booking-summary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  width: 100%;
+  max-width: 350px;
+}
+
+.success-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.success-summary-row:last-child {
+  border-bottom: none;
+}
+
+.success-summary-row.total {
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.success-summary-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Inter, sans-serif;
+  font-size: 0.9em;
+}
+
+.success-summary-value {
+  color: white;
+  font-family: Inter, sans-serif;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+.success-summary-row.total .success-summary-value {
+  color: #10b981;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+/* ===== STEP EXPLANATION TEXT ===== */
+.step-explanation {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: Inter, sans-serif;
+  font-size: 0.95em;
+  margin: 0 0 16px 0;
+  line-height: 1.4;
+}
+
 /* ===== TOAST NOTIFICATION ===== */
 .booking-toast {
   position: fixed;

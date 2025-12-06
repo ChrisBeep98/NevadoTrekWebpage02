@@ -58,7 +58,10 @@ const translations = {
     yourSelectedDate: 'Tu fecha seleccionada',
     changeDate: 'Cambiar',
     availableSpots: 'Cupos disponibles',
-    groupSize: 'Tamaño del grupo después de tu reserva'
+    groupSize: 'Tamaño del grupo después de tu reserva',
+    publicDatesExplain: 'Únete a un grupo existente:',
+    privateDateExplain: 'O solicita una fecha privada exclusiva para tu grupo:',
+    currency: 'COP'
   },
   en: {
     title: 'BOOK TOUR',
@@ -110,7 +113,10 @@ const translations = {
     yourSelectedDate: 'Your selected date',
     changeDate: 'Change',
     availableSpots: 'Available spots',
-    groupSize: 'Group size after your booking'
+    groupSize: 'Group size after your booking',
+    publicDatesExplain: 'Join an existing group:',
+    privateDateExplain: 'Or request a private date exclusive for your group:',
+    currency: 'USD'
   }
 };
 
@@ -238,6 +244,8 @@ function createModalHTML() {
 
             <!-- Step 1: Date Selection -->
             <div class="booking-step active" id="booking-step-1">
+              <p class="step-explanation" id="public-dates-explanation" data-i18n="publicDatesExplain">${t.publicDatesExplain}</p>
+              
               <div id="date-cards-container" class="date-cards-container">
                 <!-- Date cards injected here -->
               </div>
@@ -245,6 +253,8 @@ function createModalHTML() {
               <div class="booking-divider">
                 <span data-i18n="or">${t.or}</span>
               </div>
+
+              <p class="step-explanation" id="private-dates-explanation" data-i18n="privateDateExplain">${t.privateDateExplain}</p>
 
               <div class="private-date-toggle" id="private-date-toggle">
                 <div class="toggle-left">
@@ -257,12 +267,12 @@ function createModalHTML() {
                   <span data-i18n="requestDifferentDate">${t.requestDifferentDate}</span>
                 </div>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="private-date-checkbox">
+                  <input type="checkbox" id="private-date-checkbox" checked>
                   <span class="toggle-slider"></span>
                 </label>
               </div>
 
-              <div class="private-date-input" id="private-date-input">
+              <div class="private-date-input" id="private-date-input" style="display: block;">
                 <div class="form-group">
                   <label data-i18n="selectDate">${t.selectDate}</label>
                   <input type="date" id="booking-private-date" min="${getMinDate()}">
@@ -365,6 +375,23 @@ function createModalHTML() {
               </div>
               <h3 data-i18n="successTitle">${t.successTitle}</h3>
               <p data-i18n="successMessage">${t.successMessage}</p>
+              
+              <!-- Booking Summary in Success -->
+              <div class="success-booking-summary">
+                <div class="success-summary-row">
+                  <span class="success-summary-label" data-i18n="selectedDate">${t.selectedDate}</span>
+                  <span class="success-summary-value" id="success-date"></span>
+                </div>
+                <div class="success-summary-row">
+                  <span class="success-summary-label" data-i18n="guestCount">${t.guestCount}</span>
+                  <span class="success-summary-value" id="success-pax"></span>
+                </div>
+                <div class="success-summary-row total">
+                  <span class="success-summary-label" data-i18n="totalPrice">${t.totalPrice}</span>
+                  <span class="success-summary-value" id="success-total"></span>
+                </div>
+              </div>
+              
               <p><span data-i18n="bookingId">${t.bookingId}</span>:</p>
               <span class="booking-id" id="booking-ref-id"></span>
               <div class="booking-success-actions">
@@ -495,12 +522,16 @@ async function openModal() {
   // Render date cards with fresh data
   renderDateCards();
 
-  // Reset toggle switch state
+  // Set toggle switch to checked by default (show private date option)
   const toggleSwitch = document.getElementById('private-date-checkbox');
   if (toggleSwitch) {
-    toggleSwitch.checked = false;
+    toggleSwitch.checked = true;
   }
-  document.getElementById('private-date-input')?.classList.remove('active');
+  // Show the private date input by default
+  const privateDateInput = document.getElementById('private-date-input');
+  if (privateDateInput) {
+    privateDateInput.style.display = 'block';
+  }
 
   // Reset to step 1
   goToStep(1);
@@ -537,7 +568,7 @@ function renderPricingTiers() {
     return `
       <div class="pricing-tier">
         <span class="pricing-tier-pax">${paxText}</span>
-        <span class="pricing-tier-price">${price}</span>
+        <span class="pricing-tier-price">${price} ${t.currency}</span>
       </div>
     `;
   }).join('');
@@ -553,37 +584,45 @@ function renderDateCards() {
   // If no public departures
   if (currentDepartures.length === 0) {
     container.innerHTML = `<p class="no-dates-message" data-i18n="noPublicDates">${t.noPublicDates}</p>`;
-    // Hide toggle switch and divider, show private date input directly
+    // Hide toggle switch, divider, and public explanation
     const toggleEl = document.getElementById('private-date-toggle');
     const dividerEl = document.querySelector('.booking-divider');
     const inputEl = document.getElementById('private-date-input');
-    
-    console.log('No departures - showing private date input:', inputEl);
+    const publicExplainEl = document.getElementById('public-dates-explanation');
+    const privateExplainEl = document.getElementById('private-dates-explanation');
     
     if (toggleEl) toggleEl.style.display = 'none';
     if (dividerEl) dividerEl.style.display = 'none';
+    if (publicExplainEl) publicExplainEl.style.display = 'none';
+    if (privateExplainEl) privateExplainEl.style.display = 'none';
     if (inputEl) {
-      inputEl.style.display = 'block'; // Force display
+      inputEl.style.display = 'block';
       inputEl.style.marginTop = '16px';
     }
     return;
   }
   
-  // Show toggle and divider when there are departures
+  // Show toggle, divider, and explanation texts when there are departures
   const toggleEl = document.getElementById('private-date-toggle');
   const dividerEl = document.querySelector('.booking-divider');
   const inputEl = document.getElementById('private-date-input');
+  const publicExplainEl = document.getElementById('public-dates-explanation');
+  const privateExplainEl = document.getElementById('private-dates-explanation');
   
   if (toggleEl) toggleEl.style.display = 'flex';
   if (dividerEl) dividerEl.style.display = 'flex';
+  if (publicExplainEl) publicExplainEl.style.display = 'block';
+  if (privateExplainEl) privateExplainEl.style.display = 'block';
+  
+  // Toggle is checked by default (set in HTML), so show the input
   if (inputEl) {
-    inputEl.style.display = 'none'; // Hide, toggle will control
+    inputEl.style.display = 'block';
     inputEl.style.marginTop = '16px';
   }
   
-  // Reset toggle checkbox
+  // Ensure toggle checkbox stays checked
   const checkbox = document.getElementById('private-date-checkbox');
-  if (checkbox) checkbox.checked = false;
+  if (checkbox) checkbox.checked = true;
 
   // Render up to 4 date cards
   const displayDates = currentDepartures.slice(0, 4);
@@ -600,7 +639,6 @@ function renderDateCards() {
     const isLow = available <= 3;
 
     // IMPORTANT: Price is based on TOTAL people after user joins (currentPax + 1 minimum)
-    // If there are already 7 people booked, the next person pays the 4-8 tier price
     const totalPeopleAfterBooking = currentPax + 1;
     const price = getFormattedPrice(dep.pricingSnapshot || currentTour.pricingTiers, totalPeopleAfterBooking);
 
@@ -612,7 +650,7 @@ function renderDateCards() {
           <span class="dot"></span>
           <span>${available} ${spotsText}</span>
         </div>
-        <p class="date-card-price">${price}${t.perPerson}</p>
+        <p class="date-card-price">${price} ${t.currency}${t.perPerson}</p>
       </div>
     `;
   }).join('');
@@ -994,6 +1032,9 @@ function showToast() {
 }
 
 function showSuccess(bookingId) {
+  const t = translations[currentLang];
+  const pax = parseInt(document.getElementById('booking-pax').value);
+  
   // Hide all steps
   document.querySelectorAll('.booking-step').forEach(s => s.classList.remove('active'));
   
@@ -1003,6 +1044,46 @@ function showSuccess(bookingId) {
   
   // Set booking ID
   document.getElementById('booking-ref-id').textContent = bookingId;
+  
+  // Populate success summary - DATE
+  let dateText = '';
+  let currentPaxInDeparture = 0;
+  
+  if (isPrivateBooking && selectedDate) {
+    const date = new Date(selectedDate + 'T12:00:00');
+    dateText = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(date);
+    dateText += ` (${t.privateDate})`;
+  } else if (selectedDepartureId) {
+    const dep = currentDepartures.find(d => d.departureId === selectedDepartureId);
+    if (dep) {
+      const date = new Date(dep.date._seconds * 1000);
+      dateText = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }).format(date);
+      currentPaxInDeparture = dep.currentPax || 0;
+    }
+  }
+  document.getElementById('success-date').textContent = dateText || '-';
+  
+  // Populate success summary - PAX
+  document.getElementById('success-pax').textContent = `${pax} ${pax === 1 ? t.person : t.persons}`;
+  
+  // Populate success summary - TOTAL PRICE
+  const pricingTiers = currentTour.pricingTiers;
+  const totalGroupSize = isPrivateBooking ? pax : (currentPaxInDeparture + pax);
+  const tier = pricingTiers.find(t => totalGroupSize >= t.minPax && totalGroupSize <= t.maxPax) 
+    || pricingTiers[pricingTiers.length - 1];
+  
+  const pricePerPerson = currentLang === 'en' ? tier.priceUSD : tier.priceCOP;
+  const total = pricePerPerson * pax;
+  const formattedTotal = currentLang === 'en' ? formatUSD(total) : formatCOP(total);
+  document.getElementById('success-total').textContent = `${formattedTotal} ${t.currency}`;
 }
 
 // ==================== API CALLS ====================
