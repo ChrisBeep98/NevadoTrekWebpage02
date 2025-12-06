@@ -1,4 +1,5 @@
 import { apiService } from './../js/services/api.js';
+import { initBookingModal } from './booking-modal.js';
 
 /**
  * TOUR PAGE LOADER
@@ -39,13 +40,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Render Content
     renderTourPage(tour, departures);
 
-    // 4. Listen for language changes
+    // 4. Initialize Booking Modal
+    initBookingModal(tour, departures);
+
+    // 5. Listen for language changes
     window.addEventListener('languageChange', (e) => {
       const lang = e.detail.lang;
       applyLanguageToDynamicElements(lang);
     });
 
-    // 5. Apply current language
+    // 6. Apply current language
     const currentLang = localStorage.getItem('nevado_lang') || 'es';
     applyLanguageToDynamicElements(currentLang);
 
