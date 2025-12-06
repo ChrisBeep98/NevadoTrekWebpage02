@@ -45,10 +45,19 @@ export const apiService = {
 
   /**
    * Fetch upcoming departures
+   * @param {boolean} forceRefresh - If true, bypasses CDN cache by adding timestamp
    */
-  async getDepartures() {
+  async getDepartures(forceRefresh = false) {
     try {
-      const response = await fetch(`${API_BASE_URL}/public/departures`);
+      let url = `${API_BASE_URL}/public/departures`;
+      
+      // Bypass cache if force refresh requested (after booking)
+      if (forceRefresh) {
+        url += `?t=${Date.now()}`;
+        console.log('🔄 Fetching departures with cache bypass');
+      }
+      
+      const response = await fetch(url);
       if (!response.ok) throw new Error(`API Error: ${response.status}`);
       return await response.json();
     } catch (error) {

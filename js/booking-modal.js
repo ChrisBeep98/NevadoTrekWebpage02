@@ -117,6 +117,7 @@ let currentDepartures = [];
 let selectedDate = null;
 let selectedDepartureId = null;
 let isPrivateBooking = false;
+let needsForceRefresh = false; // Flag to bypass cache after booking
 
 // ==================== INITIALIZATION ====================
 export function initBookingModal(tour, departures) {
@@ -445,11 +446,16 @@ function bindEvents() {
 }
 
 // ==================== MODAL CONTROLS ====================
-function openModal() {
+async function openModal() {
   const modal = document.getElementById('booking-modal');
   const overlay = document.getElementById('booking-modal-overlay');
   
   if (!modal || !currentTour) return;
+
+  // Show modal immediately with loading state
+  overlay.classList.add('active');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 
   // Set tour name
   const tourNameEl = document.getElementById('booking-tour-name');
@@ -457,20 +463,41 @@ function openModal() {
     tourNameEl.textContent = currentTour.name[currentLang];
   }
 
-  // Render pricing tiers
+  // Render pricing tiers (doesn't need refresh)
   renderPricingTiers();
 
-  // Render date cards
+  // IMPORTANT: Refresh departures from API to get latest availability
+  // Use forceRefresh to bypass CDN cache (especially after a booking)
+  try {
+    console.log('🔄 Refreshing departures data...');
+    const freshDepartures = await apiService.getDepartures(true); // Always bypass cache when opening modal
+    
+    // Update currentDepartures with fresh data for this tour
+    currentDepartures = freshDepartures.filter(d => 
+      d.tourId === currentTour.tourId && 
+      d.status === 'open' &&
+      new Date(d.date._seconds * 1000) >= new Date()
+    ).sort((a, b) => a.date._seconds - b.date._seconds);
+    
+    console.log('✅ Departures refreshed:', currentDepartures.length, 'available');
+    needsForceRefresh = false; // Reset flag
+  } catch (error) {
+    console.error('❌ Failed to refresh departures:', error);
+  }
+
+  // Render date cards with fresh data
   renderDateCards();
+
+  // Reset toggle switch state
+  const toggleSwitch = document.getElementById('private-date-checkbox');
+  if (toggleSwitch) {
+    toggleSwitch.checked = false;
+  }
+  document.getElementById('private-date-input')?.classList.remove('active');
 
   // Reset to step 1
   goToStep(1);
   resetForm();
-
-  // Show modal
-  overlay.classList.add('active');
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
 
   console.log('📋 Modal opened for:', currentTour.name[currentLang]);
 }
