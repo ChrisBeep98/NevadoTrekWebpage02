@@ -211,6 +211,16 @@ section {
     width: 100% !important;
     max-width: 100% !important;
     height: 400px !important;
+    margin-top: 64px !important;
+  }
+
+  /* Additional w-node containers - 64px margin top */
+  #w-node-f394fc0a-854b-23ac-f6c4-43a6c3985167-93ad6e2b {
+    margin-top: 64px !important;
+  }
+
+  #w-node-f394fc0a-854b-23ac-f6c4-43a6c3985169-93ad6e2b {
+    margin-top: 64px !important;
   }
 
   /* Description section layout - FULL WIDTH */
@@ -499,6 +509,6 @@ section {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #f7f7f3;
+  background: #a9becb;
   pointer-events: none;
 }
