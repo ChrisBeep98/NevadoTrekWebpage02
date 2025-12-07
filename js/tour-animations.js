@@ -937,6 +937,11 @@
     }, 500);
 
     setTimeout(() => clearInterval(interval), 10000);
+
+    // Listen for language changes to update price dynamically
+    window.addEventListener('languageChange', () => {
+        trySetPrice();
+    });
   }
 
   // Initialize Mobile Menu
