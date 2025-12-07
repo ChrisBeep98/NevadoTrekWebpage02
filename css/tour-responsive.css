@@ -243,6 +243,11 @@ section {
     height: 400px !important;
   }
 
+  /* Parallax image medium - reduce margin from 160px to 64px */
+  .parallax-image-medium {
+    margin-top: 64px !important;
+  }
+
   /* Itinerary container - FULL WIDTH */
   .itinerary-containe,
   .titinerari-padding {
@@ -417,6 +422,29 @@ section {
 
 /* ===== MOBILE PORTRAIT BREAKPOINT (≤479px) ===== */
 @media screen and (max-width: 479px) {
+
+
+
+
+  .faq-tourpage-container {
+  
+    margin-top: 64px !important;
+  }
+
+  
+  .short-message-animated-scroll {
+    padding-left: 4em !important;
+    padding-right: 1em !important;
+    margin-top: 4em !important;
+  }
+
+  .div-block-38 {
+    padding: 0rem 0 !important;
+  }
+
+
+
+
   /* section-8 stays at 0 for full-width images */
   .section-8 {
     padding-left: 0 !important;
@@ -468,7 +496,7 @@ section {
 
   /* Navbar */
   #navbar-exclusion.navbar-fixed.scrolled {
-    width: 94% !important;
+    width: 100% !important;
     max-width: 94% !important;
     padding: 0 1em !important;
   }
@@ -482,6 +510,17 @@ section {
   }
 
   /* Mobile menu adjustments */
+
+ #w-node-_7694b81d-be8f-05a3-6149-2103870ac5ce-93ad6e2b {
+    margin-top: 164px !important;
+    padding-top: 0px !important;
+  }
+
+  #Itinerary-container {
+   margin-top: 64px !important;
+   padding-top: 0px !important;
+  }
+
   .mobile-nav-link {
     font-size: 1.4rem;
   }
