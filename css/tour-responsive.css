@@ -1,0 +1,359 @@
+/* ===========================================
+   TOURPAGE RESPONSIVE STYLES
+   Following index.html patterns
+   Breakpoints: 991px (tablet), 767px (mobile landscape), 479px (mobile portrait)
+   =========================================== */
+
+/* ===== BASE MOBILE MENU STYLES ===== */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.mobile-nav-link {
+  font-family: Inter, sans-serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #042e4d;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.mobile-nav-link:hover {
+  color: #2563eb;
+  transform: scale(1.05);
+}
+
+.mobile-nav-link.cta {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: 50px;
+  padding: 1rem 2.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.mobile-nav-link.cta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.mobile-menu-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #042e4d;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-close:hover {
+  transform: rotate(90deg);
+}
+
+/* ===== TABLET BREAKPOINT (≤991px) ===== */
+@media screen and (max-width: 991px) {
+  /* 1. Hide dynamic TOC completely */
+  .div-block-142,
+  .index {
+    display: none !important;
+  }
+
+  /* 2. Hide header CTA button (Reservar Tour) */
+  .header-cta-primary {
+    display: none !important;
+  }
+
+  /* 3. Show hamburger menu */
+  .menu-toggle-exclusion {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 4. Convert .a-grid from 2-column grid to single-column flex */
+  .a-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 32px !important;
+    gap: 2rem;
+  }
+
+  /* 5. Hero title container adjustments */
+  .div-block-130 {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* 6. Hero title sizing */
+  .h-1 {
+    font-size: clamp(2.5rem, 10vw, 4rem) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em;
+  }
+
+  /* 7. Subtitle adjustments */
+  .h-5.tour-subtitle {
+    font-size: clamp(1rem, 3vw, 1.25rem) !important;
+  }
+
+  /* 8. Chips container - wrap on tablet */
+  .div-block-42 {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* 9. Full-width images - maintain aspect ratio */
+  .scroll-zoom-image {
+    height: auto !important;
+    min-height: 50vh;
+    max-height: 70vh;
+  }
+
+  /* 10. Description section layout */
+  .div-block-132,
+  .div-block-133 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .div-block-131 {
+    width: 100% !important;
+    padding: 2rem 0 !important;
+  }
+
+  /* 11. Mini curtain images - full width */
+  .mini-image-container {
+    width: 100% !important;
+    height: 400px !important;
+  }
+
+  /* 12. Itinerary container */
+  .itinerary-containe {
+    width: 100% !important;
+    padding: 2rem 0 !important;
+  }
+
+  /* 13. Parallax image adjustments */
+  .image-15.parallax-image-medium {
+    height: 50vh !important;
+    min-height: 350px !important;
+  }
+
+  /* 14. Inclusions/Exclusions section */
+  .div-block-38 {
+    width: 100% !important;
+    padding: 2rem !important;
+  }
+
+  .div-block-39 {
+    width: 100% !important;
+  }
+
+  /* 15. Feature list items - flex wrap */
+  .div-block-40 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem;
+  }
+
+  .div-block-41 {
+    width: 100% !important;
+  }
+
+  /* 16. FAQ section */
+  .div-block-136 {
+    padding: 2rem !important;
+  }
+
+  /* 17. Navbar adjustments for tablet */
+  #navbar-exclusion {
+    width: calc(100% - 4em) !important;
+  }
+
+  #navbar-exclusion.navbar-fixed.scrolled {
+    width: 85% !important;
+    max-width: 85% !important;
+    padding: 0 2em !important;
+  }
+
+  /* 18. Footer adjustments */
+  .div-block-79 {
+    flex-direction: column !important;
+    gap: 2rem;
+  }
+
+  .footer_right-2 {
+    flex-direction: column !important;
+    gap: 1rem;
+  }
+
+  .footer_links-wrap {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE BREAKPOINT (≤767px) ===== */
+@media screen and (max-width: 767px) {
+  /* Tighter padding */
+  .a-grid {
+    padding: 0 24px !important;
+  }
+
+  /* Smaller hero title */
+  .h-1 {
+    font-size: clamp(2rem, 12vw, 3rem) !important;
+  }
+
+  /* Image heights */
+  .scroll-zoom-image {
+    min-height: 40vh;
+    max-height: 60vh;
+  }
+
+  .mini-image-container {
+    height: 300px !important;
+  }
+
+  /* Accordion adjustments */
+  .accordion-header {
+    gap: 0.5rem;
+  }
+
+  .h-4 {
+    font-size: 1.2rem !important;
+  }
+
+  /* Navbar scrolled */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    width: 90% !important;
+    max-width: 90% !important;
+    padding: 0 1.5em !important;
+  }
+
+  /* Footer bottom */
+  .footer-bottom-content {
+    flex-direction: column !important;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+/* ===== MOBILE PORTRAIT BREAKPOINT (≤479px) ===== */
+@media screen and (max-width: 479px) {
+  /* 16px lateral margins per design system */
+  .a-grid {
+    padding: 0 16px !important;
+  }
+
+  /* Even smaller hero */
+  .h-1 {
+    font-size: clamp(1.75rem, 14vw, 2.5rem) !important;
+  }
+
+  .h-5.tour-subtitle {
+    font-size: 0.9rem !important;
+  }
+
+  /* Chips - smaller */
+  .chip-tour-info-wrapper {
+    padding: 6px 10px !important;
+  }
+
+  .chip-tour-info-wrapper .body-small {
+    font-size: 11px !important;
+  }
+
+  /* Images */
+  .scroll-zoom-image {
+    min-height: 35vh;
+    max-height: 50vh;
+  }
+
+  .mini-image-container {
+    height: 250px !important;
+  }
+
+  /* Accordion */
+  .h-4 {
+    font-size: 1rem !important;
+  }
+
+  .body-large {
+    font-size: 14px !important;
+  }
+
+  /* Navbar */
+  #navbar-exclusion.navbar-fixed.scrolled {
+    width: 94% !important;
+    max-width: 94% !important;
+    padding: 0 1em !important;
+  }
+
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
+    width: 28px !important;
+  }
+
+  #navbar-exclusion.navbar-fixed.scrolled .navbar-title {
+    font-size: 10px !important;
+  }
+
+  /* Mobile menu adjustments */
+  .mobile-nav-link {
+    font-size: 1.4rem;
+  }
+
+  .mobile-menu-close {
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+/* ===== PRESERVE ANIMATIONS ===== */
+/* Ensure scroll-triggered animations still work at all breakpoints */
+.scroll-zoom-image,
+.image-parallax-mask,
+.parallax-wrapper,
+.image-14,
+.image-15 {
+  /* Keep transform-origin for animations */
+  transform-origin: center center;
+}
+
+/* Ensure curtain overlays can still animate */
+.image-curtain-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f7f7f3;
+  pointer-events: none;
+}

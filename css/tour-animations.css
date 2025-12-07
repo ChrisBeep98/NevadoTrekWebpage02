@@ -7,7 +7,7 @@
 .h-1 {
   position: relative;
   overflow: visible;
-  opacity: 1 !important; /* Override any hiding */
+  opacity: 0; /* Changed from 1 !important to 0 to prevent flash of template text */
 }
 
 /* Individual letters - professional smooth reveal */

@@ -14,11 +14,32 @@
   }
 
   function init() {
+    // Check if data is already loaded using flag from tour-loader.js
+    if (window.tourDataLoaded) {
+      startAnimations();
+    } else {
+      // Wait for the custom event
+      window.addEventListener('tourDataReady', startAnimations);
+      
+      // Fallback: if event never fires (e.g. static HTML or error), force start after delay
+      setTimeout(() => {
+        // Only run if not already started
+        if (!document.body.classList.contains('animations-started')) {
+          console.warn('⚠️ Tour data event timeout - forcing animations');
+          startAnimations();
+        }
+      }, 3000);
+    }
+  }
 
-    
-    // Add small delay to ensure all styles are loaded
+  function startAnimations() {
+    if (document.body.classList.contains('animations-started')) return;
+    document.body.classList.add('animations-started');
+
+    // Add small delay to ensure rendering is completely finished
     setTimeout(() => {
       initFloatingNavbar(); // Floating pill navbar effect
+      initMobileMenu(); // Mobile menu toggle
       initTitleLetterReveal();
       initScrollReveal();
       initImageScrollZoom();
@@ -29,7 +50,54 @@
       initFeatureListReveal();
       initFAQReveal();
       initLanguageSwitcher(); // Language dropdown
-    }, 100);
+    }, 50);
+  }
+
+  /**
+   * MOBILE MENU TOGGLE
+   * Opens/closes the mobile menu overlay when hamburger is clicked
+   */
+  function initMobileMenu() {
+    const toggle = document.querySelector('.menu-toggle-exclusion');
+    const menu = document.getElementById('mobile-menu');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    
+    if (!toggle || !menu) {
+      console.log('Mobile menu elements not found (normal on desktop)');
+      return;
+    }
+    
+    const links = menu.querySelectorAll('.mobile-nav-link');
+    
+    // Open menu on hamburger click
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      menu.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    });
+    
+    // Close menu function
+    const closeMenu = () => {
+      menu.classList.remove('active');
+      document.body.style.overflow = ''; // Restore scroll
+    };
+    
+    // Close on X button click
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeMenu);
+    }
+    
+    // Close on link click (for smooth navigation)
+    links.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('active')) {
+        closeMenu();
+      }
+    });
   }
 
   /**
@@ -625,6 +693,9 @@
     
     // Clear the element
     titleElement.innerHTML = '';
+    
+    // Reveal the parent element now that letters are about to be created
+    titleElement.style.opacity = '1'; /* Critical: Make parent visible so children can be seen */
     
     // Split text into letters and wrap each in a span
     const letters = titleText.split('');

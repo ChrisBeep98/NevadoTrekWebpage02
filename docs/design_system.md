@@ -92,6 +92,8 @@ El sistema usa variaciones numeradas. La principal detectada es `.button-6`.
 *   `--base--section-padding-large`: `8em` (Secciones con mucho aire)
 *   `--base--section-padding-small`: `2.5em` (Secciones compactas)
 
+margenes de 16 px para todo en mobile
+
 ### Guía de Breakpoints (Responsive)
 El CSS usa un enfoque `Desktop-First` con `max-width`.
 

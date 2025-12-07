@@ -53,6 +53,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const currentLang = localStorage.getItem('nevado_lang') || 'es';
     applyLanguageToDynamicElements(currentLang);
 
+    // 7. Signal that content is ready
+    window.tourDataLoaded = true;
+    window.dispatchEvent(new CustomEvent('tourDataReady'));
+
   } catch (error) {
     console.error('Error loading tour:', error);
     showError('Error al cargar el tour.');
