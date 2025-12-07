@@ -200,6 +200,12 @@ section {
     max-height: 70vh;
   }
 
+  /* Remove margin from w-node container - parent already has padding */
+  [id^="w-node-"] {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   /* Description section layout - FULL WIDTH */
   .div-block-132,
   .div-block-133 {
