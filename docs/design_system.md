@@ -87,20 +87,25 @@ El sistema usa variaciones numeradas. La principal detectada es `.button-6`.
 
 ## 4. Espaciado y Layout (Spacing & Layout)
 
-### Variables de Espaciado
-*   `--base--section-padding`: `5em` (Default Padding Sección)
+### Variables de Espaciado Global
+*   `--base--section-padding`: `5em` (Default Padding Sección Desktop)
 *   `--base--section-padding-large`: `8em` (Secciones con mucho aire)
 *   `--base--section-padding-small`: `2.5em` (Secciones compactas)
 
-margenes de 16 px para todo en mobile
+### Regla de Oro Responsive (Tablet/Mobile)
+En pantallas `< 992px`, se aplica una regla estricta de márgenes laterales:
 
-### Guía de Breakpoints (Responsive)
-El CSS usa un enfoque `Desktop-First` con `max-width`.
+> **Margen Lateral: 16px**
+> Todo el contenido de texto y contenedores debe tener un padding lateral de 16px.
 
-1.  **Desktop:** `> 991px` (Layout principal)
-2.  **Tablet:** `991px` (Colapso de Grid a Flex/Columnas simples)
-3.  **Mobile Landscape:** `767px` (Padings reducidos, fuentes responsivas ajustadas)
-4.  **Mobile Portrait:** `479px` (Ancho 100%, fuentes minimizadas)
+*   **Contenedores de Contenido:** (`.a-grid`, `.div-block-130`, `.container`) -> `padding-left: 16px; padding-right: 16px;`
+*   **Wrappers Principales:** (`.section-8`) -> `padding: 0;` (Para permitir elementos full-width edge-to-edge).
+
+### Espaciado Hero (TourPage)
+Elementos dentro del bloque hero (`.div-block-130`):
+*   **Gap:** `12px` (Flex gap entre elementos)
+*   **Márgenes Texto:** `6px` bottom (`.h-1`, `.tour-subtitle`)
+*   **Chips:** `6px` top
 
 ---
 
@@ -110,6 +115,48 @@ El CSS usa un enfoque `Desktop-First` con `max-width`.
 *   **Color Texto:** `.f-white`, `.f-blue-dark`, `.f-grey`, `.f-pink`
 *   **Sombras:** `.text-shadow-1` (Sombra suave para texto sobre imagen)
 *   **Fondos:** `.bg-dark` (`--color--dark`), `.bg-blur` (backdrop blur)
+
+---
+
+## 6. Comportamiento Responsivo (Responsive Behavior)
+
+Este proyecto sigue una estrategia **Desktop-First** con adaptaciones específicas para mantener la calidad visual en móviles.
+
+### Breakpoints
+1.  **Tablet:** `< 992px` (Cambio estructural mayor: Grid -> Columnas)
+2.  **Mobile Landscape:** `< 768px` (Ajustes de tamaño de fuente)
+3.  **Mobile Portrait:** `< 480px` (Layout final compacto)
+
+### Transformaciones Clave (Tablet & Mobile)
+
+#### 1. Layouts Grid -> Flex Column
+Los contenedores `.a-grid` que en desktop son grids de varias columnas, se transforman automáticamente a:
+```css
+display: flex;
+flex-direction: column;
+gap: 2rem;
+padding: 0 16px; /* Mantiene el margen de seguridad */
+```
+
+#### 2. Imágenes Full-Width (Edge-to-Edge)
+Las imágenes principales (`.scroll-zoom-image`) rompen el grid para ocupar el 100% del ancho de la pantalla:
+*   **Ancho:** `100vw` (Full width)
+*   **Márgenes:** `0` (Sin margen lateral)
+*   **Contenedor Padre:** El padre directo (`.section-8`) tiene `padding: 0` forzado.
+*   **Animación Grow:** Desactivada visualmente (la imagen ya empieza al 100% de ancho).
+
+#### 3. Navbar Responsivo
+El header (`#navbar-exclusion`) tiene un comportamiento específico en tablet/mobile:
+*   **Ancho:** `calc(100% - 32px)` (Para dejar 16px a cada lado)
+*   **Posición:** Centrado con `left: 16px` y `right: 16px`.
+*   **Hamburger:** Barras oscuras (`#042e4d`) forzadas mediante `stroke` en el SVG, anulando inversiones de color de otras páginas.
+*   **Filtros:** `mix-blend-mode: normal` para evitar inversión de colores sobre fondos claros.
+
+#### 4. Ajustes Específicos (Nodos w-node)
+Ciertos elementos tienen ajustes manuales por ID en responsive:
+*   `#w-node...582`: Altura foza a `400px` y `width: 100%`.
+*   Contenedores específicos: `margin-top: 64px` para separar secciones visualmente.
+*   `parallax-image-medium`: Reduce su `margin-top` de 160px a `64px`.
 
 ---
 

@@ -131,7 +131,35 @@ window.addEventListener("scroll", checkNavbarBackground);
 
 ## Próximo Paso Sugerido
 
-Si quieres que el header **se contraiga** (se haga más pequeño) al hacer scroll, dime y lo implemento. Sería algo como:
-
-- **Arriba (scroll = 0):** Header grande con padding de 1.5em
 - **Al bajar (scroll > 50px):** Header pequeño con padding de 0.5em y fondo semi-transparente
+
+---
+
+## Header Template: Tour Page (`#navbar-exclusion`)
+
+El header en `TourPage.html` funciona diferente al home. Usa una estrategia de "Exclusión" y "Pill Effect".
+
+### Comportamiento Desktop
+*   **Estado Inicial:** Fixed, ancho completo, transparente.
+*   **Estado Scroll (`.scrolled`):**
+    *   Se transforma en una "píldora" (Pill Shape).
+    *   Centrado en pantalla.
+    *   Ancho reducido (`84%` o similar).
+    *   Fondo Glassmorphism (Blur + Blanco translúcido).
+
+### Comportamiento Responsivo (Mobile/Tablet)
+En pantallas `< 992px`, el header tiene reglas estrictas para garantizar usabilidad:
+
+1.  **Márgenes Laterales:** `16px` a cada lado.
+    *   `width: calc(100% - 32px)`
+    *   `left: 16px`, `right: 16px`
+2.  **Hamburger Menu:**
+    *   Color forzado a **Dark Navy** (`#042e4d`) usando `stroke` en el SVG.
+    *   `mix-blend-mode: normal` y `filter: none` para evitar que se vuelva blanco por las reglas del Home.
+3.  **Posicionamiento:**
+    *   Usa estilos inline con `!important` y media queries integradas en el HTML (`<style>`) para vencer la especificidad de otros archivos CSS y garantizar que los márgenes se respeten sobre cualquier otra regla.
+
+### Archivos Relacionados
+*   **HTML:** `Sections/TourPage.html` (Incluye estilos inline críticos para el comportamiento responsive).
+*   **CSS:** `css/tour-navbar.css` (Estilos base y scroll desktop).
+*   **CSS:** `css/tour-responsive.css` (Ajustes de layout general).
