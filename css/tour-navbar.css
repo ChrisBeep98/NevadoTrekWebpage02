@@ -369,6 +369,7 @@ html {
 .menu-toggle-exclusion svg {
   width: 24px;
   height: 24px;
+  stroke: #042e4d !important; /* Dark bars always */
 }
 
 /* ===== RESPONSIVE ===== */

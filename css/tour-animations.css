@@ -544,7 +544,7 @@
 
 /* Container for title, subtitle, and chips */
 .div-block-130 {
-  gap: 16px;
+  gap: 8px;
 }
 
 /* Title - prevent word breaking */
@@ -552,15 +552,15 @@
   word-break: keep-all;
   overflow-wrap: normal;
   hyphens: none;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 /* Subtitle spacing */
 .div-block-130 .tour-subtitle {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 /* Chips container spacing */
 .div-block-130 .div-block-42 {
-  margin-top: 8px;
+  margin-top: 4px;
 }
