@@ -793,4 +793,66 @@
     }
   });
 
+  /**
+   * Mobile Menu Logic (Refactored)
+   */
+  function initMobileMenu() {
+    const toggle = document.querySelector('.menu-toggle-exclusion');
+    const menu = document.getElementById('mobile-menu');
+    const links = document.querySelectorAll('.mobile-nav-link');
+    
+    if (!toggle || !menu) return;
+
+    let isOpen = false;
+
+    // Toggle function
+    function toggleMenu() {
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        menu.classList.add('active');
+        // We allow body scroll if the user wants to see the rest of the page?
+        // User said "slide in from top... 70% vh". usually you lock scroll.
+        document.body.style.overflow = 'hidden'; 
+      } else {
+        menu.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    // Close on link click
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+    
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (isOpen && !menu.contains(e.target) && !toggle.contains(e.target)) {
+        toggleMenu(); 
+      }
+    });
+
+    // Handle Close Button (X)
+    const closeBtn = document.getElementById('mobile-menu-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+      });
+    }
+
+    // Handle Fixed Bottom Button visibility?
+    // It is handled by CSS (display: none on desktop, block on mobile)
+  }
+
+  // Initialize Mobile Menu
+  initMobileMenu();
+
 })();

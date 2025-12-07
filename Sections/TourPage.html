@@ -1734,41 +1734,47 @@
     </section>
 
     <!-- ===== MOBILE MENU OVERLAY ===== -->
+    <!-- ===== MOBILE MENU OVERLAY & CTA ===== -->
+    <!-- Mobile Menu Overlay (70vh slide from top) -->
     <div class="mobile-menu-overlay" id="mobile-menu">
-      <button
-        class="mobile-menu-close"
-        id="mobile-menu-close"
-        aria-label="Cerrar menú"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
+      <!-- Header with separate Close Button -->
+      <div class="mobile-menu-header">
+        <span class="mobile-menu-title">Menú</span>
+        <button
+          class="mobile-menu-close-btn"
+          id="mobile-menu-close"
+          aria-label="Cerrar"
         >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-      <a href="../index.html" class="mobile-nav-link" data-i18n-key="nav.home"
-        >Inicio</a
-      >
-      <a
-        href="../index.html#tours"
-        class="mobile-nav-link"
-        data-i18n-key="nav.tours"
-        >Tours</a
-      >
-      <a
-        href="../index.html#gallery"
-        class="mobile-nav-link"
-        data-i18n-key="nav.gallery"
-        >Galería</a
-      >
-      <a href="#booking" class="mobile-nav-link cta">Reservar Tour</a>
+          ✕
+        </button>
+      </div>
+
+      <!-- Nav Links Container -->
+      <div class="mobile-menu-links">
+        <a href="../index.html" class="mobile-nav-link">
+          <span class="nav-icon">🏠</span>
+          <span data-i18n-key="nav.home">Inicio</span>
+        </a>
+
+        <div class="nav-separator"></div>
+
+        <a href="../index.html#tours" class="mobile-nav-link">
+          <span class="nav-icon">🏔️</span>
+          <span data-i18n-key="nav.tours">Tours</span>
+        </a>
+
+        <div class="nav-separator"></div>
+
+        <a href="../index.html#gallery" class="mobile-nav-link">
+          <span class="nav-icon">📸</span>
+          <span data-i18n-key="nav.gallery">Galería</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Fixed Bottom CTA (Always visible on mobile) -->
+    <div class="mobile-fixed-cta-container">
+      <a href="#booking" class="mobile-fixed-btn">Reservar Tour</a>
     </div>
 
     <script
