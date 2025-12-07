@@ -116,8 +116,20 @@ section {
      ONLY section-8 has 16px padding, children have 0
      ===================================================== */
   
-  /* Main wrapper - ONLY this gets the 16px */
+  /* Main wrapper - NO padding so images can be full-width */
   .section-8 {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Content containers GET the 16px padding */
+  .a-grid,
+  section.a-grid {
     width: 100% !important;
     max-width: 100% !important;
     padding-left: 16px !important;
@@ -127,9 +139,7 @@ section {
     box-sizing: border-box !important;
   }
 
-  /* All child containers - NO padding, inherit full width */
-  .a-grid,
-  section.a-grid,
+  /* Other Webflow containers - no padding */
   .w-container,
   .container-default,
   .inner-container,
@@ -144,12 +154,16 @@ section {
     box-sizing: border-box !important;
   }
 
-  /* Hero title container - FULL WIDTH no padding */
+  /* Hero title container - needs 16px padding since section-8 has 0 */
   .div-block-130 {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     margin: 0 !important;
+    box-sizing: border-box !important;
   }
 
   /* Convert a-grid to flex column */
@@ -324,15 +338,16 @@ section {
 
 /* ===== MOBILE LANDSCAPE BREAKPOINT (≤767px) ===== */
 @media screen and (max-width: 767px) {
-  /* Only section-8 gets 16px - children have 0 */
+  /* section-8 stays at 0 padding for full-width images */
   .section-8 {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-  
-  .a-grid {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+  
+  /* a-grid keeps 16px for content */
+  .a-grid {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   /* Smaller hero title */
@@ -376,15 +391,16 @@ section {
 
 /* ===== MOBILE PORTRAIT BREAKPOINT (≤479px) ===== */
 @media screen and (max-width: 479px) {
-  /* Only section-8 gets 16px - children have 0 */
+  /* section-8 stays at 0 for full-width images */
   .section-8 {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-  
-  .a-grid {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+  
+  /* a-grid keeps 16px for content */
+  .a-grid {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   /* Even smaller hero */
