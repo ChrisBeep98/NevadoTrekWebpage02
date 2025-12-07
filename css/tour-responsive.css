@@ -135,9 +135,42 @@ section {
 }
 
 /* Show on Tablet/Mobile */
+/* Show on Tablet/Mobile */
 @media screen and (max-width: 991px) {
   .mobile-fixed-cta-container {
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .mobile-fixed-price-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+
+  .price-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 4px; /* Increased to 4px as requested */
+  }
+
+  .price-value {
+    font-size: 16px; /* Sutil as requested */
+    color: #042e4d;
+    font-weight: 700;
+    font-family: Inter, sans-serif;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .mobile-fixed-btn-wrapper {
+    flex-grow: 1;
   }
 }
 

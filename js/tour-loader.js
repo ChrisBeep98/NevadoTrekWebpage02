@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyLanguageToDynamicElements(currentLang);
 
     // 7. Signal that content is ready
+    window.tourData = tour; // Expose tour data globally for animations/other scripts
     window.tourDataLoaded = true;
     window.dispatchEvent(new CustomEvent('tourDataReady'));
 

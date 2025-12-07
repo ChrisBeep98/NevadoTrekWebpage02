@@ -848,8 +848,95 @@
       });
     }
 
-    // Handle Fixed Bottom Button visibility?
-    // It is handled by CSS (display: none on desktop, block on mobile)
+    // Initialize Price in Fixed Footer
+    updateMobileFixedPrice();
+  }
+
+  /**
+   * Updates the fixed mobile footer with the minimum price found
+   */
+  function updateMobileFixedPrice() {
+    const priceElement = document.getElementById('mobile-fixed-price');
+    if (!priceElement) return;
+
+    // Helper to format price
+    const formatPrice = (amount) => {
+      const currentLang = localStorage.getItem('nevado_lang') || 'es';
+      const currency = currentLang === 'en' ? 'USD' : 'COP';
+      
+      // If USD, conversion logic might be needed if amount is in COP
+      // But assuming amount is raw from pricingTiers (usually has both priceCOP and priceUSD)
+      // To keep it simple based on current 'amount' variable usage (which was priceCOP):
+      // We'll stick to COP for now if 'amount' is passed as priceCOP.
+      // Ideally, we should fetch the correct currency value from the tier object.
+      
+      // Since the logic below passes targetTier.priceCOP, we should display COP.
+      // Unless we want to support multi-currency fully. 
+      // User request: "ponle cop o usd depende del lenguaje".
+      // So I need to use the correct price field from the tier!
+      
+      return new Intl.NumberFormat(currentLang === 'en' ? 'en-US' : 'es-CO', {
+        style: 'currency',
+        currency: currency,
+        maximumFractionDigits: 0
+      }).format(amount) + ` ${currency}`; // Explicitly append code if format doesn't
+    };
+
+    // Function to try setting the price
+    const trySetPrice = () => {
+        if (typeof window.tourData !== 'undefined' && window.tourData?.pricingTiers) {
+            let targetTier = window.tourData.pricingTiers.find(t => t.minSize === 4 && t.maxSize === 8);
+            
+            if (!targetTier) {
+                targetTier = window.tourData.pricingTiers.reduce((min, t) => 
+                    t.priceCOP < min.priceCOP ? t : min
+                , window.tourData.pricingTiers[0]);
+            }
+
+            if (targetTier) {
+                // Determine value based on language
+                const currentLang = localStorage.getItem('nevado_lang') || 'es';
+                const value = currentLang === 'en' ? targetTier.priceUSD : targetTier.priceCOP;
+                
+                // Format
+                const currency = currentLang === 'en' ? 'USD' : 'COP';
+                const locale = currentLang === 'en' ? 'en-US' : 'es-CO';
+                
+                // Format manually to ensure "COP" or "USD" appends correctly if desired
+                const formatted = new Intl.NumberFormat(locale, {
+                    style: 'currency',
+                    currency: currency,
+                    maximumFractionDigits: 0
+                }).format(value);
+                
+                // User said "ponle cop o usd". Often symbols ($) are enough, but explicit code is requested.
+                // Standard Intl with 'currencyDisplay: "code"' gives "COP 54.000"
+                // Let's try to match: "$ 54.000 COP" style
+                
+                priceElement.textContent = `${formatted} ${currency}`;
+                return true; 
+            }
+        }
+        return false; 
+    };
+
+    // Attempt 1: Immediate
+    if (trySetPrice()) return;
+
+    // Attempt 2: Listen for event if not ready
+    window.addEventListener('tourDataReady', () => {
+        trySetPrice();
+    });
+
+    // Attempt 3: Polling fallback (robustness for network delays)
+    // Poll every 500ms for 10 seconds
+    const interval = setInterval(() => {
+        if (trySetPrice()) {
+            clearInterval(interval);
+        }
+    }, 500);
+
+    setTimeout(() => clearInterval(interval), 10000);
   }
 
   // Initialize Mobile Menu
