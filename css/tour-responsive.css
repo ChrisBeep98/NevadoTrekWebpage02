@@ -206,6 +206,13 @@ section {
     padding: 0 !important;
   }
 
+  /* Specific w-node container - make full width to match image */
+  #w-node-_76e2460d-fbc1-dd2b-7bf3-581e567cb582-93ad6e2b {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 400px !important;
+  }
+
   /* Description section layout - FULL WIDTH */
   .div-block-132,
   .div-block-133 {
