@@ -290,17 +290,20 @@ section {
     padding: 2rem 0 !important;
   }
 
-  /* Navbar adjustments for tablet */
+  /* Navbar adjustments for tablet - 16px margins */
   #navbar-exclusion {
-    width: calc(100% - 32px) !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    width: calc(100% - 32px) !important; /* 16px each side */
+    left: 16px !important;
+    right: 16px !important;
+    transform: none !important;
+    padding: 0 !important;
   }
 
   #navbar-exclusion.navbar-fixed.scrolled {
-    width: 85% !important;
-    max-width: 85% !important;
-    padding: 0 2em !important;
+    width: calc(100% - 32px) !important;
+    max-width: calc(100% - 32px) !important;
+    left: 16px !important;
+    padding: 0 16px !important;
   }
 
   /* Footer adjustments - FULL WIDTH */

@@ -157,6 +157,29 @@
         border-color: #042e4d !important;
         color: #042e4d !important;
       }
+
+      /* ===== RESPONSIVE NAVBAR - 16px margins for tablet/mobile ===== */
+      @media screen and (max-width: 991px) {
+        #navbar-exclusion {
+          left: 16px !important;
+          right: 16px !important;
+          transform: none !important;
+          width: calc(100% - 32px) !important;
+        }
+
+        #navbar-exclusion.navbar-fixed.scrolled {
+          left: 16px !important;
+          right: 16px !important;
+          transform: none !important;
+          width: calc(100% - 32px) !important;
+          max-width: calc(100% - 32px) !important;
+          padding: 0 16px !important;
+        }
+
+        #navbar-exclusion .navbar-container {
+          padding: 0 8px !important;
+        }
+      }
     </style>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link
