@@ -478,6 +478,7 @@ async function openModal() {
   overlay.classList.add('active');
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden'; // Lock html too
 
   // Set tour name
   const tourNameEl = document.getElementById('booking-tour-name');
@@ -527,6 +528,7 @@ function closeModal() {
   if (modal) modal.classList.remove('active');
   if (overlay) overlay.classList.remove('active');
   document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
 }
 
 // ==================== RENDER PRICING TIERS ====================

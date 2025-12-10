@@ -5,9 +5,22 @@
    =========================================== */
 
 /* ===== PREVENT HORIZONTAL SCROLL ===== */
-html, body {
+/* ===== PREVENT HORIZONTAL SCROLL & DOUBLE SCROLLBAR ===== */
+/* ===== PREVENT HORIZONTAL SCROLL & DOUBLE SCROLLBAR ===== */
+html, html.w-mod-js {
   overflow-x: hidden !important;
+  overflow-y: scroll !important; /* Force ONE main scrollbar on HTML */
+  height: auto !important;
+  min-height: 100% !important;
   max-width: 100vw !important;
+}
+
+body, .body-2, .main_wraper, .section-8 {
+  overflow: visible !important; /* Must be visible on BOTH axes to avoid auto-promotion */
+  height: auto !important; /* Force content-based height */
+  min-height: 100% !important;
+  max-width: 100vw !important;
+  position: relative !important;
 }
 
 /* Ensure all containers respect viewport bounds */
@@ -753,5 +766,16 @@ section {
   .date-cards-container {
     grid-template-columns: 1fr 1fr !important;
     gap: 10px !important;
+  }
+}
+
+/* ===== MOBILE FIX: Restore Horizontal Clipping ===== */
+/* On mobile/tablet, we need overflow-x: hidden to prevent layout shifts. 
+   Mobile browsers use overlay scrollbars, so the "double scrollbar" risk is minimal here. */
+@media screen and (max-width: 991px) {
+  body, .body-2 {
+    overflow-x: hidden !important; 
+    overflow-y: visible !important; /* Computed to auto, but necessary for x-hidden */
+    position: relative !important;
   }
 }
