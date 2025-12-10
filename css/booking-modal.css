@@ -214,7 +214,7 @@
   cursor: default; /* Reset cursor */
   transition: all 0.3s ease;
 }
-/* ===== STEPS INDICATOR (PROGRESS BAR STYLE) ===== */
+/* Gray track background - Dynamic positioning */
 .booking-steps {
   display: flex;
   justify-content: space-between;
@@ -224,16 +224,29 @@
   padding: 0 10px;
 }
 
-/* Gray track background - Dynamic positioning */
-.booking-steps::before {
-  content: '';
+/* New Progress Track Container */
+.booking-progress-track {
   position: absolute;
-  top: 14px;
-  left: 40px; /* Adjusted to align with centers of first/last circles */
-  right: 40px;
+  top: 14px; /* Center with circle height (30px/2 approx) */
+  left: 26px; /* 10px padding + 15px center + 1px adjustment */
+  right: 26px;
   height: 2px;
   background: rgba(255, 255, 255, 0.1);
   z-index: 0;
+  border-radius: 2px;
+}
+
+/* Animated Fill Bar */
+.booking-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%; /* JS updates this */
+  background: #2563eb;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
 }
 
 .booking-step-indicator {
@@ -242,7 +255,7 @@
   align-items: center;
   gap: 8px;
   position: relative;
-  z-index: 1;
+  z-index: 1; /* Above the track */
   color: rgba(255, 255, 255, 0.4);
   font-family: Inter, sans-serif;
   transition: all 0.3s ease;

@@ -741,7 +741,7 @@ section {
 
   /* 7. Steps Indicator (Compact) */
   .booking-steps {
-    justify-content: center;
+    justify-content: space-between; /* Spread out */
     margin-bottom: 24px !important;
   }
   

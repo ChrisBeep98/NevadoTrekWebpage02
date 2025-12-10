@@ -220,6 +220,10 @@ function createModalHTML() {
 
             <!-- Steps Indicator -->
             <div class="booking-steps">
+              <div class="booking-progress-track">
+                <div class="booking-progress-fill" id="booking-progress-fill"></div>
+              </div>
+              
               <div class="booking-step-indicator active" data-step="1">
                 <span class="step-number">1</span>
                 <span data-i18n="step1">${t.step1}</span>
@@ -700,6 +704,17 @@ function goToStep(stepNum) {
     step.classList.remove('active');
   });
   document.getElementById(`booking-step-${stepNum}`)?.classList.add('active');
+
+  // Update Progress Bar Width
+  const progressFill = document.getElementById('booking-progress-fill');
+  if (progressFill) {
+    // 3 steps total. 
+    // Step 1: 0%
+    // Step 2: 50%
+    // Step 3: 100%
+    const progressPercentage = (stepNum - 1) * 50; 
+    progressFill.style.width = `${progressPercentage}%`;
+  }
 
   // Hide success
   document.getElementById('booking-success')?.classList.remove('active');
