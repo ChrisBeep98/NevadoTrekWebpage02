@@ -1,0 +1,488 @@
+/* ===================================
+   TOURS PAGE STYLES
+   Responsive grid layout for tour cards
+   =================================== */
+
+/* Prevent horizontal scroll globally */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* === PAGE CONTAINER === */
+#tours-page-container {
+  padding-top: 120px; /* Account for fixed navbar */
+  min-height: 100vh;
+  background: #ffffff;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  max-width: 100vw; /* Don't exceed viewport width */
+}
+
+/* === HEADER SECTION === */
+.tours-page-header {
+  padding: 4em 5em 2em 5em; /* Desktop margins: 5em */
+  text-align: center;
+}
+
+.header-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.page-title {
+  margin-bottom: 0.5em;
+  color: var(--color--dark, #042e4d);
+}
+
+.page-subtitle {
+  color: var(--font-grey-100, #687075);
+  font-weight: 300;
+}
+
+/* === FILTERS SECTION === */
+.filters-section {
+  padding: 2em 5em; /* Desktop margins: 5em */
+  border-bottom: 1px solid #e6e6e6;
+  background: #f7f7f3;
+}
+
+.filters-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-label {
+  font-weight: 600;
+  color: var(--color--dark, #042e4d);
+  margin: 0;
+}
+
+/* Difficulty Filter Chips */
+.difficulty-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-chip {
+  padding: 10px 20px;
+  border: 1.5px solid #dde9f0;
+  border-radius: 50px;
+  background: #ffffff;
+  color: var(--color--dark, #042e4d);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.filter-chip:hover {
+  border-color: #8fbbd3;
+  background: #edf6f3;
+  transform: translateY(-2px);
+}
+
+.filter-chip.active {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Duration Dropdown */
+.duration-filter {
+  padding: 10px 20px;
+  border: 1.5px solid #dde9f0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--color--dark, #042e4d);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  min-width: 150px;
+  transition: all 0.3s ease;
+}
+
+.duration-filter:hover {
+  border-color: #8fbbd3;
+}
+
+.duration-filter:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* === TOURS GRID SECTION === */
+.tours-grid-section {
+  padding: 3em 5em 5em 5em; /* Desktop margins: 5em */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.tours-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Force 2 equal columns, prevent overflow */
+  gap: 3rem;
+  width: 100%; /* Ensure grid doesn't exceed container */
+}
+
+/* === TOUR CARD STYLES === */
+/* Prevent cards from overflowing their grid cells */
+.home-tour-card,
+.home-card-tour-2 {
+  min-width: 0; /* Critical: allows flex items to shrink below content size */
+  width: 100%;
+  max-width: 100%; /* Prevent overflow */
+  display: flex;
+  flex-direction: column;
+}
+
+.tour-card,
+.tour-card._02 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0; /* Allow shrinking */
+}
+
+/* Image container with fixed aspect ratio */
+.div-block-17.info-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.div-block-17.info-container:hover {
+  transform: scale(1.02);
+}
+
+.main-tour-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Text container */
+.tour-card-container-text {
+  padding-top: 1.5rem;
+  width: 100%;
+  min-width: 0; /* Allow text to wrap */
+}
+
+.div-block-24 {
+  width: 100%;
+}
+
+.tour-name-heading {
+  margin-bottom: 0.75rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.div-block-57 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Loading State */
+.loading-state {
+  grid-column: 1 / span 2;
+  text-align: center;
+  padding: 4em 0;
+  color: var(--font-grey-100, #687075);
+}
+
+/* Empty State (when filters return no results) */
+.empty-state {
+  grid-column: 1 / span 2;
+  text-align: center;
+  padding: 4em 2em;
+}
+
+.empty-state p {
+  color: var(--font-grey-100, #687075);
+  font-size: 18px;
+}
+
+/* ===================================
+   RESPONSIVE: TABLET (≤991px)
+   Margins: 2.5em
+   Grid: Still 2 columns
+   =================================== */
+@media screen and (max-width: 991px) {
+  .tours-page-header {
+    padding: 3em 2.5em 1.5em 2.5em;
+  }
+
+  .filters-section {
+    padding: 1.5em 2.5em;
+  }
+
+  .tours-grid-section {
+    padding: 2em 2.5em 3em 2.5em;
+  }
+
+  .tours-grid {
+    gap: 2rem; /* Reduce gap on tablet */
+  }
+
+  .page-title {
+    font-size: 5vw; /* Responsive scaling */
+  }
+
+  /* Make filters scrollable horizontally on tablet */
+  .difficulty-filters {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+  }
+
+  .difficulty-filters::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .difficulty-filters::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .difficulty-filters::-webkit-scrollbar-thumb {
+    background: #8fbbd3;
+    border-radius: 10px;
+  }
+}
+
+/* ===================================
+   RESPONSIVE: MOBILE (≤767px)
+   Margins: 16px
+   Grid: 1 column
+   =================================== */
+@media screen and (max-width: 767px) {
+  #tours-page-container {
+    padding-top: 100px; /* Less padding on mobile */
+  }
+
+  .tours-page-header {
+    padding: 2em 16px 1em 16px; /* 16px lateral margins */
+  }
+
+  .filters-section {
+    padding: 1em 16px; /* 16px lateral margins */
+  }
+
+  .tours-grid-section {
+    padding: 2em 16px 3em 16px; /* 16px lateral margins */
+  }
+
+  .tours-grid {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 2rem;
+  }
+
+  .loading-state,
+  .empty-state {
+    grid-column: 1;
+  }
+
+  .page-title {
+    font-size: 8vw;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+  }
+
+  .filters-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .difficulty-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .duration-filter {
+    width: 100%;
+  }
+}
+
+/* ===================================
+   LANGUAGE DROPDOWN STYLES
+   (Match index.html behavior)
+   =================================== */
+.lang-dropdown {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+}
+
+.lang-flag {
+  width: 16px;
+  height: auto;
+  border-radius: 2px;
+}
+
+.lang-options {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  min-width: 100px;
+}
+
+.lang-options.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.lang-option:hover {
+  background: #f7f7f3;
+}
+
+.lang-option:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.lang-option:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+/* ===================================
+   NAVBAR LINK STYLES
+   (Match TourPage styling)
+   =================================== */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  width: 40px;
+  height: auto;
+}
+
+.navbar-title {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  color: inherit;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2em;
+}
+
+.nav-link-exclusion {
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link-exclusion::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2563eb;
+  transition: width 0.3s ease;
+}
+
+.nav-link-exclusion:hover::after {
+  width: 100%;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+/* Hide contact button and show hamburger on mobile */
+.header-contact-btn {
+  display: inline-flex;
+}
+
+.menu-toggle-exclusion {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+@media screen and (max-width: 991px) {
+  .navbar-links {
+    display: none;
+  }
+
+  .header-contact-btn {
+    display: none;
+  }
+
+  .menu-toggle-exclusion {
+    display: block;
+  }
+}
