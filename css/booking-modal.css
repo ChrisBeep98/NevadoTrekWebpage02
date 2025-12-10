@@ -202,28 +202,51 @@
 .booking-modal-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  overflow-y: auto;
-  padding-right: 8px;
+  width: 100%;
+  padding: 0; /* Removed padding */
+  background: transparent;
+  border: none; /* Removed border */
+  border-radius: 0;
+  color: white;
+  font-family: Inter, sans-serif;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: default; /* Reset cursor */
+  transition: all 0.3s ease;
 }
-
-/* ===== STEPS INDICATOR ===== */
+/* ===== STEPS INDICATOR (PROGRESS BAR STYLE) ===== */
 .booking-steps {
   display: flex;
-  gap: 24px;
-  margin-bottom: 16px;
-  flex-shrink: 0;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 32px;
+  width: 100%;
+  padding: 0 10px;
+}
+
+/* Gray track background - Dynamic positioning */
+.booking-steps::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 40px; /* Adjusted to align with centers of first/last circles */
+  right: 40px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 0;
 }
 
 .booking-step-indicator {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
   color: rgba(255, 255, 255, 0.4);
   font-family: Inter, sans-serif;
-  font-size: 0.9em;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: default;
 }
 
 .booking-step-indicator.active {
@@ -231,24 +254,39 @@
 }
 
 .booking-step-indicator .step-number {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  border: 1px solid currentColor;
+  background: var(--color--dark, #042e4d); /* Match modal bg to cover line */
+  border: 2px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8em;
+  font-size: 0.85em;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .booking-step-indicator.active .step-number {
-  background: #2563eb;
   border-color: #2563eb;
+  background: #2563eb;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
 }
 
 .booking-step-indicator.completed .step-number {
   background: #10b981;
   border-color: #10b981;
+  color: white;
+}
+
+/* Small names */
+.booking-step-indicator span[data-i18n] {
+  font-size: 0.75em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: block !important; /* Force show even if hidden by mobile CSS */
 }
 
 /* ===== DATE SELECTION (Step 1) ===== */
@@ -264,7 +302,7 @@
 
 .date-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 180px));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 12px;
 }
 
@@ -629,8 +667,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Fix double separator: Remove border from 2nd to last element (the one before Total) */
+.summary-row:nth-last-child(2) {
+  border-bottom: none;
 }
 
 .summary-row:last-of-type {
@@ -641,6 +684,18 @@
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   margin-top: 12px;
   padding-top: 16px;
+}
+
+/* Icons Styles */
+.summary-label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.summary-icon {
+  stroke: var(--color--blue-dark, #8fbbd3);
+  opacity: 0.8;
 }
 
 .summary-label {
@@ -654,6 +709,7 @@
   font-family: Inter, sans-serif;
   font-size: 1em;
   font-weight: 500;
+  text-align: right;
 }
 
 .summary-row.total .summary-label,

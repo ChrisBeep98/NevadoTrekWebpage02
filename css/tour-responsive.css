@@ -659,3 +659,99 @@ section {
   background: #a9becb;
   pointer-events: none;
 }
+
+/* ===========================================
+   MOBILE BOOKING MODAL OVERRIDES
+   Bottom Sheet Style for Tablet/Mobile (≤991px)
+   =========================================== */
+@media screen and (max-width: 991px) {
+  /* 1. Reset Container (Remove center alignment & scale) */
+  .booking-modal {
+    align-items: flex-end !important; /* Align to bottom for sheet effect */
+    padding: 0 !important;
+    transform: none !important;
+    transition: opacity 0.4s ease, visibility 0.4s ease !important;
+  }
+  
+  .booking-modal.active {
+    transform: none !important;
+  }
+
+  /* 2. Content Card (Slide Up Bottom Sheet) */
+  .booking-modal-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    height: 96vh !important; /* Slide up 96% as requested */
+    border-radius: 24px 24px 0 0 !important; /* Round top corners only */
+    padding: 24px 16px !important; /* 16px lateral padding request */
+    transform: translateY(100%); /* Start off-screen */
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1) !important; /* Smooth slide */
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.15) !important;
+  }
+
+  /* Slide up animation trigger */
+  .booking-modal.active .booking-modal-content {
+    transform: translateY(0);
+  }
+
+  /* 3. Internal Grid (Stack vertically) */
+  .booking-modal-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 32px !important;
+    overflow-y: visible !important; /* Allow full scroll within content */
+    padding-bottom: 40px; /* Extra space for scrolling */
+  }
+
+  /* 4. Columns (Reset padding & scrolling) */
+  .booking-modal-info,
+  .booking-modal-form {
+    padding-right: 0 !important;
+    overflow: visible !important;
+    flex: none !important;
+    gap: 20px !important;
+  }
+
+  /* 5. Header Adjustments */
+  .booking-modal-header {
+    margin-bottom: 24px !important;
+    text-align: left !important; /* Left alignment as requested */
+    padding-right: 40px; /* Space for close button */
+  }
+
+  .booking-modal-title {
+    font-size: 24px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .booking-modal-tour-name {
+    font-size: 1rem !important;
+  }
+  
+  /* 6. Close Button (Adjust position) */
+  .booking-modal-close {
+    top: 16px !important;
+    right: 16px !important;
+    width: 32px !important;
+    height: 32px !important;
+    background: rgba(255,255,255,0.1) !important; /* visible bg */
+  }
+
+  /* 7. Steps Indicator (Compact) */
+  .booking-steps {
+    justify-content: center;
+    margin-bottom: 24px !important;
+  }
+  
+  .booking-step-indicator span[data-i18n] {
+    display: none; /* Hide text label on mobile to save space */
+  }
+  
+  /* 8. Date Cards (2 per row on small mobile) */
+  .date-cards-container {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+}
