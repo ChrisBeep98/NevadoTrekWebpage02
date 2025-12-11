@@ -106,3 +106,12 @@
   - `home-loader.js` listens to the `#lang-switch` change event to trigger updates immediately.
   - It also checks `localStorage` before the initial render to ensure cards load in the correct language immediately.
 
+
+## Animation System & Standards
+- **Golden Rule:** All animations must adhere to the Premium Animation Design System.
+- **Authoritative Inventory:** See `docs/ANIMATION_INVENTORY.md` for a complete list of implemented effects and their implementation details.
+- **Key Principles:**
+  - **Text:** Letter-by-letter reveals (Apple style) for headings.
+  - **Scroll:** Scrub-linked animations for Parallax and Zoom.
+  - **Performance:** Use GSAP ScrollTrigger for complex effects, CSS for simple micro-interactions.
+  - **Consistency:** Reuse existing classes (`.letter`, `.reveal`, `.image-parallax-mask`) instead of creating new ones.

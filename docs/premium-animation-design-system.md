@@ -4,6 +4,7 @@
 > **Compiled from:** Apple, Stripe, Airbnb, and leading UX/UI design standards  
 > **Last Updated:** November 30, 2025  
 > **Purpose:** Complete animation reference for premium web experiences
+> **Implemented Inventory:** See [ANIMATION_INVENTORY.md](./ANIMATION_INVENTORY.md) for the live project catalog.
 
 ---
 
