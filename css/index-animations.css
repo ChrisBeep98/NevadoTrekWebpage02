@@ -215,7 +215,7 @@ html {
 .nav-link-exclusion::after {
   content: '';
   position: absolute;
-  bottom: 6px;
+  bottom: 4px; /* Increased spacing (was 6px) */
   left: 50%;
   right: 50%;
   height: 2px;

@@ -382,7 +382,12 @@ html, body {
   gap: 2em;
 }
 
+/* Nav Links - Managed by index-animations.css to ensure consistency
+   Styles removed to prevent conflicts with the global navbar animation.
+   See index-animations.css for the correct implementation using left/right + padding.
+*/
 .nav-link-exclusion {
+  /* Inherit global styles */
   font-family: Inter, sans-serif;
   font-size: 15px;
   font-weight: 500;
@@ -392,20 +397,7 @@ html, body {
   transition: color 0.3s ease;
 }
 
-.nav-link-exclusion::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #2563eb;
-  transition: width 0.3s ease;
-}
-
-.nav-link-exclusion:hover::after {
-  width: 100%;
-}
+/* Conflicting ::after styles removed */
 
 .navbar-actions {
   display: flex;
