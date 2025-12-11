@@ -350,42 +350,96 @@ function initAnimations() {
     });
   });
 
-  // Fade in cards with stagger
-  gsap.from('.home-tour-card', {
-    opacity: 0,
-    y: 30,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: 'power3.out',
-    clearProps: 'opacity,transform'
-  });
+  // PER-CARD ANIMATIONS LOOP
+  // Iterate through each card to set up individual animations
+  tourCards.forEach((card, index) => {
+    const title = card.querySelector('.tour-name-heading');
+    const price = card.querySelector('.price-h');
+    const description = card.querySelector('.body-medium');
+    
+    // Animate Card Entrance
+    gsap.from(card, {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: 'power3.out',
+      clearProps: 'opacity,transform',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%', // Trigger when top of card hits 85% of viewport height
+        toggleActions: 'play none none none'
+      }
+    });
 
-  // Animate card text elements
-  gsap.from('.home-tour-card .tour-name-heading', {
-    opacity: 0,
-    y: 15,
-    duration: 0.6,
-    delay: 0.3,
-    ease: 'power2.out',
-    clearProps: 'opacity,transform'
-  });
+    // Animate Title
+    if (title) {
+      gsap.from(title, {
+        opacity: 0,
+        y: 15,
+        duration: 0.8, // Increased duration
+        delay: 0.5, // Increased delay (was 0.2)
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
 
-  gsap.from('.home-tour-card .price-h', {
-    opacity: 0,
-    y: 15,
-    duration: 0.6,
-    delay: 0.4,
-    ease: 'power2.out',
-    clearProps: 'opacity,transform'
-  });
+    // Animate Price
+    if (price) {
+      gsap.from(price, {
+        opacity: 0,
+        y: 15,
+        duration: 0.8,
+        delay: 0.7, // Increased delay (was 0.3)
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
 
-  gsap.from('.home-tour-card .body-medium', {
-    opacity: 0,
-    y: 15,
-    duration: 0.6,
-    delay: 0.5,
-    ease: 'power2.out',
-    clearProps: 'opacity,transform'
+    // Animate Description
+    if (description) {
+      gsap.from(description, {
+        opacity: 0,
+        y: 15,
+        duration: 0.8,
+        delay: 0.9, // Increased delay (was 0.4)
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
+
+    // Animate Chips (optional but recommended for consistency)
+    const chips = card.querySelectorAll('.chip-tour-info-wrapper, .pink-chip, .div-block-56');
+    if (chips.length > 0) {
+      gsap.from(chips, {
+        opacity: 0,
+        y: 10,
+        duration: 0.6,
+        stagger: 0.1,
+        delay: 1.1, // Increased delay (was 0.5)
+        ease: 'back.out(1.2)',
+        clearProps: 'opacity,transform',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
   });
 }
 
