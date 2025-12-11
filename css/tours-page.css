@@ -128,15 +128,20 @@ html, body {
 .tours-grid-section {
   padding: 3em 5em 5em 5em; /* Desktop margins: 5em */
   overflow-x: hidden; /* Prevent horizontal scroll */
+  display: flex;
+  justify-content: center; /* Center grid horizontally */
+  width: 100%;
 }
 
 .tours-grid {
   max-width: 1400px;
-  margin: 0 auto;
+  width: 100%; /* Full width up to max-width */
+  margin: 0 auto; /* Center the grid */
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* Force 2 equal columns, prevent overflow */
   gap: 3rem;
-  width: 100%; /* Ensure grid doesn't exceed container */
+  align-items: start; /* Align all cards to top - prevents vertical offset */
+  justify-items: center; /* Center cards horizontally within grid cells */
 }
 
 /* === TOUR CARD STYLES === */
@@ -144,8 +149,7 @@ html, body {
 .home-tour-card,
 .home-card-tour-2 {
   min-width: 0; /* Critical: allows flex items to shrink below content size */
-  width: 100%;
-  max-width: 100%; /* Prevent overflow */
+  width: 100%; /* Full width of grid cell */
   display: flex;
   flex-direction: column;
 }
@@ -179,27 +183,60 @@ html, body {
   object-position: center;
 }
 
-/* Text container */
+/* Text container - EXACT spacing from index.html */
 .tour-card-container-text {
-  padding-top: 1.5rem;
+  padding: 20px 3px 0; /* Same as index.html */
   width: 100%;
-  min-width: 0; /* Allow text to wrap */
+  display: block;
 }
 
 .div-block-24 {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Same as index.html */
+}
+
+/* Title and price on same line */
+.div-block-57 {
+  display: flex;
+  flex-direction: row; /* Horizontal layout */
+  justify-content: space-between; /* Title left, price right */
+  align-items: baseline; /* Align on baseline */
+  width: 100%;
+  gap: 1rem;
 }
 
 .tour-name-heading {
-  margin-bottom: 0.75rem;
+  flex: 0 1 auto; /* Don't grow, can shrink */
+  margin: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  text-align: left; /* Title to the left */
+  opacity: 1 !important; /* Force visible */
+  visibility: visible !important;
 }
 
-.div-block-57 {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.price-h {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  margin: 0;
+  white-space: nowrap; /* Price on one line */
+  text-align: right; /* Price to the right */
+  opacity: 1 !important; /* Force visible */
+  visibility: visible !important;
+}
+
+/* Description below title and price - RIGHT ALIGNED */
+.descriptin-responsiveness,
+.tour-card-container-text .body-medium {
+  width: 100%;
+  max-width: 70%; /* Limit width to 70% */
+  margin-top: 0;
+  margin-left: auto; /* Push to the right */
+  text-align: right; /* ALIGNED RIGHT */
+  display: block !important; /* Force visibility */
+  opacity: 1 !important; /* Override inline opacity:0 */
+  visibility: visible !important; /* Ensure visible */
 }
 
 /* Loading State */

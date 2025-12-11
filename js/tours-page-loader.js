@@ -100,32 +100,10 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
   const isTypeA = index % 2 === 0;
 
   if (isTypeA) {
-    // Type A: home-tour-card with side image (card-01 style)
+    // Type A: Simplified card without top icon/text
     return `
       <div class="home-tour-card card-01" data-tour-id="${tour.tourId}">
         <div class="tour-card">
-          <div class="div-block-55">
-            <svg
-              data-w-id="icon-${tour.tourId}"
-              style="opacity: 0"
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"
-              ></path>
-            </svg>
-            <h1
-              data-w-id="title-icon-${tour.tourId}"
-              style="opacity: 0"
-              class="h-5 italic"
-            >
-              ( Próximas Salidas)
-            </h1>
-          </div>
           <a
             href="TourPage.html?id=${tour.tourId}"
             class="div-block-17 info-container w-inline-block"
@@ -208,30 +186,30 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
           </a>
           <div class="tour-card-container-text">
             <div class="div-block-24">
-              <h1
-                style="opacity: 0"
-                class="h-5 medium italic tour-name-heading dynamic-i18n"
-                data-i18n-es="${tour.name.es}"
-                data-i18n-en="${tour.name.en}"
-              >
-                ${tour.name[lang] || tour.name.es}
-              </h1>
               <div class="div-block-57">
+                <h1
+                  style="opacity: 0"
+                  class="h-5 medium italic tour-name-heading dynamic-i18n"
+                  data-i18n-es="${tour.name.es}"
+                  data-i18n-en="${tour.name.en}"
+                >
+                  ${tour.name[lang] || tour.name.es}
+                </h1>
                 <h1
                   style="opacity: 0"
                   class="h-6 price-h"
                 >
                   ${price}
                 </h1>
-                <p
-                  style="opacity: 0"
-                  class="body-medium f-grey italic descriptin-responsiveness dynamic-i18n"
-                  data-i18n-es="${tour.shortDescription.es}"
-                  data-i18n-en="${tour.shortDescription.en}"
-                >
-                  ${tour.shortDescription[lang] || tour.shortDescription.es}
-                </p>
               </div>
+              <p
+                style="opacity: 0"
+                class="body-medium f-grey italic descriptin-responsiveness dynamic-i18n"
+                data-i18n-es="${tour.shortDescription.es}"
+                data-i18n-en="${tour.shortDescription.en}"
+              >
+                ${tour.shortDescription[lang] || tour.shortDescription.es}
+              </p>
             </div>
           </div>
         </div>
@@ -324,30 +302,30 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
           </a>
           <div class="tour-card-container-text">
             <div class="div-block-24">
-              <h1
-                style="opacity: 0"
-                class="h-5 medium italic tour-name-heading dynamic-i18n"
-                data-i18n-es="${tour.name.es}"
-                data-i18n-en="${tour.name.en}"
-              >
-                ${tour.name[lang] || tour.name.es}
-              </h1>
               <div class="div-block-57">
+                <h1
+                  style="opacity: 0"
+                  class="h-5 medium italic tour-name-heading dynamic-i18n"
+                  data-i18n-es="${tour.name.es}"
+                  data-i18n-en="${tour.name.en}"
+                >
+                  ${tour.name[lang] || tour.name.es}
+                </h1>
                 <h1
                   style="opacity: 0"
                   class="h-6 price-h"
                 >
                   ${price}
                 </h1>
-                <p
-                  style="opacity: 0"
-                  class="body-medium f-grey italic dynamic-i18n"
-                  data-i18n-es="${tour.shortDescription.es}"
-                  data-i18n-en="${tour.shortDescription.en}"
-                >
-                  ${tour.shortDescription[lang] || tour.shortDescription.es}
-                </p>
               </div>
+              <p
+                style="opacity: 0"
+                class="body-medium f-grey italic dynamic-i18n"
+                data-i18n-es="${tour.shortDescription.es}"
+                data-i18n-en="${tour.shortDescription.en}"
+              >
+                ${tour.shortDescription[lang] || tour.shortDescription.es}
+              </p>
             </div>
           </div>
         </div>
@@ -456,7 +434,19 @@ function applyLanguageToDynamicElements(lang) {
  * Initialize GSAP animations matching index.html
  */
 function initAnimations() {
-  if (typeof gsap === 'undefined') return;
+  // Fallback: ensure text is visible even if GSAP is not loaded
+  setTimeout(() => {
+    document.querySelectorAll('.tour-name-heading, .price-h, .body-medium').forEach(el => {
+      if (el.style.opacity === '0') {
+        el.style.opacity = '1';
+      }
+    });
+  }, 1000);
+
+  if (typeof gsap === 'undefined') {
+    console.warn('GSAP not loaded, using fallback animations');
+    return;
+  }
 
   // Fade in cards with stagger
   gsap.from('.home-tour-card, .home-card-tour-2', {
@@ -465,26 +455,35 @@ function initAnimations() {
     duration: 0.8,
     stagger: 0.15,
     ease: 'power3.out',
-    clearProps: 'all'
+    clearProps: 'opacity,transform'
   });
 
-  // Animate card text elements
-  gsap.from('.tour-name-heading, .price-h, .body-medium', {
+  // Animate card text elements - more specific selectors
+  gsap.from('.home-tour-card .tour-name-heading, .home-card-tour-2 .tour-name-heading', {
     opacity: 0,
     y: 15,
     duration: 0.6,
-    stagger: 0.1,
     delay: 0.3,
-    ease: 'power2.out'
+    ease: 'power2.out',
+    clearProps: 'opacity,transform'
   });
 
-  // Animate icons
-  gsap.from('[data-w-id^="icon-"]', {
+  gsap.from('.home-tour-card .price-h, .home-card-tour-2 .price-h', {
     opacity: 0,
-    scale: 0.8,
-    duration: 0.5,
-    stagger: 0.1,
-    ease: 'back.out(1.7)'
+    y: 15,
+    duration: 0.6,
+    delay: 0.4,
+    ease: 'power2.out',
+    clearProps: 'opacity,transform'
+  });
+
+  gsap.from('.home-tour-card .body-medium, .home-card-tour-2 .body-medium', {
+    opacity: 0,
+    y: 15,
+    duration: 0.6,
+    delay: 0.5,
+    ease: 'power2.out',
+    clearProps: 'opacity,transform'
   });
 }
 
