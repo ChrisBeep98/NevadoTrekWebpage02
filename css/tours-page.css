@@ -199,14 +199,16 @@ html, body {
   color: var(--white, #ffffff); /* Force white for the arrow icon */
   background-color: transparent; /* Default transparent */
   border-radius: 50%; /* Ensure circular shape */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease; /* Animate transform and shadow too */
   padding: 8px; /* Ensure space for background */
 }
 
-/* Hover effect on card - Arrow circle turns vivid blue */
+/* Hover effect on card - Arrow circle turns vivid blue, moves left, adds shadow */
 .home-tour-card:hover .div-block-56 {
   background-color: #2563eb; /* Vivid Blue */
-  color: #ffffff; /* Keep icon white */
+  color: #ffffff;
+  transform: translateX(-4px); /* Move 4px to LEFT */
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); /* Vivid blue glow/shadow */
 }
 
 /* Image container with fixed aspect ratio */
