@@ -427,15 +427,70 @@ html, body {
 }
 
 @media screen and (max-width: 991px) {
+  /* Tablet Styles */
+  
+  /* Navbar adjustments */
   .navbar-links {
     display: none;
   }
-
   .header-contact-btn {
     display: none;
   }
-
   .menu-toggle-exclusion {
     display: block;
+  }
+
+  /* Page Margins: 2.5em */
+  .tours-page-header {
+    padding: 3em 2.5em 1em 2.5em;
+  }
+
+  .filters-section {
+    padding: 2em 2.5em;
+  }
+
+  .tours-grid-section {
+    padding: 2em 2.5em 4em 2.5em;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /* Mobile Styles */
+
+  /* Page Margins: 16px */
+  .tours-page-header {
+    padding: 2.5em 16px 1em 16px;
+    text-align: left; /* User alignment request */
+  }
+  
+  /* Increase spacing between title and subtitle on mobile */
+  .tours-page-header .page-title {
+    margin-bottom: 0.5em; /* Was 0.2em, increased to separate them */
+  }
+
+  .filters-section {
+    padding: 1.5em 16px;
+  }
+
+  .tours-grid-section {
+    padding: 2em 16px 4em 16px;
+  }
+
+  .filters-container {
+    gap: 1.5rem;
+  }
+
+  /* Grid: 1 Column */
+  .tours-grid {
+    grid-template-columns: 1fr; /* Single column */
+    gap: 2rem;
+  }
+  
+  /* Text Alignment */
+  .descriptin-responsiveness,
+  .tour-card-container-text .body-medium {
+    text-align: left !important; /* Force left align on mobile */
+    margin-left: 0; /* Reset auto margin */
+    max-width: 100%; /* Allow full width */
   }
 }
