@@ -96,242 +96,121 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
 
   const mainImage = tour.images && tour.images.length > 0 ? tour.images[0] : '';
 
-  // Alternate between two card types (like index.html)
-  const isTypeA = index % 2 === 0;
-
-  if (isTypeA) {
-    // Type A: Simplified card without top icon/text
-    return `
-      <div class="home-tour-card card-01" data-tour-id="${tour.tourId}">
-        <div class="tour-card">
-          <a
-            href="TourPage.html?id=${tour.tourId}"
-            class="div-block-17 info-container w-inline-block"
-          >
-            <div class="div-block-20 top">
-              <div class="div-block-20 top"></div>
-            </div>
-            <div class="div-block-20">
-              <div class="div-block-64">
-                <div class="div-block-86">
-                  <div class="pink-chip">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                    >
-                      <path
-                        d="M7 1V3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H10.7546C9.65672 19.6304 9 17.8919 9 16C9 11.5817 12.5817 8 17 8C18.8919 8 20.6304 8.65672 22 9.75463V4C22 3.44772 21.5523 3 21 3H17V1H15V3H9V1H7ZM23 16C23 19.3137 20.3137 22 17 22C13.6863 22 11 19.3137 11 16C11 12.6863 13.6863 10 17 10C20.3137 10 23 12.6863 23 16ZM16 12V16.4142L18.2929 18.7071L19.7071 17.2929L18 15.5858V12H16Z"
-                      ></path>
-                    </svg>
-                    <p class="body-small">${dateStr}</p>
-                  </div>
-                </div>
-                <div class="chip-tour-info-wrapper mobile-hide">
+  // Single card type matching index.html structure
+  return `
+    <div class="home-tour-card card-01" data-tour-id="${tour.tourId}">
+      <div class="tour-card">
+        <a
+          href="TourPage.html?id=${tour.tourId}"
+          class="div-block-17 info-container w-inline-block"
+        >
+          <div class="div-block-20 top">
+            <div class="div-block-20 top"></div>
+          </div>
+          <div class="div-block-20">
+            <div class="div-block-64">
+              <div class="div-block-86">
+                <div class="pink-chip">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     width="20"
                     height="20"
+                    fill="currentColor"
                   >
-                    <g fill="none" fill-rule="evenodd">
-                      <path
-                        fill="currentColor"
-                        d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
-                      ></path>
-                    </g>
+                    <path
+                      d="M7 1V3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H10.7546C9.65672 19.6304 9 17.8919 9 16C9 11.5817 12.5817 8 17 8C18.8919 8 20.6304 8.65672 22 9.75463V4C22 3.44772 21.5523 3 21 3H17V1H15V3H9V1H7ZM23 16C23 19.3137 20.3137 22 17 22C13.6863 22 11 19.3137 11 16C11 12.6863 13.6863 10 17 10C20.3137 10 23 12.6863 23 16ZM16 12V16.4142L18.2929 18.7071L19.7071 17.2929L18 15.5858V12H16Z"
+                    ></path>
                   </svg>
-                  <p class="body-small dynamic-i18n" data-i18n-es="${altitudeText}" data-i18n-en="${altitudeText}">${altitudeText}</p>
-                </div>
-                <div class="chip-tour-info-wrapper mobile-hide">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                  >
-                    <g fill="none" fill-rule="evenodd">
-                      <path
-                        fill="currentColor"
-                        d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
-                      ></path>
-                    </g>
-                  </svg>
-                  <p class="body-small dynamic-i18n" data-i18n-es="${daysText}" data-i18n-en="${daysText}">${daysText}</p>
+                  <p class="body-small">${dateStr}</p>
                 </div>
               </div>
-              <div class="div-block-56">
+              <div class="chip-tour-info-wrapper mobile-hide">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                   width="20"
                   height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
                 >
-                  <path
-                    d="M13.4697 8.53033C13.1768 8.23744 13.1768 7.76256 13.4697 7.46967C13.7626 7.17678 14.2374 7.17678 14.5303 7.46967L18.5303 11.4697C18.8232 11.7626 18.8232 12.2374 18.5303 12.5303L14.5303 16.5303C14.2374 16.8232 13.7626 16.8232 13.4697 16.5303C13.1768 16.2374 13.1768 15.7626 13.4697 15.4697L16.1893 12.75H6.5C6.08579 12.75 5.75 12.4142 5.75 12C5.75 11.5858 6.08579 11.25 6.5 11.25H16.1893L13.4697 8.53033Z"
-                    fill="currentColor"
-                  ></path>
+                  <g fill="none" fill-rule="evenodd">
+                    <path
+                      fill="currentColor"
+                      d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
+                    ></path>
+                  </g>
                 </svg>
+                <p class="body-small dynamic-i18n" data-i18n-es="${altitudeText}" data-i18n-en="${altitudeText}">${altitudeText}</p>
+              </div>
+              <div class="chip-tour-info-wrapper mobile-hide">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                >
+                  <g fill="none" fill-rule="evenodd">
+                    <path
+                      fill="currentColor"
+                      d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
+                    ></path>
+                  </g>
+                </svg>
+                <p class="body-small dynamic-i18n" data-i18n-es="${daysText}" data-i18n-en="${daysText}">${daysText}</p>
               </div>
             </div>
-            <img
-              src="${mainImage}"
-              loading="lazy"
-              alt="${tour.name.es}"
-              class="image-8 main-tour-img"
-            />
-          </a>
-          <div class="tour-card-container-text">
-            <div class="div-block-24">
-              <div class="div-block-57">
-                <h1
-                  style="opacity: 0"
-                  class="h-5 medium italic tour-name-heading dynamic-i18n"
-                  data-i18n-es="${tour.name.es}"
-                  data-i18n-en="${tour.name.en}"
-                >
-                  ${tour.name[lang] || tour.name.es}
-                </h1>
-                <h1
-                  style="opacity: 0"
-                  class="h-6 price-h"
-                >
-                  ${price}
-                </h1>
-              </div>
-              <p
-                style="opacity: 0"
-                class="body-medium f-grey italic descriptin-responsiveness dynamic-i18n"
-                data-i18n-es="${tour.shortDescription.es}"
-                data-i18n-en="${tour.shortDescription.en}"
+            <div class="div-block-56">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
               >
-                ${tour.shortDescription[lang] || tour.shortDescription.es}
-              </p>
+                <path
+                  d="M13.4697 8.53033C13.1768 8.23744 13.1768 7.76256 13.4697 7.46967C13.7626 7.17678 14.2374 7.17678 14.5303 7.46967L18.5303 11.4697C18.8232 11.7626 18.8232 12.2374 18.5303 12.5303L14.5303 16.5303C14.2374 16.8232 13.7626 16.8232 13.4697 16.5303C13.1768 16.2374 13.1768 15.7626 13.4697 15.4697L16.1893 12.75H6.5C6.08579 12.75 5.75 12.4142 5.75 12C5.75 11.5858 6.08579 11.25 6.5 11.25H16.1893L13.4697 8.53033Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
             </div>
+          </div>
+          <img
+            src="${mainImage}"
+            loading="lazy"
+            alt="${tour.name.es}"
+            class="image-8 main-tour-img"
+          />
+        </a>
+        <div class="tour-card-container-text">
+          <div class="div-block-24">
+            <div class="div-block-57">
+              <h1
+                style="opacity: 0"
+                class="h-5 medium italic tour-name-heading dynamic-i18n"
+                data-i18n-es="${tour.name.es}"
+                data-i18n-en="${tour.name.en}"
+              >
+                ${tour.name[lang] || tour.name.es}
+              </h1>
+              <h1
+                style="opacity: 0"
+                class="h-6 price-h"
+              >
+                ${price}
+              </h1>
+            </div>
+            <p
+              style="opacity: 0"
+              class="body-medium f-grey italic descriptin-responsiveness dynamic-i18n"
+              data-i18n-es="${tour.shortDescription.es}"
+              data-i18n-en="${tour.shortDescription.en}"
+            >
+              ${tour.shortDescription[lang] || tour.shortDescription.es}
+            </p>
           </div>
         </div>
       </div>
-    `;
-  } else {
-    // Type B: home-card-tour-2 (card-02 style)
-    return `
-      <div class="home-card-tour-2 card-02" data-tour-id="${tour.tourId}">
-        <div class="tour-card _02">
-          <a
-            href="TourPage.html?id=${tour.tourId}"
-            class="div-block-17 info-container w-inline-block"
-          >
-            <div class="div-block-20 top">
-              <div class="div-block-20 top"></div>
-            </div>
-            <div class="div-block-20">
-              <div class="div-block-64">
-                <div>
-                  <div class="pink-chip">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                    >
-                      <path
-                        d="M7 1V3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H10.7546C9.65672 19.6304 9 17.8919 9 16C9 11.5817 12.5817 8 17 8C18.8919 8 20.6304 8.65672 22 9.75463V4C22 3.44772 21.5523 3 21 3H17V1H15V3H9V1H7ZM23 16C23 19.3137 20.3137 22 17 22C13.6863 22 11 19.3137 11 16C11 12.6863 13.6863 10 17 10C20.3137 10 23 12.6863 23 16ZM16 12V16.4142L18.2929 18.7071L19.7071 17.2929L18 15.5858V12H16Z"
-                      ></path>
-                    </svg>
-                    <p class="body-small">${dateStr}</p>
-                  </div>
-                </div>
-                <div class="chip-tour-info-wrapper mobile-hide">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                  >
-                    <g fill="none" fill-rule="evenodd">
-                      <path
-                        fill="currentColor"
-                        d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
-                      ></path>
-                    </g>
-                  </svg>
-                  <p class="body-small dynamic-i18n" data-i18n-es="${altitudeText}" data-i18n-en="${altitudeText}">${altitudeText}</p>
-                </div>
-                <div class="chip-tour-info-wrapper mobile-hide">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                  >
-                    <g fill="none" fill-rule="evenodd">
-                      <path
-                        fill="currentColor"
-                        d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
-                      ></path>
-                    </g>
-                  </svg>
-                  <p class="body-small dynamic-i18n" data-i18n-es="${daysText}" data-i18n-en="${daysText}">${daysText}</p>
-                </div>
-              </div>
-              <div class="div-block-56">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M13.4697 8.53033C13.1768 8.23744 13.1768 7.76256 13.4697 7.46967C13.7626 7.17678 14.2374 7.17678 14.5303 7.46967L18.5303 11.4697C18.8232 11.7626 18.8232 12.2374 18.5303 12.5303L14.5303 16.5303C14.2374 16.8232 13.7626 16.8232 13.4697 16.5303C13.1768 16.2374 13.1768 15.7626 13.4697 15.4697L16.1893 12.75H6.5C6.08579 12.75 5.75 12.4142 5.75 12C5.75 11.5858 6.08579 11.25 6.5 11.25H16.1893L13.4697 8.53033Z"
-                    fill="currentColor"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-            <img
-              src="${mainImage}"
-              loading="lazy"
-              alt="${tour.name.es}"
-              class="image-8 main-tour-img"
-            />
-          </a>
-          <div class="tour-card-container-text">
-            <div class="div-block-24">
-              <div class="div-block-57">
-                <h1
-                  style="opacity: 0"
-                  class="h-5 medium italic tour-name-heading dynamic-i18n"
-                  data-i18n-es="${tour.name.es}"
-                  data-i18n-en="${tour.name.en}"
-                >
-                  ${tour.name[lang] || tour.name.es}
-                </h1>
-                <h1
-                  style="opacity: 0"
-                  class="h-6 price-h"
-                >
-                  ${price}
-                </h1>
-              </div>
-              <p
-                style="opacity: 0"
-                class="body-medium f-grey italic dynamic-i18n"
-                data-i18n-es="${tour.shortDescription.es}"
-                data-i18n-en="${tour.shortDescription.en}"
-              >
-                ${tour.shortDescription[lang] || tour.shortDescription.es}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
+    </div>
+  `;
 }
 
 /**
@@ -444,12 +323,35 @@ function initAnimations() {
   }, 1000);
 
   if (typeof gsap === 'undefined') {
-    console.warn('GSAP not loaded, using fallback animations');
     return;
   }
 
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Image Parallax Effect - Optimized
+  const tourCards = document.querySelectorAll('.home-tour-card');
+  
+  tourCards.forEach(card => {
+    const img = card.querySelector('.main-tour-img');
+    if (!img) return;
+    
+    img.style.willChange = 'transform';
+    
+    gsap.to(img, {
+      y: 50,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+        invalidateOnRefresh: true
+      }
+    });
+  });
+
   // Fade in cards with stagger
-  gsap.from('.home-tour-card, .home-card-tour-2', {
+  gsap.from('.home-tour-card', {
     opacity: 0,
     y: 30,
     duration: 0.8,
@@ -458,8 +360,8 @@ function initAnimations() {
     clearProps: 'opacity,transform'
   });
 
-  // Animate card text elements - more specific selectors
-  gsap.from('.home-tour-card .tour-name-heading, .home-card-tour-2 .tour-name-heading', {
+  // Animate card text elements
+  gsap.from('.home-tour-card .tour-name-heading', {
     opacity: 0,
     y: 15,
     duration: 0.6,
@@ -468,7 +370,7 @@ function initAnimations() {
     clearProps: 'opacity,transform'
   });
 
-  gsap.from('.home-tour-card .price-h, .home-card-tour-2 .price-h', {
+  gsap.from('.home-tour-card .price-h', {
     opacity: 0,
     y: 15,
     duration: 0.6,
@@ -477,7 +379,7 @@ function initAnimations() {
     clearProps: 'opacity,transform'
   });
 
-  gsap.from('.home-tour-card .body-medium, .home-card-tour-2 .body-medium', {
+  gsap.from('.home-tour-card .body-medium', {
     opacity: 0,
     y: 15,
     duration: 0.6,
