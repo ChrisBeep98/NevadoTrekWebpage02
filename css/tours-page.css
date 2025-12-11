@@ -184,6 +184,31 @@ html, body {
   min-width: 0; /* Allow shrinking */
 }
 
+/* === CARDS SECTION === */
+.home-tour-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden; /* Ensure image doesn't bleed */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  margin-top: 56px !important; /* Specific user request */
+}
+
+/* Arrow Icon Container */
+.div-block-56 {
+  color: var(--white, #ffffff); /* Force white for the arrow icon */
+  background-color: transparent; /* Default transparent */
+  border-radius: 50%; /* Ensure circular shape */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px; /* Ensure space for background */
+}
+
+/* Hover effect on card - Arrow circle turns vivid blue */
+.home-tour-card:hover .div-block-56 {
+  background-color: #2563eb; /* Vivid Blue */
+  color: #ffffff; /* Keep icon white */
+}
+
 /* Image container with fixed aspect ratio */
 .div-block-17.info-container {
   position: relative;
@@ -476,7 +501,7 @@ html, body {
 
 
 .home-tour-card{
-  margin-top: 48px !important;
+  margin-top: 56px !important;
 }
 
 
