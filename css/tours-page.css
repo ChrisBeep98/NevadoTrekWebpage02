@@ -48,6 +48,7 @@ html, body {
 
 /* === FILTERS SECTION === */
 .filters-section {
+  margin-top: 3em; /* Added spacing from header */
   padding: 2em 5em; /* Desktop margins: 5em */
   border-bottom: 1px solid #e6e6e6;
   background: #f7f7f3; /* Restored subtle background */

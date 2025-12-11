@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Initial Render
     renderToursGrid(allTours, savedLang);
 
-    // 4. Initialize Filters
+    // 4. Initialize Filters (Smart - hide unused properties)
+    initSmartFilters();
     initFilters();
 
     // 5. Listen for language changes
@@ -43,6 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 6. Initialize animations
     initAnimations();
+    // Filter animations specifically
+    initFilterAnimations();
 
   } catch (error) {
     console.error('Error loading tours:', error);
@@ -238,6 +241,118 @@ function initFilters() {
       applyFilters();
     });
   }
+}
+
+/**
+ * Smart Filters: Hide difficulty options that don't exist in the data
+ */
+function initSmartFilters() {
+  if (!allTours || allTours.length === 0) return;
+
+  // Map API values to Chip values
+  // API uses "Medium", Chips use "Moderate", etc.
+  const difficultyMapping = {
+    'easy': 'easy',
+    'medium': 'moderate',
+    'moderate': 'moderate',
+    'hard': 'difficult',
+    'difficult': 'difficult',
+    // Add others if needed
+  };
+
+  const foundDifficulties = new Set();
+  
+  allTours.forEach(tour => {
+    if (tour.difficulty) {
+      const apiValue = tour.difficulty.toLowerCase();
+      // Add direct value
+      foundDifficulties.add(apiValue);
+      // Add mapped value
+      if (difficultyMapping[apiValue]) {
+        foundDifficulties.add(difficultyMapping[apiValue]);
+      }
+    }
+  });
+
+  console.log('Available difficulties:', foundDifficulties);
+
+  const chips = document.querySelectorAll('.filter-chip');
+  let hasVisibleChips = false;
+
+  chips.forEach(chip => {
+    const chipVal = (chip.dataset.difficulty || '').toLowerCase();
+    
+    // Always show 'all'
+    if (chipVal === 'all') {
+      chip.style.display = 'inline-block';
+      return;
+    }
+    
+    if (foundDifficulties.has(chipVal)) {
+        chip.style.display = 'inline-block';
+        hasVisibleChips = true;
+    } else {
+        chip.style.display = 'none';
+        chip.classList.remove('active'); // Deselect if hidden
+    }
+  });
+
+  // Fallback: If no specific chips are visible (only 'All'), 
+  // show them all to avoid empty UI bug in case of data mismatch
+  if (!hasVisibleChips) {
+    console.warn('Smart filters hid all options. Reverting to show all.');
+    chips.forEach(c => c.style.display = 'inline-block');
+  }
+}
+
+/**
+ * Animate Filters Entrance
+ */
+function initFilterAnimations() {
+  // Ensure elements are visible if GSAP is missing
+  if (typeof gsap === 'undefined') {
+    document.querySelector('.filters-section').style.opacity = '1';
+    return;
+  }
+
+  // Kill any previous tweens to prevent conflicts
+  gsap.killTweensOf('.filter-chip');
+  gsap.killTweensOf('.filter-label');
+  gsap.killTweensOf('.duration-filter');
+
+  const tl = gsap.timeline({ delay: 0.2 });
+
+  // Animate labels
+  tl.fromTo('.filter-label', 
+    { y: 10, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }
+  );
+
+  // Animate Visible Chips
+  // Select only chips that are NOT display: none
+  const visibleChips = Array.from(document.querySelectorAll('.filter-chip'))
+    .filter(c => getComputedStyle(c).display !== 'none');
+  
+  if (visibleChips.length > 0) {
+    tl.fromTo(visibleChips,
+      { y: 15, opacity: 0 },
+      {
+        y: 0, 
+        opacity: 1, 
+        duration: 0.5, 
+        stagger: 0.05, 
+        ease: 'back.out(1.2)'
+      }, 
+      "-=0.3"
+    );
+  }
+
+  // Animate Duration Dropdown
+  tl.fromTo('.duration-filter',
+    { y: 15, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+    "-=0.4"
+  );
 }
 
 /**
