@@ -459,7 +459,8 @@ html, body {
 
   /* Page Margins: 16px */
   .tours-page-header {
-    padding: 2.5em 16px 1em 16px;
+
+    padding: 0em 16px 1em 16px;
     text-align: left; /* User alignment request */
   }
   
@@ -469,21 +470,30 @@ html, body {
   }
 
   .filters-section {
-    padding: 1.5em 16px;
+    padding: 2em 16px;
+    margin-top: 1.4em;
   }
 
   .tours-grid-section {
-    padding: 2em 16px 4em 16px;
+    padding: 0em 16px 0em 16px;
   }
 
   .filters-container {
     gap: 1.5rem;
   }
 
+
+.home-tour-card{
+  margin-top: 48px !important;
+}
+
+
   /* Grid: 1 Column */
   .tours-grid {
+    margin-top: 0;
     grid-template-columns: 1fr; /* Single column */
-    gap: 2rem;
+    gap: 0rem;
+    overflow: hidden;
   }
   
   /* Text Alignment */
