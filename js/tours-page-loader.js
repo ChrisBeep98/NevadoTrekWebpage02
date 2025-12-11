@@ -299,7 +299,7 @@ function applyLanguageToDynamicElements(lang) {
   const pageTitle = document.querySelector('[data-i18n-key="page.tours.title"]');
   const pageSubtitle = document.querySelector('[data-i18n-key="page.tours.subtitle"]');
   
-  if (pageTitle) {
+    if (pageTitle) {
     pageTitle.textContent = lang === 'en' ? 'Our Tours' : 'Nuestros Tours';
   }
   if (pageSubtitle) {
@@ -307,6 +307,11 @@ function applyLanguageToDynamicElements(lang) {
       ? 'Discover unforgettable adventures in the Colombian Andes' 
       : 'Descubre aventuras inolvidables en los Andes colombianos';
   }
+
+  // Re-run header animations after text update
+  // Check if we are not already animating to avoid loops, 
+  // but simpler to just clear and re-run since textContent wiped it anyway.
+  initHeaderAnimations();
 }
 
 /**
@@ -476,6 +481,83 @@ function showError() {
       <p style="color: #d93644;">${message}</p>
     </div>
   `;
+}
+
+
+/**
+ * Initialize Header Animations
+ * Premium letter reveal for title + ease up for subtitle
+ * Uses word-safe splitting and Apple-style easing
+ */
+/**
+ * Initialize Header Animations
+ * Premium letter reveal for title (CSS based) + ease up for subtitle (GSAP)
+ * Matches index.html implementation exactly
+ */
+function initHeaderAnimations() {
+  const title = document.querySelector('.page-title');
+  const subtitle = document.querySelector('.page-subtitle');
+
+  // Title Letter Reveal (CSS Animation)
+  if (title) {
+    const text = title.textContent.trim();
+    if (text.length > 0) {
+      title.textContent = ''; // Clear text
+      title.style.opacity = '1'; // Make container visible
+      
+      // Clean up multiple spaces
+      const cleanText = text.replace(/\s+/g, ' ').trim();
+      const words = cleanText.split(' ');
+      
+      let globalLetterIndex = 0;
+
+      words.forEach((word, index) => {
+        // Wrapper for word to prevent breaking
+        const wordSpan = document.createElement('span');
+        wordSpan.style.display = 'inline-block';
+        wordSpan.style.whiteSpace = 'nowrap';
+        // Add minimal margin except for last word
+        if (index < words.length - 1) {
+             wordSpan.style.marginRight = '0.25em'; 
+        }
+        
+        const letters = word.split('');
+        letters.forEach(char => {
+          const span = document.createElement('span');
+          span.textContent = char;
+          span.className = 'letter'; // Triggers CSS animation in index-animations.css
+          
+          // Stagger delay: 40ms per letter
+          const delay = globalLetterIndex * 20; // 70ms match index.html
+          span.style.animationDelay = `${delay}ms`;
+          
+          wordSpan.appendChild(span);
+          globalLetterIndex++;
+        });
+        
+        title.appendChild(wordSpan);
+      });
+    }
+  }
+
+  // Subtitle Fade Up (GSAP for simple smoothness)
+  if (subtitle && typeof gsap !== 'undefined') {
+    gsap.fromTo(subtitle, 
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.8, // Wait for title to finish mostly
+        ease: 'power2.out'
+      }
+    );
+  } else if (subtitle) {
+    // Fallback if GSAP fails
+    subtitle.style.transition = 'opacity 1s ease, transform 1s ease';
+    subtitle.style.opacity = '1';
+    subtitle.style.transform = 'translateY(0)';
+  }
 }
 
 // Expose for debugging

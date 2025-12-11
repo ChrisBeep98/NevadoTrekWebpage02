@@ -20,7 +20,7 @@ html, body {
 
 /* === HEADER SECTION === */
 .tours-page-header {
-  padding: 4em 5em 2em 5em; /* Desktop margins: 5em */
+  padding: 4em 5em 1em 5em; /* Desktop margins: 5em. Reduced bottom padding */
   text-align: center;
 }
 
@@ -30,20 +30,27 @@ html, body {
 }
 
 .page-title {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em; /* Reduced gap */
   color: var(--color--dark, #042e4d);
+  /* Animation setup */
+  opacity: 0; /* Hidden initially for GSAP */
+  transform: translateY(20px);
 }
 
 .page-subtitle {
   color: var(--font-grey-100, #687075);
   font-weight: 300;
+  margin-top: 0;
+  /* Animation setup */
+  opacity: 0; /* Hidden initially for GSAP */
+  transform: translateY(10px);
 }
 
 /* === FILTERS SECTION === */
 .filters-section {
   padding: 2em 5em; /* Desktop margins: 5em */
   border-bottom: 1px solid #e6e6e6;
-  background: #f7f7f3;
+  background: #f7f7f3; /* Restored subtle background */
 }
 
 .filters-container {
@@ -51,8 +58,9 @@ html, body {
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
-  align-items: flex-start;
+  gap: 3rem; /* Still gap for mobile wrapping */
+  align-items: flex-end; 
+  justify-content: space-between; /* Push groups apart */
 }
 
 .filter-group {
@@ -63,11 +71,14 @@ html, body {
 
 .filter-label {
   font-weight: 600;
-  color: var(--color--dark, #042e4d);
-  margin: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--font-grey-100, #687075); /* Softer label */
+  margin: 0 0 4px 4px;
 }
 
-/* Difficulty Filter Chips */
+/* Premium Filter Chips */
 .difficulty-filters {
   display: flex;
   flex-wrap: wrap;
@@ -75,53 +86,63 @@ html, body {
 }
 
 .filter-chip {
-  padding: 10px 20px;
-  border: 1.5px solid #dde9f0;
+  padding: 10px 24px;
+  border: 1px solid transparent; /* Remove visible border */
   border-radius: 50px;
-  background: #ffffff;
+  background: #f5f7f9; /* Light grey bg */
   color: var(--color--dark, #042e4d);
   font-family: Inter, sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Premium easing */
   white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Very subtle shadow */
 }
 
 .filter-chip:hover {
-  border-color: #8fbbd3;
-  background: #edf6f3;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Lift effect */
   transform: translateY(-2px);
+  color: #2563eb;
 }
 
 .filter-chip.active {
-  border-color: #2563eb;
   background: #2563eb;
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); /* Colored shadow */
+  transform: translateY(0);
 }
 
-/* Duration Dropdown */
+/* Premium Duration Dropdown */
 .duration-filter {
   padding: 10px 20px;
-  border: 1.5px solid #dde9f0;
-  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px; /* Softer corners */
   background: #ffffff;
   color: var(--color--dark, #042e4d);
   font-family: Inter, sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  min-width: 150px;
+  min-width: 180px;
   transition: all 0.3s ease;
+  appearance: none; /* Remove default arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23042e4d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .duration-filter:hover {
-  border-color: #8fbbd3;
+  border-color: #b0c4de;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .duration-filter:focus {
   outline: none;
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* === TOURS GRID SECTION === */
@@ -257,112 +278,6 @@ html, body {
 .empty-state p {
   color: var(--font-grey-100, #687075);
   font-size: 18px;
-}
-
-/* ===================================
-   RESPONSIVE: TABLET (≤991px)
-   Margins: 2.5em
-   Grid: Still 2 columns
-   =================================== */
-@media screen and (max-width: 991px) {
-  .tours-page-header {
-    padding: 3em 2.5em 1.5em 2.5em;
-  }
-
-  .filters-section {
-    padding: 1.5em 2.5em;
-  }
-
-  .tours-grid-section {
-    padding: 2em 2.5em 3em 2.5em;
-  }
-
-  .tours-grid {
-    gap: 2rem; /* Reduce gap on tablet */
-  }
-
-  .page-title {
-    font-size: 5vw; /* Responsive scaling */
-  }
-
-  /* Make filters scrollable horizontally on tablet */
-  .difficulty-filters {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-  }
-
-  .difficulty-filters::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .difficulty-filters::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  .difficulty-filters::-webkit-scrollbar-thumb {
-    background: #8fbbd3;
-    border-radius: 10px;
-  }
-}
-
-/* ===================================
-   RESPONSIVE: MOBILE (≤767px)
-   Margins: 16px
-   Grid: 1 column
-   =================================== */
-@media screen and (max-width: 767px) {
-  #tours-page-container {
-    padding-top: 100px; /* Less padding on mobile */
-  }
-
-  .tours-page-header {
-    padding: 2em 16px 1em 16px; /* 16px lateral margins */
-  }
-
-  .filters-section {
-    padding: 1em 16px; /* 16px lateral margins */
-  }
-
-  .tours-grid-section {
-    padding: 2em 16px 3em 16px; /* 16px lateral margins */
-  }
-
-  .tours-grid {
-    grid-template-columns: 1fr; /* Single column on mobile */
-    gap: 2rem;
-  }
-
-  .loading-state,
-  .empty-state {
-    grid-column: 1;
-  }
-
-  .page-title {
-    font-size: 8vw;
-  }
-
-  .page-subtitle {
-    font-size: 16px;
-  }
-
-  .filters-container {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .filter-group {
-    width: 100%;
-  }
-
-  .difficulty-filters {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-
-  .duration-filter {
-    width: 100%;
-  }
 }
 
 /* ===================================
