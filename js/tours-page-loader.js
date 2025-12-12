@@ -384,7 +384,7 @@ function initFilterAnimations() {
  * Apply current filters to tours list
  */
 function applyFilters() {
-  const lang = localStorage.getItem('language') || 'es';
+  const lang = localStorage.getItem('lang') || 'es';
   
   let filteredTours = allTours;
 
@@ -592,7 +592,7 @@ function initAnimations() {
  * Show empty state when no tours match filters
  */
 function showEmptyState(grid) {
-  const lang = localStorage.getItem('language') || 'es';
+  const lang = localStorage.getItem('lang') || 'es';
   const message = lang === 'en' 
     ? 'No tours match your filters. Try adjusting your search.'
     : 'No hay tours que coincidan con tus filtros. Prueba ajustar tu búsqueda.';
@@ -611,7 +611,7 @@ function showError() {
   const grid = document.getElementById('tours-grid');
   if (!grid) return;
 
-  const lang = localStorage.getItem('language') || 'es';
+  const lang = localStorage.getItem('lang') || 'es';
   const message = lang === 'en' 
     ? 'Error loading tours. Please try again later.'
     : 'Error al cargar los tours. Por favor intenta de nuevo más tarde.';

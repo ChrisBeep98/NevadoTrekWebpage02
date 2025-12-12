@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // 6. Apply current language
-    const currentLang = localStorage.getItem('nevado_lang') || 'es';
+    const currentLang = localStorage.getItem('lang') || 'es';
     applyLanguageToDynamicElements(currentLang);
 
     // 7. Signal that content is ready

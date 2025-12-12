@@ -1854,5 +1854,50 @@
     <!-- Custom Tour Hero Animations -->
     <script src="../js/tour-animations.js" type="text/javascript"></script>
     <script type="module" src="../js/tour-loader.js"></script>
+    <script>
+      // Language Switcher Logic
+      document.addEventListener('DOMContentLoaded', () => {
+        const langBtn = document.getElementById('lang-btn');
+        const langOptions = document.getElementById('lang-options');
+        const currentLangSpan = document.getElementById('current-lang');
+        const currentFlagImg = document.getElementById('current-flag');
+        
+        // Toggle dropdown
+        if (langBtn && langOptions) {
+          langBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langOptions.classList.toggle('show');
+          });
+
+          // Close when clicking outside
+          document.addEventListener('click', () => {
+            langOptions.classList.remove('show');
+          });
+
+          // Handle option selection
+          const options = document.querySelectorAll('.lang-option');
+          options.forEach(option => {
+            option.addEventListener('click', (e) => {
+              e.stopPropagation(); // prevent bubbling to document click
+              const lang = option.getAttribute('data-lang');
+              const flag = option.getAttribute('data-flag');
+              
+              // Update UI
+              if (currentLangSpan) currentLangSpan.textContent = lang.toUpperCase();
+              if (currentFlagImg) currentFlagImg.src = flag;
+              
+              // Update Storage
+              localStorage.setItem('lang', lang);
+              
+              // Dispatch event for other scripts (like tour-loader.js)
+              window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+              
+              // Close dropdown
+              langOptions.classList.remove('show');
+            });
+          });
+        }
+      });
+    </script>
   </body>
 </html>

@@ -4049,6 +4049,8 @@
               localStorage.setItem("lang", newLang);
               if (currentLang) currentLang.textContent = newLang.toUpperCase();
               if (currentFlag) currentFlag.src = newFlag;
+              // Close dropdown
+              langOptions.classList.remove("show");
               apply(newLang);
             });
           });

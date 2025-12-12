@@ -471,7 +471,7 @@
           currentLangSpan.textContent = lang.toUpperCase();
           currentFlagImg.src = flag;
 
-          localStorage.setItem("language", lang);
+          localStorage.setItem("lang", lang);
           langOptions.classList.remove("show");
 
           // Dispatch event for tours loader
@@ -482,7 +482,7 @@
       });
 
       // Initialize language from localStorage
-      const savedLang = localStorage.getItem("language") || "es";
+      const savedLang = localStorage.getItem("lang") || "es";
       if (savedLang === "en") {
         currentLangSpan.textContent = "EN";
         currentFlagImg.src = "https://flagcdn.com/w20/us.png";
