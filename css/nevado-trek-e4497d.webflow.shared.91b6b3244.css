@@ -2527,7 +2527,8 @@ a {
 }
 
 .style-h1._01 {
-  min-width: 100vw;
+  width: fit-content;
+  min-width: fit-content;
 }
 
 .hero-img_cloud-01 {

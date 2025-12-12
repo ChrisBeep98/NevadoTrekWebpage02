@@ -779,3 +779,17 @@ section {
     position: relative !important;
   }
 }
+
+/* ===== HIDE FECHAS SECTION AND TOC LINK ===== */
+/* Hide the dates section (Próximas Salidas) */
+section.a-grid[data-toc-section="fechas"] {
+  visibility: hidden !important;
+  position: unset !important;
+  display: none !important;
+}
+
+/* Hide the "Fechas" TOC link */
+a.toc-link[href="#fechas"],
+a.toc-link[data-target="fechas"] {
+  display: none !important;
+}
