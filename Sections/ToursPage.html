@@ -176,6 +176,13 @@
           display: none !important;
         }
       }
+
+      /* Hide Mobile Menu on Desktop */
+      @media screen and (min-width: 992px) {
+        .mobile-menu-overlay {
+          display: none !important;
+        }
+      }
     </style>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link
@@ -411,7 +418,11 @@
             <p class="body-large">Cargando tours...</p>
           </div>
         </div>
+        </div>
       </section>
+
+      <!-- FOOTER PLACEHOLDER -->
+      <div id="footer-placeholder"></div>
     </main>
 
     <!-- ===== MOBILE MENU OVERLAY ===== -->
@@ -550,5 +561,7 @@
 
     <!-- Tours Page Loader -->
     <script type="module" src="../js/tours-page-loader.js"></script>
+    <!-- Dynamic Component Loader -->
+    <script src="../js/load-components.js"></script>
   </body>
 </html>
