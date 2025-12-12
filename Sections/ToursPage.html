@@ -33,13 +33,23 @@
         will-change: auto !important;
       }
 
+      /* ANIMATION KEYFRAMES */
+      @keyframes slideDownHeaderDesktop {
+        0% { transform: translate(-50%, -100%); opacity: 0; }
+        100% { transform: translate(-50%, 0); opacity: 1; }
+      }
+      @keyframes slideDownHeaderMobile {
+        0% { transform: translateY(-100%); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+
       /* FORCE navbar to be fixed */
       #navbar-exclusion {
         position: fixed !important;
         top: 0;
         left: 50% !important;
         right: auto !important;
-        transform: translateX(-50%) !important;
+        transform: translateX(-50%); /* Removed !important for animation */
         width: calc(100% - 10em) !important;
         z-index: 2147483647 !important;
         padding: 0 !important;
@@ -50,6 +60,9 @@
         align-items: center;
         height: 88px;
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        
+        /* PREMIUM ENTRANCE ANIMATION */
+        animation: slideDownHeaderDesktop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s backwards;
       }
 
       /* Scrolled state - pill */
@@ -137,8 +150,11 @@
         #navbar-exclusion {
           left: 16px !important;
           right: 16px !important;
-          transform: none !important;
+          transform: none; /* Removed !important */
           width: calc(100% - 32px) !important;
+          
+          /* MOBILE ANIMATION */
+          animation: slideDownHeaderMobile 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s backwards;
         }
 
         #navbar-exclusion.navbar-fixed.scrolled {
