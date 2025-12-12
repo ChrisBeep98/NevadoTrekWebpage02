@@ -78,11 +78,11 @@ html {
   right: 0;
   width: 100%;
   z-index: 99999 !important;
-  padding: 1em 2em;
+ 
   pointer-events: auto;
   /* Transparent at top */
   background: transparent;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar-container {
@@ -92,7 +92,7 @@ html {
   width: 100%;
   max-width: 100%;
   padding: 0 1em;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ===== FLOATING PILL SCROLLED STATE (positioning handled by inline styles) ===== */
@@ -100,7 +100,7 @@ html {
 /* Adjust container when scrolled */
 #navbar-exclusion.navbar-fixed.scrolled .navbar-container {
   max-width: 100%;
-  padding: 0.5em 1em;
+  
   gap: 2em;
 }
 
