@@ -68,6 +68,32 @@
       ro.observe(footerPlaceholder);
     }
     
+    // TOC Hiding Logic (Prevent overlap)
+    const tocElement = document.querySelector('.index') || document.querySelector('.div-block-142');
+    
+    if (tocElement) {
+      window.addEventListener('scroll', () => {
+         const mainRect = mainContainer.getBoundingClientRect();
+         const footerHeight = footerPlaceholder.offsetHeight;
+         const windowHeight = window.innerHeight;
+         
+         // Calculate how much of the footer is visible
+         // When mainRect.bottom <= windowHeight, footer starts showing
+         const footerVisibleHeight = windowHeight - mainRect.bottom;
+         
+         if (footerVisibleHeight > 0) {
+            // Footer is revealing, fade out TOC
+            tocElement.style.opacity = '0';
+            tocElement.style.pointerEvents = 'none';
+            tocElement.style.transition = 'opacity 0.3s ease';
+         } else {
+            // Footer hidden, show TOC
+            tocElement.style.opacity = '1';
+            tocElement.style.pointerEvents = 'auto';
+         }
+      });
+    }
+
     console.log('Footer Reveal Initialized');
   }
 
