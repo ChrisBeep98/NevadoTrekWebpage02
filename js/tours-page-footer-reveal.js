@@ -80,57 +80,116 @@
       const placeholder = document.getElementById('footer-placeholder');
       const textElInPlaceholder = placeholder ? placeholder.querySelector('.last-heading') : null;
       if (!textElInPlaceholder) return;
-      applyLetterReveal(textElInPlaceholder, 15, 150);
+      
+      // Use GSAP ScrollTrigger if available, else Fallback to IntersectionObserver
+      if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
+        runGsapReveal(textElInPlaceholder);
+      } else {
+        applyLetterReveal(textElInPlaceholder, 15, 150);
+      }
       return;
     }
 
-    // Use Intersection Observer for scroll trigger
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            applyLetterReveal(textEl, 15, 150); 
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: '0px 0px -10% 0px', // Slightly earlier trigger
-        threshold: 0.1,
-      }
-    );
+    // Use GSAP ScrollTrigger if available
+    if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
+      runGsapReveal(textEl);
+    } else {
+      // Fallback to IntersectionObserver logic if GSAP missing
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              applyLetterReveal(textEl, 15, 150); 
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          rootMargin: '0px 0px -10% 0px',
+          threshold: 0.1,
+        }
+      );
+      observer.observe(textEl);
+    }
+  }
 
-    observer.observe(textEl);
+  function runGsapReveal(element) {
+    if (!element) return;
+    
+    // Prepare split text manually (GSAP SplitText is premium, assume we don't have it)
+    const text = element.textContent;
+    element.innerHTML = '';
+    element.style.opacity = '1'; // Ensure container is visible
+
+    const allLetters = [];
+
+    const words = text.split(' ');
+    words.forEach((word, wordIndex) => {
+      const wordWrapper = document.createElement('span');
+      wordWrapper.style.whiteSpace = 'nowrap';
+      wordWrapper.style.display = 'inline-block';
+      
+      for (let i = 0; i < word.length; i++) {
+        const char = word[i];
+        const letterSpan = document.createElement('span');
+        letterSpan.textContent = char;
+        letterSpan.style.display = 'inline-block';
+        letterSpan.style.opacity = '0'; // Initial state
+        letterSpan.style.transform = 'translateY(20px) scale(0.98)';
+        letterSpan.style.filter = 'blur(8px)';
+        
+        allLetters.push(letterSpan);
+        wordWrapper.appendChild(letterSpan);
+      }
+      
+      element.appendChild(wordWrapper);
+      
+      if (wordIndex < words.length - 1) {
+        const space = document.createTextNode(' ');
+        element.appendChild(space);
+      }
+    });
+
+    // Create GSAP ScrollTrigger
+    gsap.to(allLetters, {
+      scrollTrigger: {
+        trigger: element,
+        start: "top 90%", // Start when top of element hits 90% of viewport height
+        toggleActions: "play none none none"
+      },
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: 'blur(0px)',
+      duration: 1.2,
+      stagger: 0.02,
+      ease: "power3.out", // Smooth easing as requested
+      delay: 0.1
+    });
   }
 
   function applyLetterReveal(element, staggerMs = 15, initialDelayMs = 0) {
     if (!element) return;
 
     const text = element.textContent;
-    element.innerHTML = ''; // Clear original text
-    
-    // Add 'animating' class to make container visible
+    element.innerHTML = ''; 
     element.classList.add('animating');
 
-    // Split by words first
     const words = text.split(' ');
     let letterIndex = 0;
 
     words.forEach((word, wordIndex) => {
-      // Create wrapper for each word
       const wordWrapper = document.createElement('span');
       wordWrapper.className = 'word-letter-wrapper';
       wordWrapper.style.whiteSpace = 'nowrap';
       wordWrapper.style.display = 'inline-block';
       
-      // Split word into letters
       for (let i = 0; i < word.length; i++) {
         const char = word[i];
         const letterSpan = document.createElement('span');
-        letterSpan.className = 'letter'; // Requires index-animations.css
+        letterSpan.className = 'letter'; // Requires index-animations.css if falling back
         letterSpan.textContent = char;
         
-        // Calculate delay
         const delay = initialDelayMs + letterIndex * staggerMs;
         letterSpan.style.animationDelay = `${delay}ms`;
         
@@ -140,7 +199,6 @@
       
       element.appendChild(wordWrapper);
       
-      // Add space between words
       if (wordIndex < words.length - 1) {
         const space = document.createTextNode(' ');
         element.appendChild(space);
