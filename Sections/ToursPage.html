@@ -164,6 +164,17 @@
           filter: none !important;
           mix-blend-mode: normal !important;
         }
+        /* Ensure Contact Label is Visible on Tablet */
+        .header-contact-btn span {
+          display: inline-block !important; /* Force visibility */
+        }
+      }
+
+      /* Hide Header Contact Button on Mobile */
+      @media screen and (max-width: 767px) {
+        .header-contact-btn {
+          display: none !important;
+        }
       }
     </style>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -287,7 +298,8 @@
             </div>
           </div>
           <a
-            href="#"
+            href="https://wa.me/573001234567"
+            target="_blank"
             class="header-contact-btn"
             style="
               display: inline-flex;
@@ -305,22 +317,20 @@
           >
             <span data-i18n-key="cta.contact">Contacto</span>
             <svg
-              style="
-                width: 19px; /* Slightly larger */
-                height: 19px;
-                fill: none;
-                stroke: currentColor;
-                stroke-width: 1.1; /* Delicate, premium stroke */
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                flex-shrink: 0;
-              "
-              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="flex-shrink: 0"
             >
               <path
-                d="M17.472 14.382c-.297-.413-1.57-1.486-1.57-1.486-.32-.262-.66-.292-.99-.292-.692 0-1.258.495-1.57.99l-.02.03c-.283.432-.605.507-.978.507-.52 0-1.433-.206-2.656-1.082-1.442-1.03-2.187-2.112-2.396-2.426-.264-.396-.183-.69-.028-.853.15-.156.406-.456.598-.742.176-.262.247-.533.125-.853-.195-.515-1.5-3.66-1.558-3.79-.19-.434-.645-.42-1.127-.42H5.06c-.328 0-.91.082-1.41.62-.68.73-2.132 2.05-2.132 5.093 0 3.328 2.378 6.45 2.76 6.946.33.434 4.545 7.027 11.233 9.4 4.965 1.76 4.965.867 5.867.79 1.107-.095 2.508-1.01 2.87-1.99.362-.98.362-1.83.255-2.015-.108-.19-.4-.306-.827-.52zM12.04 2C6.47 2 2 6.48 2 12.03C2 13.8 2.47 15.51 3.32 17L2 22L7.12 20.66C8.6 21.5 10.28 21.97 12.04 21.97C17.61 21.97 22.08 17.49 22.08 11.93C22.08 6.45 17.61 2 12.04 2Z"
-              />
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+              ></path>
             </svg>
           </a>
           <button class="menu-toggle-exclusion" aria-label="Menu">
@@ -430,6 +440,45 @@
         <a href="../index.html#gallery" class="mobile-nav-link">
           <span class="nav-icon">📸</span>
           <span data-i18n-key="nav.gallery">Galería</span>
+        </a>
+        <div class="nav-separator"></div>
+        <a
+          href="https://wa.me/573001234567"
+          target="_blank"
+          class="mobile-nav-link"
+          style="
+            margin-top: 32px !important;
+            display: inline-flex;
+            width: auto;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            border: 1px solid currentColor;
+            border-radius: 50px;
+            color: #25d366 !important;
+            text-decoration: none;
+            font-family: Inter, sans-serif;
+            font-size: 1.2rem;
+          "
+        >
+          <span class="nav-icon" style="display: flex; align-items: center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+              ></path>
+            </svg>
+          </span>
+          <span data-i18n-key="cta.contact">Contacto</span>
         </a>
       </div>
     </div>
