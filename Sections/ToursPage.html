@@ -220,7 +220,7 @@
             >Inicio</a
           >
           <a
-            href="../index.html#tours"
+            href="ToursPage.html"
             class="nav-link-exclusion"
             data-i18n-key="nav.tours"
             >Tours</a
@@ -403,6 +403,36 @@
         </div>
       </section>
     </main>
+
+    <!-- ===== MOBILE MENU OVERLAY ===== -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <span class="mobile-menu-title">Menú</span>
+        <button
+          class="mobile-menu-close-btn"
+          id="mobile-menu-close"
+          aria-label="Cerrar"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="mobile-menu-links">
+        <a href="../index.html" class="mobile-nav-link">
+          <span class="nav-icon">🏠</span>
+          <span data-i18n-key="nav.home">Inicio</span>
+        </a>
+        <div class="nav-separator"></div>
+        <a href="ToursPage.html" class="mobile-nav-link">
+          <span class="nav-icon">🏔️</span>
+          <span data-i18n-key="nav.tours">Tours</span>
+        </a>
+        <div class="nav-separator"></div>
+        <a href="../index.html#gallery" class="mobile-nav-link">
+          <span class="nav-icon">📸</span>
+          <span data-i18n-key="nav.gallery">Galería</span>
+        </a>
+      </div>
+    </div>
 
     <!-- SCRIPTS -->
     <script
