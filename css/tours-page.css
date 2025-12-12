@@ -666,4 +666,16 @@ html, body {
     margin-left: 0; /* Reset auto margin */
     max-width: 100%; /* Allow full width */
   }
+
+  /* Stack Title and Price */
+  .div-block-57 {
+    flex-direction: column;
+    align-items: flex-start; /* Align Left */
+    gap: 4px; /* Small gap */
+  }
+
+  .price-h {
+    text-align: left;
+    font-size: 1.1em; /* Slight adjustment if needed */
+  }
 }

@@ -79,6 +79,18 @@ export const apiService = {
   },
 
   /**
+   * Helper to format price in USD
+   */
+  formatPriceUSD(price) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price);
+  },
+
+  /**
    * Helper to get the next available date from a list of departures for a specific tour
    */
   getNextDepartureDate(tourId, departures) {

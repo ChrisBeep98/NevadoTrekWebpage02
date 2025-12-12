@@ -91,9 +91,30 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
   const nextDate = apiService.getNextDepartureDate(tour.tourId, departures);
   const dateStr = nextDate ? nextDate.toLocaleDateString('es-CO') : 'Por definir';
   
-  const price = tour.pricingTiers && tour.pricingTiers.length > 0 
-    ? apiService.formatPrice(tour.pricingTiers[0].priceCOP)
-    : 'Consultar';
+  // Price Logic: Calculate CHEAPEST price in both currencies
+  let priceCOP = 'Consultar';
+  let priceUSD = 'Contact us';
+  
+  if (tour.pricingTiers && tour.pricingTiers.length > 0) {
+    // Find absolute minimum prices
+    const minCOP = Math.min(...tour.pricingTiers.map(t => t.priceCOP || Infinity));
+    // Assume priceUSD exists as per user, otherwise fallback or calculate
+    const minUSD = Math.min(...tour.pricingTiers.map(t => t.priceUSD || Infinity));
+
+    if (minCOP !== Infinity) {
+      priceCOP = `${apiService.formatPrice(minCOP)} COP`;
+    }
+    
+    if (minUSD !== Infinity) {
+      priceUSD = `${apiService.formatPriceUSD(minUSD)} USD`;
+    } else {
+      // Fallback if no USD price found (safe default)
+      priceUSD = 'Contact us';
+    }
+  }
+
+  // Set initial text based on current lang
+  let currentPrice = lang === 'en' ? priceUSD : priceCOP;
 
   const altitudeText = tour.altitude ? (tour.altitude[lang] || tour.altitude.es) : '';
   const daysText = lang === 'en' 
@@ -198,10 +219,11 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
                 ${tour.name[lang] || tour.name.es}
               </h1>
               <h1
-                style="opacity: 0"
-                class="h-6 price-h"
+                class="h-6 price-h dynamic-i18n"
+                data-i18n-es="${priceCOP}"
+                data-i18n-en="${priceUSD}"
               >
-                ${price}
+                ${currentPrice}
               </h1>
             </div>
             <p
