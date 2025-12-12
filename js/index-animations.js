@@ -33,7 +33,7 @@
   function initFloatingNavbar() {
     const navbar = document.getElementById('navbar-exclusion');
     if (!navbar) {
-      console.warn('Navbar element not found');
+   
       return;
     }
 
@@ -77,7 +77,7 @@
   function initHeroTitleReveal() {
     const titleEl = document.querySelector('.main-heading .italic-text-4');
     if (!titleEl) {
-      console.warn('Hero title element not found');
+      
       return;
     }
 
@@ -87,11 +87,11 @@
     // Clean up multiple spaces and newlines
     const cleanText = text.replace(/\s+/g, ' ').trim();
     
-    console.log('Hero title text:', cleanText); // Debug
+    
     
     const words = cleanText.split(' ').filter(w => w.length > 0); // Remove empty strings
     
-    console.log('Words found:', words); // Debug
+   
     
     titleEl.innerHTML = ''; // Clear original text
 
@@ -129,7 +129,7 @@
   function initExperiencesTextReveal() {
     const textEl = document.querySelector('[data-i18n-key="experiences.lead"]');
     if (!textEl) {
-      console.warn('Experiences text element not found');
+     
       return;
     }
 
@@ -159,7 +159,7 @@
   function initServicesTextReveal() {
     const textEl = document.querySelector('[data-i18n-key="services.lead"]');
     if (!textEl) {
-      console.warn('Services text element not found');
+     
       return;
     }
 
@@ -189,7 +189,7 @@
   function initServicesBottomTextReveal() {
     const textEl = document.querySelector('[data-i18n-key="services.lead.bottom"]');
     if (!textEl) {
-      console.warn('Services bottom text element not found');
+     
       return;
     }
 
@@ -219,7 +219,7 @@
   function initFooterFinalTextReveal() {
     const textEl = document.querySelector('.moving-gallery .last-heading');
     if (!textEl) {
-      console.warn('Footer final text element not found');
+     
       return;
     }
 

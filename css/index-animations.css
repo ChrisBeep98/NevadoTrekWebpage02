@@ -78,6 +78,8 @@ html {
   right: 0;
   width: 100%;
   z-index: 99999 !important;
+  margin-top: 0px;
+  margin-left: 0 !important;
  
   pointer-events: auto;
   /* Transparent at top */
@@ -91,7 +93,8 @@ html {
   align-items: center;
   width: 100%;
   max-width: 100%;
-  padding: 0 1em;
+  padding: 0 !important;
+  padding-top: 0px;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -100,8 +103,21 @@ html {
 /* Adjust container when scrolled */
 #navbar-exclusion.navbar-fixed.scrolled .navbar-container {
   max-width: 100%;
+
+ 
   
-  gap: 2em;
+}
+.navbar-container {
+padding: 0 !important;
+padding-left: 0 !important;
+padding-right: 0 !important;
+}
+#navbar-exclusion.navbar-fixed.scrolled {
+  margin-top: 12px;
+  padding: 0 !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  margin-left: 0 !important;
 }
 
 /* Smaller logo when scrolled */
@@ -540,4 +556,11 @@ html {
   #navbar-exclusion.navbar-fixed.scrolled .navbar-title {
     font-size: 10px;
   }
+}
+
+/* ===== H2 STYLE-H1 WIDTH OVERRIDES ===== */
+h2.style-h1.italic._03,
+h2.style-h1._03.italic {
+  width: fit-content !important;
+  min-width: fit-content !important;
 }

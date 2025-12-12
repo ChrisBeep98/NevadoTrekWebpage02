@@ -1204,6 +1204,10 @@ textarea.w-input, textarea.w-select {
   overflow: hidden;
 }
 
+#w-slider-mask-1 {
+  max-height: 440px;
+}
+
 .w-slide {
   vertical-align: top;
   white-space: normal;
@@ -2518,12 +2522,18 @@ a {
 .style-h1._03 {
   justify-content: flex-start;
   align-items: center;
-  min-width: 100vw;
+  width: 100%;
+  min-width: fit-content;
   display: flex;
 }
 
 .style-h1._03.italic {
   min-width: 110vw;
+}
+
+h2.style-h1 {
+  width: 100%;
+  min-width: fit-content;
 }
 
 .style-h1._01 {
@@ -6992,10 +7002,12 @@ a {
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   border: 1px solid var(--stroke-light);
+  border-color: rgba(199, 199, 199, 0.99);
+  border-image: none;
   -webkit-backdrop-filter: blur(30px);
   backdrop-filter: blur(30px);
   color: var(--font-black);
-  background-color: #e6f6ffc7;
+  background-color: rgba(230, 246, 255, 0.49);
   border-radius: 6px;
   flex-flow: column;
   justify-content: center;
