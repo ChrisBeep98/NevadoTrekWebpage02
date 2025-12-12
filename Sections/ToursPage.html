@@ -360,7 +360,7 @@
     </nav>
 
     <!-- MAIN CONTENT -->
-    <main id="tours-page-container">
+    <main id="tours-page-container" style="position: relative; z-index: 10; background-color: #ffffff; margin-bottom: 0px; width: 100%;">
       <!-- HEADER SECTION -->
       <section class="tours-page-header">
         <div class="header-content">
@@ -421,9 +421,11 @@
         </div>
       </section>
 
-      <!-- FOOTER PLACEHOLDER -->
-      <div id="footer-placeholder"></div>
+      </section>
     </main>
+
+    <!-- FOOTER PLACEHOLDER (Outside Main for Sticky Reveal) -->
+    <div id="footer-placeholder" style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: -1;"></div>
 
     <!-- ===== MOBILE MENU OVERLAY ===== -->
     <div class="mobile-menu-overlay" id="mobile-menu">
@@ -563,5 +565,7 @@
     <script type="module" src="../js/tours-page-loader.js"></script>
     <!-- Dynamic Component Loader -->
     <script src="../js/load-components.js"></script>
+    <!-- Footer Reveal Script -->
+    <script src="../js/tours-page-footer-reveal.js"></script>
   </body>
 </html>

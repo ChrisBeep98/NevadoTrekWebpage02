@@ -30,6 +30,12 @@ async function loadComponent(elementId, componentPath) {
             el.style.opacity = '1';
         });
     }, 500);
+    
+    // Dispatch event to notify that component is loaded
+    const event = new CustomEvent('componentLoaded', { 
+      detail: { id: elementId, path: componentPath } 
+    });
+    window.dispatchEvent(event);
 
   } catch (error) {
     console.error("Error loading component:", error);
