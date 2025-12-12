@@ -1,0 +1,317 @@
+/* ===================================
+   GALLERY PAGE STYLES
+   =================================== */
+
+/* Prevent horizontal scroll globally */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* === PAGE CONTAINER === */
+#gallery-page-container {
+  padding-top: 120px; /* Account for fixed navbar */
+  min-height: 100vh;
+  background: #ffffff;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  max-width: 100vw; /* Don't exceed viewport width */
+}
+
+/* === HEADER SECTION === */
+.gallery-page-header {
+  padding: 4em 5em 1em 5em; /* Desktop margins */
+  text-align: center;
+}
+
+.header-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.page-title {
+  margin-bottom: 0.2em; /* Reduced gap */
+  color: var(--color--dark, #042e4d);
+  font-family: Inter, sans-serif; /* Explicit font family */
+  /* Animation setup */
+  opacity: 0; /* Hidden initially for JS */
+  transform: translateY(20px);
+}
+
+.page-subtitle {
+  color: var(--font-grey-100, #687075);
+  font-weight: 300;
+  margin-top: 0;
+  font-family: Inter, sans-serif;
+  /* Animation setup */
+  opacity: 0; /* Hidden initially for GSAP */
+  transform: translateY(10px);
+}
+
+/* ===================================
+   NAVBAR LINK STYLES
+   (Copied from tours-page.css for consistency)
+   =================================== */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  width: 40px;
+  height: auto;
+}
+
+.navbar-title {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  color: inherit;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2em;
+}
+
+.nav-link-exclusion {
+  /* Inherit global styles */
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+/* Hide contact button and show hamburger on mobile */
+.header-contact-btn {
+  display: inline-flex;
+}
+
+.menu-toggle-exclusion {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* ===================================
+   LANGUAGE DROPDOWN STYLES
+   =================================== */
+.lang-dropdown {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+}
+
+.lang-flag {
+  width: 16px;
+  height: auto;
+  border-radius: 2px;
+}
+
+.lang-options {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  min-width: 100px;
+}
+
+.lang-options.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.lang-option:hover {
+  background: #f7f7f3;
+}
+
+.lang-option:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.lang-option:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media screen and (max-width: 991px) {
+  /* Tablet Styles */
+  
+  /* Navbar adjustments */
+  .navbar-links {
+    display: none;
+  }
+  .header-contact-btn {
+    display: none;
+  }
+  .menu-toggle-exclusion {
+    display: block;
+  }
+
+  /* Page Margins */
+  .gallery-page-header {
+    padding: 3em 2.5em 1em 2.5em;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /* Mobile Styles */
+
+  /* Page Margins */
+  .gallery-page-header {
+    padding: 0em 16px 1em 16px;
+    text-align: left; /* Match ToursPage mobile alignment */
+  }
+  
+  .gallery-page-header .page-title {
+    margin-bottom: 0.5em; 
+  }
+}
+
+/* ===========================================
+   MOBILE MENU STYLES (Copied from ToursPage)
+   =========================================== */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50vh;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 999990; /* Below Navbar */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: flex-start; /* Start from top */
+  padding-top: 2rem;
+  gap: 0; /* Gap handled by separators/padding */
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+}
+
+.mobile-menu-overlay.active {
+  transform: translateY(0);
+}
+
+/* Header within Menu */
+.mobile-menu-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem 2rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+}
+
+.mobile-menu-title {
+  font-family: 'Tasa Orbiter Display', sans-serif;
+  font-size: 1.2rem;
+  color: #042e4d;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mobile-menu-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #042e4d;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.3s ease;
+}
+.mobile-menu-close-btn:hover { transform: rotate(90deg); }
+
+/* Links Container */
+.mobile-menu-links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mobile-nav-link {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Icon then text */
+  gap: 1rem;
+  font-family: Inter, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #042e4d;
+  text-decoration: none;
+  padding: 1.2rem 1rem;
+  transition: all 0.2s ease;
+  letter-spacing: -0.01em;
+  border-radius: 16px;
+}
+
+.mobile-nav-link:hover {
+  background: rgba(37, 99, 235, 0.05);
+  transform: translateX(10px);
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.nav-separator {
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(4, 46, 77, 0.1), transparent);
+}

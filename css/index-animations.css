@@ -107,6 +107,18 @@ html {
  
   
 }
+
+
+
+/* ===== H2 STYLE-H1 WIDTH OVERRIDES ===== */
+h2.style-h1.italic._03,
+h2.style-h1._03.italic {
+  width: fit-content !important;
+  min-width: fit-content !important;
+}
+
+
+
 .navbar-container {
 padding: 0 !important;
 padding-left: 0 !important;
