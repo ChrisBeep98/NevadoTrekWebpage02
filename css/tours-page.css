@@ -574,6 +574,47 @@ html, body {
   .tours-grid-section {
     padding: 2em 2.5em 4em 2.5em;
   }
+
+  /* === TABLET CARD FIXES === */
+  
+  /* 1. Left Align Description */
+  .descriptin-responsiveness,
+  .tour-card-container-text .body-medium {
+    text-align: left !important;
+    margin-left: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* 2. Fix Chip/Arrow Overlap */
+  /* Ensure the row handles wrapping */
+  .div-block-20 {
+    display: flex;
+    align-items: center; /* Vertically center arrow with multi-line chips */
+  }
+
+  /* Chips container - Allow wrap */
+  .div-block-64 {
+    display: flex;
+    flex-wrap: wrap; /* CRITICAL: Allow stacking */
+    gap: 8px; /* Clean 8px spacing (horizontal and vertical) */
+    justify-content: flex-start; /* Pack to left */
+    max-width: 80%; /* Reserve space for arrow */
+    flex: 1 1 auto;
+  }
+
+  /* Arrow container - Protect size */
+  .div-block-56 {
+    flex-shrink: 0;
+    margin-left: auto; /* Push to right */
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Reset margins to rely solely on gap */
+  .chip-tour-info-wrapper,
+  .div-block-86 {
+    margin: 0 !important;
+  }
 }
 
 @media screen and (max-width: 767px) {
