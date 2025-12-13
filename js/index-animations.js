@@ -1,13 +1,13 @@
 /* ===================================
    INDEX PAGE ANIMATIONS SCRIPT
-   Letter-by-letter reveal for hero and key texts
-   Performance-optimized (no GSAP scrub)
+   Optimized Text Reveals using GSAP
+   Replaces heavy letter-by-letter DOM manipulation
    =================================== */
 
 (function () {
   'use strict';
 
-  // Wait for DOM to be fully loaded
+  // Wait for DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
@@ -15,14 +15,28 @@
   }
 
   function init() {
-    // Small delay to ensure styles are loaded
+    // Determine if GSAP is available
+    const hasGSAP = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+    
+    if (hasGSAP) {
+      gsap.registerPlugin(ScrollTrigger);
+    } else {
+      console.warn('GSAP not found. Animations disabled.');
+    }
+
+    // Small delay to ensure styles/layout settled
     setTimeout(() => {
-      initHeroTitleReveal();
-      initExperiencesTextReveal();
-      initServicesTextReveal();
-      initServicesBottomTextReveal(); // NEW: Second services text
-      initFooterFinalTextReveal(); // NEW: Footer final text
-      initFloatingNavbar(); // Floating pill navbar effect
+      // 1. Hero Title (Optimized)
+      initHeroTitleReveal(hasGSAP);
+      
+      // 2. Body Text Reveals (Optimized Block Animation)
+      initOptimizedTextReveal('[data-i18n-key="experiences.lead"]', hasGSAP);
+      initOptimizedTextReveal('[data-i18n-key="services.lead"]', hasGSAP);
+      initOptimizedTextReveal('[data-i18n-key="services.lead.bottom"]', hasGSAP);
+      initOptimizedTextReveal('.moving-gallery .last-heading', hasGSAP);
+
+      // 3. Navbar Logic
+      initFloatingNavbar();
     }, 100);
   }
 
@@ -32,12 +46,9 @@
    */
   function initFloatingNavbar() {
     const navbar = document.getElementById('navbar-exclusion');
-    if (!navbar) {
-   
-      return;
-    }
+    if (!navbar) return;
 
-    const SCROLL_THRESHOLD = 80; // Pixels to scroll before activating
+    const SCROLL_THRESHOLD = 80;
     let isScrolled = false;
     let ticking = false;
 
@@ -62,58 +73,39 @@
       }
     }
 
-    // Add scroll listener with passive option for better performance
     window.addEventListener('scroll', onScroll, { passive: true });
-    
-    // Initial check in case page loads already scrolled
     updateNavbar();
   }
 
   /**
    * 1. Hero Title: "Un Paraíso En Salento"
-   * Target: .italic-text-4 inside the hero section
-   * Special: Each WORD on its own line, each LETTER gets blur animation
+   * KEPT: Letter-by-letter (It's the main hero, worth the cost)
+   * This matches the specific premium request for the hero section.
    */
-  function initHeroTitleReveal() {
+  function initHeroTitleReveal(hasGSAP) {
     const titleEl = document.querySelector('.main-heading .italic-text-4');
-    if (!titleEl) {
-      
-      return;
-    }
+    if (!titleEl) return;
 
-    // Get text - important: textContent gets ALL text including from br-separated lines
+    // Use current logic for Hero
     const text = titleEl.textContent.trim();
-    
-    // Clean up multiple spaces and newlines
     const cleanText = text.replace(/\s+/g, ' ').trim();
+    const words = cleanText.split(' ').filter(w => w.length > 0);
     
-    
-    
-    const words = cleanText.split(' ').filter(w => w.length > 0); // Remove empty strings
-    
-   
-    
-    titleEl.innerHTML = ''; // Clear original text
-
+    titleEl.innerHTML = ''; 
     let letterIndex = 0;
     
-    words.forEach((word, wordIndex) => {
-      // Create a wrapper for each word (will be displayed as block)
+    words.forEach((word) => {
       const wordWrapper = document.createElement('span');
       wordWrapper.className = 'word-wrapper';
-      wordWrapper.style.display = 'block'; // Each word on its own line
+      wordWrapper.style.display = 'block';
       
-      // Split word into letters and add them to the wrapper
       for (let i = 0; i < word.length; i++) {
         const char = word[i];
         const letterSpan = document.createElement('span');
-        letterSpan.className = 'letter'; // This class has the blur animation
+        letterSpan.className = 'letter';
         letterSpan.textContent = char;
-        
-        // Calculate delay: 70ms per letter across ALL words (slower for hero)
         const delay = letterIndex * 70;
         letterSpan.style.animationDelay = `${delay}ms`;
-        
         wordWrapper.appendChild(letterSpan);
         letterIndex++;
       }
@@ -123,175 +115,45 @@
   }
 
   /**
-   * 2. Experiences Text: "No importa la ruta que elijas..."
-   * Target: [data-i18n-key="experiences.lead"]
+   * 2. OPTIMIZED TEXT REVEAL (GSAP)
+   * Animates the entire text block at once instead of hundreds of spans
+   * Effect: Fade In + Slight Slide Up + Blur removal
    */
-  function initExperiencesTextReveal() {
-    const textEl = document.querySelector('[data-i18n-key="experiences.lead"]');
-    if (!textEl) {
-     
-      return;
-    }
-
-    // Use Intersection Observer for scroll trigger
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            applyLetterReveal(textEl, 20, 0);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: '0px 0px -20% 0px',
-        threshold: 0.1,
-      }
-    );
-
-    observer.observe(textEl);
-  }
-
-  /**
-   * 3. Services Text (Top): "Traemos nuevas emociones..."
-   * Target: [data-i18n-key="services.lead"]
-   */
-  function initServicesTextReveal() {
-    const textEl = document.querySelector('[data-i18n-key="services.lead"]');
-    if (!textEl) {
-     
-      return;
-    }
-
-    // Use Intersection Observer for scroll trigger
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            applyLetterReveal(textEl, 15, 200); // 300ms initial delay
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: '0px 0px -20% 0px',
-        threshold: 0.1,
-      }
-    );
-
-    observer.observe(textEl);
-  }
-
-  /**
-   * 4. Services Text (Bottom): "Traemos nuevas emociones..." (after tours)
-   * Target: [data-i18n-key="services.lead.bottom"]
-   */
-  function initServicesBottomTextReveal() {
-    const textEl = document.querySelector('[data-i18n-key="services.lead.bottom"]');
-    if (!textEl) {
-     
-      return;
-    }
-
-    // Use Intersection Observer for scroll trigger
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            applyLetterReveal(textEl, 15, 200); // 200ms initial delay, 25ms between letters
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: '0px 0px -20% 0px',
-        threshold: 0.1,
-      }
-    );
-
-    observer.observe(textEl);
-  }
-
-  /**
-   * 5. Footer Final Text: "Where the frailejón keeps silence..."
-   * Target: .moving-gallery .last-heading (injected by i18n)
-   */
-  function initFooterFinalTextReveal() {
-    const textEl = document.querySelector('.moving-gallery .last-heading');
-    if (!textEl) {
-     
-      return;
-    }
-
-    // Use Intersection Observer for scroll trigger
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            applyLetterReveal(textEl, 15, 150); // 150ms initial delay, 30ms between letters
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: '0px 0px -20% 0px',
-        threshold: 0.1,
-      }
-    );
-
-    observer.observe(textEl);
-  }
-
-  /**
-   * Core function: Split text into letters and apply staggered animation
-   * Groups letters by WORD to prevent splitting
-   * @param {HTMLElement} element - Element to animate
-   * @param {number} staggerMs - Delay between each letter in milliseconds
-   * @param {number} initialDelayMs - Initial delay before starting animation
-   */
-  function applyLetterReveal(element, staggerMs = 15, initialDelayMs = 0) {
+  function initOptimizedTextReveal(selector, hasGSAP) {
+    const element = document.querySelector(selector);
     if (!element) return;
 
-    const text = element.textContent;
-    element.innerHTML = ''; // Clear original text
+    // Ensure initial state (handled by CSS usually, but enforce here)
+    if (hasGSAP) {
+      // Set initial hidden state immediately
+      gsap.set(element, { 
+        opacity: 0, 
+        y: 30, 
+        filter: 'blur(10px)' // Premium blur feel but on whole block
+      });
+
+      // Animate when visible
+      gsap.to(element, {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: element,
+          start: 'top 85%', // Trigger slightly before it's fully in view
+          toggleActions: 'play none none none' // Play once
+        }
+      });
+    } else {
+      // Fallback if no GSAP
+      element.style.opacity = '1';
+      element.style.transform = 'none';
+      element.style.filter = 'none';
+    }
     
-    // Add 'animating' class to make container visible
+    // Mark as handled to override any CSS hiding if necessary
     element.classList.add('animating');
-
-    // Split by words first
-    const words = text.split(' ');
-    let letterIndex = 0;
-
-    words.forEach((word, wordIndex) => {
-      // Create wrapper for each word (prevents breaking)
-      const wordWrapper = document.createElement('span');
-      wordWrapper.className = 'word-letter-wrapper';
-      wordWrapper.style.whiteSpace = 'nowrap'; // Keep word together
-      wordWrapper.style.display = 'inline-block'; // Allow wrapping between words
-      
-      // Split word into letters
-      for (let i = 0; i < word.length; i++) {
-        const char = word[i];
-        const letterSpan = document.createElement('span');
-        letterSpan.className = 'letter';
-        letterSpan.textContent = char;
-        
-        // Calculate delay
-        const delay = initialDelayMs + letterIndex * staggerMs;
-        letterSpan.style.animationDelay = `${delay}ms`;
-        
-        wordWrapper.appendChild(letterSpan);
-        letterIndex++;
-      }
-      
-      element.appendChild(wordWrapper);
-      
-      // Add space between words (except last word)
-      if (wordIndex < words.length - 1) {
-        const space = document.createTextNode(' ');
-        element.appendChild(space);
-      }
-    });
   }
 
   /**
@@ -304,4 +166,5 @@
       document.body.style.animationPlayState = 'running';
     }
   });
+
 })();

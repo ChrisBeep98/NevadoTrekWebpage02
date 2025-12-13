@@ -37,7 +37,7 @@
 [data-i18n-key="services.lead"],
 [data-i18n-key="services.lead.bottom"],
 .moving-gallery .last-heading {
-  opacity: 0 !important;
+  opacity: 0; 
   /* Prevent word breaking at line ends */
   word-break: keep-all;
   overflow-wrap: normal;
@@ -52,7 +52,7 @@
 [data-i18n-key="services.lead"].animating,
 [data-i18n-key="services.lead.bottom"].animating,
 .moving-gallery .last-heading.animating {
-  opacity: 1 !important;
+  opacity: 1; /* Handled by GSAP, removed !important */
 }
 
 /* Word wrapper for hero title - each word on its own line */
