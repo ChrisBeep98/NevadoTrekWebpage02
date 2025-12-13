@@ -125,26 +125,26 @@
 
     // Ensure initial state (handled by CSS usually, but enforce here)
     if (hasGSAP) {
-      // Set initial hidden state immediately
-      gsap.set(element, { 
-        opacity: 0, 
-        y: 30, 
-        filter: 'blur(10px)' // Premium blur feel but on whole block
-      });
-
-      // Animate when visible
-      gsap.to(element, {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 85%', // Trigger slightly before it's fully in view
-          toggleActions: 'play none none none' // Play once
+      // Animate with fromTo for better control over reset
+      gsap.fromTo(element, 
+        { 
+          opacity: 0, 
+          y: 30, 
+          filter: 'blur(10px)' 
+        },
+        {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 85%', // Trigger slightly before it's fully in view
+            toggleActions: 'play none none reverse' // Play on enter, reverse on leave back
+          }
         }
-      });
+      );
     } else {
       // Fallback if no GSAP
       element.style.opacity = '1';
