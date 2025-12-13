@@ -4,6 +4,7 @@ import { apiService } from './services/api.js';
  * GALLERY PAGE LOADER
  * Handles premium header animations, mobile menu, and Dynamic Masonry Grid.
  * OPTIMIZATION V2: Infinite Scroll + Deferred Init + Micro-Batch Rendering via rAF
+ * FEATURES: Grow animation + Fullscreen Lightbox
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -22,7 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         initGalleryGrid();
     }, 1500);
     
-    // 4. Listen for language changes
+    // 4. Initialize Lightbox
+    initLightbox();
+    
+    // 5. Listen for language changes
     window.addEventListener('languageChange', (e) => {
         const lang = e.detail.lang;
         updateDynamicText(lang);
@@ -317,5 +321,66 @@ function initMobileMenu() {
       if (e.key === 'Escape' && menu.classList.contains('active')) {
         closeMenu();
       }
+    });
+}
+
+/**
+ * LIGHTBOX FUNCTIONALITY
+ * Opens fullscreen viewer when gallery item is clicked
+ */
+function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const grid = document.getElementById('gallery-grid');
+    
+    if (!lightbox || !lightboxImg || !lightboxClose || !grid) {
+        console.warn('Lightbox elements not found');
+        return;
+    }
+    
+    console.log('✅ Lightbox initialized');
+    
+    // Event Delegation: Listen on grid for clicks on gallery items
+    // The overlay sits on top, so we need to catch clicks on the entire item
+    grid.addEventListener('click', (e) => {
+        // Find the closest gallery-item (could click on img, overlay, or skeleton)
+        const item = e.target.closest('.gallery-item');
+        if (item) {
+            const img = item.querySelector('.gallery-img');
+            if (img && img.src && img.src !== '') {
+                console.log('Opening lightbox with:', img.src);
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+        }
+    });
+    
+    // Close lightbox
+    const closeLightbox = () => {
+        console.log('Closing lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    };
+    
+    // Close on button click
+    lightboxClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+    });
+    
+    // Close on background click
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+            closeLightbox();
+        }
     });
 }
