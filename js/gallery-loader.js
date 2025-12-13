@@ -4,7 +4,7 @@ import { apiService } from './services/api.js';
  * GALLERY PAGE LOADER
  * Handles premium header animations, mobile menu, and Dynamic Masonry Grid.
  * OPTIMIZATION V2: Infinite Scroll + Deferred Init + Micro-Batch Rendering via rAF
- * FEATURES: Grow animation + Fullscreen Lightbox
+ * FEATURES: Grow animation + Fullscreen Lightbox with Navigation
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -38,6 +38,9 @@ let allImages = [];
 let currentIndex = 0;
 const BATCH_SIZE = 10; // Reduced from 20 to 10 for lighter frames
 let isLoadingBatch = false;
+
+// STATE for Lightbox Navigation
+let currentLightboxIndex = -1;
 
 /**
  * Initialize Masonry Gallery
@@ -326,12 +329,14 @@ function initMobileMenu() {
 
 /**
  * LIGHTBOX FUNCTIONALITY
- * Opens fullscreen viewer when gallery item is clicked
+ * Opens fullscreen viewer with navigation (arrows, keyboard, swipe)
  */
 function initLightbox() {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
     const grid = document.getElementById('gallery-grid');
     
     if (!lightbox || !lightboxImg || !lightboxClose || !grid) {
@@ -342,27 +347,66 @@ function initLightbox() {
     console.log('✅ Lightbox initialized');
     
     // Event Delegation: Listen on grid for clicks on gallery items
-    // The overlay sits on top, so we need to catch clicks on the entire item
     grid.addEventListener('click', (e) => {
-        // Find the closest gallery-item (could click on img, overlay, or skeleton)
         const item = e.target.closest('.gallery-item');
         if (item) {
             const img = item.querySelector('.gallery-img');
             if (img && img.src && img.src !== '') {
-                console.log('Opening lightbox with:', img.src);
-                lightboxImg.src = img.src;
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
+                // Find index in allImages array
+                currentLightboxIndex = allImages.indexOf(img.src);
+                console.log('Opening lightbox at index:', currentLightboxIndex);
+                openLightbox();
             }
         }
     });
+    
+    // Open lightbox
+    const openLightbox = () => {
+        if (currentLightboxIndex >= 0 && currentLightboxIndex < allImages.length) {
+            lightboxImg.src = allImages[currentLightboxIndex];
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    };
     
     // Close lightbox
     const closeLightbox = () => {
         console.log('Closing lightbox');
         lightbox.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
+        document.body.style.overflow = '';
+        currentLightboxIndex = -1;
     };
+    
+    // Navigate to previous image
+    const showPrevImage = () => {
+        if (currentLightboxIndex > 0) {
+            currentLightboxIndex--;
+            lightboxImg.src = allImages[currentLightboxIndex];
+        }
+    };
+    
+    // Navigate to next image
+    const showNextImage = () => {
+        if (currentLightboxIndex < allImages.length - 1) {
+            currentLightboxIndex++;
+            lightboxImg.src = allImages[currentLightboxIndex];
+        }
+    };
+    
+    // Arrow button clicks
+    if (lightboxPrev) {
+        lightboxPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showPrevImage();
+        });
+    }
+    
+    if (lightboxNext) {
+        lightboxNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showNextImage();
+        });
+    }
     
     // Close on button click
     lightboxClose.addEventListener('click', (e) => {
@@ -377,10 +421,44 @@ function initLightbox() {
         }
     });
     
-    // Close on Escape key
+    // Keyboard Navigation
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        if (!lightbox.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') {
             closeLightbox();
+        } else if (e.key === 'ArrowLeft') {
+            showPrevImage();
+        } else if (e.key === 'ArrowRight') {
+            showNextImage();
         }
     });
+    
+    // SWIPE GESTURES for Mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    lightbox.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+    
+    const handleSwipe = () => {
+        const swipeThreshold = 50; // Minimum distance for swipe
+        const diff = touchStartX - touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left -> Next image
+                showNextImage();
+            } else {
+                // Swipe right -> Previous image
+                showPrevImage();
+            }
+        }
+    };
 }
