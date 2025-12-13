@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 Initializing Tours Page Loader...');
 
   // 1. Determine Initial Language
-  const savedLang = localStorage.getItem('language') || 'es';
+  const savedLang = localStorage.getItem('lang') || 'es';
   console.log('Using language:', savedLang);
 
   // 2. Fetch Data
@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 3. Initial Render
     renderToursGrid(allTours, savedLang);
+    
+    // Apply translations to static elements (filters, titles)
+    applyLanguageToDynamicElements(savedLang);
 
     // 4. Initialize Filters (Smart - hide unused properties)
     initSmartFilters();
@@ -40,6 +43,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.addEventListener('languageChange', (e) => {
       const lang = e.detail.lang;
       applyLanguageToDynamicElements(lang);
+      // Re-render grid to update card content
+      renderToursGrid(allTours, lang);
     });
 
     // 6. Initialize animations

@@ -45,7 +45,11 @@ window.NT_I18N=(function(){
       "filter.days1": "1 día",
       "filter.days23": "2-3 días",
       "filter.days45": "4-5 días",
-      "filter.days6p": "6+ días"
+      "filter.days6p": "6+ días",
+      "page.gallery.title": "Galería",
+      "page.gallery.subtitle": "Momentos inolvidables en los Andes colombianos",
+      "page.tours.title": "Nuestros Tours",
+      "page.tours.subtitle": "Descubre aventuras inolvidables en los Andes colombianos"
     },
     en:{
       "nav.home":"Home","nav.tours":"Tours","nav.gallery":"Gallery","cta.contact":"Contact",
@@ -92,7 +96,11 @@ window.NT_I18N=(function(){
       "filter.days1": "1 day",
       "filter.days23": "2-3 days",
       "filter.days45": "4-5 days",
-      "filter.days6p": "6+ days"
+      "filter.days6p": "6+ days",
+      "page.gallery.title": "Gallery",
+      "page.gallery.subtitle": "Unforgettable moments in the Colombian Andes",
+      "page.tours.title": "Our Tours",
+      "page.tours.subtitle": "Discover unforgettable adventures in the Colombian Andes"
     }
   };
   return {dict:dict};

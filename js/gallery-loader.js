@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const lang = e.detail.lang;
         updateDynamicText(lang);
     });
+
+    // 6. Apply initial language from storage
+    const savedLang = localStorage.getItem('lang') || 'es';
+    updateDynamicText(savedLang);
 });
 
 // STATE for Infinite Scroll
@@ -271,18 +275,23 @@ function initHeaderAnimations() {
  * Handle Language Updates
  */
 function updateDynamicText(lang) {
-    const pageTitle = document.querySelector('[data-i18n-key="page.gallery.title"]');
-    const pageSubtitle = document.querySelector('[data-i18n-key="page.gallery.subtitle"]');
+    // Generic data-i18n-key lookup
+    if (window.NT_I18N && window.NT_I18N.dict) {
+        const dict = window.NT_I18N.dict[lang] || window.NT_I18N.dict['es'];
+        
+        document.querySelectorAll('[data-i18n-key]').forEach(el => {
+            const key = el.getAttribute('data-i18n-key');
+            if (dict[key]) {
+                el.textContent = dict[key];
+            }
+        });
+    }
 
-    if (pageTitle) {
-       pageTitle.textContent = lang === 'en' ? 'Gallery' : 'Galería';
-    }
-    
-    if (pageSubtitle) {
-       pageSubtitle.textContent = lang === 'en' 
-         ? 'Unforgettable moments in the Colombian Andes' 
-         : 'Momentos inolvidables en los Andes colombianos';
-    }
+    // Also support data-i18n-[lang] just in case
+    document.querySelectorAll('.dynamic-i18n').forEach(el => {
+        const text = el.getAttribute(`data-i18n-${lang}`);
+        if (text) el.textContent = text;
+    });
 
     setTimeout(() => {
         initHeaderAnimations();
