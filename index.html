@@ -40,6 +40,7 @@
     />
     <!-- Custom Index Animations CSS -->
     <link href="css/index-animations.css" rel="stylesheet" type="text/css" />
+    <link href="css/index-mobile-menu.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link
       href="https://fonts.gstatic.com"
@@ -4580,6 +4581,42 @@
     </script>
     <script src="js/index-animations.js"></script>
     <script type="module" src="js/home-loader.js"></script>
+    <script src="js/index-mobile-menu.js"></script>
+
+    <!-- MOBILE MENU OVERLAY (Ported from TourPage) -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <span class="mobile-menu-title">Menú</span>
+        <button
+          class="mobile-menu-close-btn"
+          id="mobile-menu-close"
+          aria-label="Cerrar"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="mobile-menu-links">
+        <a href="#" class="mobile-nav-link">
+          <span class="nav-icon">🏠</span>
+          <span data-i18n-key="nav.home">Inicio</span>
+        </a>
+
+        <div class="nav-separator"></div>
+
+        <a href="Sections/ToursPage.html" class="mobile-nav-link">
+          <span class="nav-icon">🏔️</span>
+          <span data-i18n-key="nav.tours">Tours</span>
+        </a>
+
+        <div class="nav-separator"></div>
+
+        <a href="Sections/Gallery.html" class="mobile-nav-link">
+          <span class="nav-icon">📸</span>
+          <span data-i18n-key="nav.gallery">Galería</span>
+        </a>
+      </div>
+    </div>
 
     <!-- FORCE NAVBAR FIXED POSITIONING -->
     <script>
