@@ -630,18 +630,18 @@
     // ====================================
     const imageConfigs = {
       'main-tour-image': {
-        start: 'top bottom',      // Cuándo empieza
-        end: 'center center',     // Cuándo termina
-        scrub: 0.5                // Suavidad (menor = más responsive)
+        start: 'top bottom',
+        end: 'center 75%',     // Finishes early (in bottom quarter)
+        scrub: 0.5
       },
       'fullscreen-img2': {
         start: 'top bottom',
-        end: 'bottom bottom',
+        end: 'center 75%',
         scrub: 0.5
       },
       'big-image-03': {
         start: 'top bottom',
-        end: 'bottom bottom',
+        end: 'center 75%',
         scrub: 0.5
       }
     };
@@ -651,8 +651,8 @@
       // Get configuration for this image (or use default)
       const config = imageConfigs[image.id] || {
         start: 'top bottom',
-        end: 'center center',
-        scrub: 0.5
+        end: 'center 75%',
+        scrub: 1
       };
       
       gsap.to(image, {

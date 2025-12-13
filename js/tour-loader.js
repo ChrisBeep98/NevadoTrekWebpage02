@@ -802,8 +802,6 @@ function createFAQItem(faq, index) {
     <div class="accordion-content-wrapper v2">
       <div class="accordion-header">
         <h3 class="h-4 italic dynamic-i18n" data-i18n-es="${faq.question.es}" data-i18n-en="${faq.question.en}">${faq.question.es}</h3>
-        <h3 class="h-4 italic">-</h3>
-        <h3 class="h-4 italic f-blue-vivid">${num}</h3>
       </div>
       <div class="acordion-body" style="height: 0px; opacity: 0;">
         <div class="accordion-spacer"></div>
