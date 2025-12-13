@@ -33,7 +33,19 @@ window.NT_I18N=(function(){
       "faq.q4":"¿Qué es mi código de referencia y cómo reviso el estado?",
       "faq.a4":"Tu referencia ‘BK-YYYYMMDD-XXX’ te permite consultar estado: pendiente, confirmada, pagada o cancelada.",
       "faq.q5":"¿Qué incluye el tour y qué no?",
-      "faq.a5":"Incluye guía certificado y equipo básico; extras como seguros especiales o gastos personales no están incluidos."
+      "faq.a5":"Incluye guía certificado y equipo básico; extras como seguros especiales o gastos personales no están incluidos.",
+      "filter.difficulty": "Dificultad:",
+      "filter.duration": "Duración:",
+      "filter.all": "Todos",
+      "filter.all_female": "Todas",
+      "filter.easy": "Fácil",
+      "filter.moderate": "Moderado",
+      "filter.modDiff": "Moderado-Difícil",
+      "filter.difficult": "Difícil",
+      "filter.days1": "1 día",
+      "filter.days23": "2-3 días",
+      "filter.days45": "4-5 días",
+      "filter.days6p": "6+ días"
     },
     en:{
       "nav.home":"Home","nav.tours":"Tours","nav.gallery":"Gallery","cta.contact":"Contact",
@@ -68,7 +80,19 @@ window.NT_I18N=(function(){
       "faq.q4":"What is my booking reference and how do I check status?",
       "faq.a4":"Your ‘BK-YYYYMMDD-XXX’ reference lets you check status: pending, confirmed, paid or cancelled.",
       "faq.q5":"What’s included in the tour and what isn’t?",
-      "faq.a5":"Includes a certified guide and basic gear; extras like special insurance or personal expenses aren’t included."
+      "faq.a5":"Includes a certified guide and basic gear; extras like special insurance or personal expenses aren’t included.",
+      "filter.difficulty": "Difficulty:",
+      "filter.duration": "Duration:",
+      "filter.all": "All",
+      "filter.all_female": "All",
+      "filter.easy": "Easy",
+      "filter.moderate": "Moderate",
+      "filter.modDiff": "Moderate-Hard",
+      "filter.difficult": "Difficult",
+      "filter.days1": "1 day",
+      "filter.days23": "2-3 days",
+      "filter.days45": "4-5 days",
+      "filter.days6p": "6+ days"
     }
   };
   return {dict:dict};

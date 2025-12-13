@@ -413,19 +413,19 @@
         <div class="filters-container">
           <!-- Difficulty Filters -->
           <div class="filter-group">
-            <p class="filter-label body-medium">Dificultad:</p>
+            <p class="filter-label body-medium" data-i18n-key="filter.difficulty">Dificultad:</p>
             <div class="difficulty-filters">
-              <button class="filter-chip active" data-difficulty="all">
+              <button class="filter-chip active" data-difficulty="all" data-i18n-key="filter.all">
                 Todos
               </button>
-              <button class="filter-chip" data-difficulty="Easy">Fácil</button>
-              <button class="filter-chip" data-difficulty="Moderate">
+              <button class="filter-chip" data-difficulty="Easy" data-i18n-key="filter.easy">Fácil</button>
+              <button class="filter-chip" data-difficulty="Moderate" data-i18n-key="filter.moderate">
                 Moderado
               </button>
-              <button class="filter-chip" data-difficulty="Moderate-Difficult">
+              <button class="filter-chip" data-difficulty="Moderate-Difficult" data-i18n-key="filter.modDiff">
                 Moderado-Difícil
               </button>
-              <button class="filter-chip" data-difficulty="Difficult">
+              <button class="filter-chip" data-difficulty="Difficult" data-i18n-key="filter.difficult">
                 Difícil
               </button>
             </div>
@@ -433,13 +433,13 @@
 
           <!-- Duration Filter -->
           <div class="filter-group">
-            <p class="filter-label body-medium">Duración:</p>
+            <p class="filter-label body-medium" data-i18n-key="filter.duration">Duración:</p>
             <select class="duration-filter" id="duration-filter">
-              <option value="all">Todas</option>
-              <option value="1">1 día</option>
-              <option value="2-3">2-3 días</option>
-              <option value="4-5">4-5 días</option>
-              <option value="6+">6+ días</option>
+              <option value="all" data-i18n-key="filter.all_female">Todas</option>
+              <option value="1" data-i18n-key="filter.days1">1 día</option>
+              <option value="2-3" data-i18n-key="filter.days23">2-3 días</option>
+              <option value="4-5" data-i18n-key="filter.days45">4-5 días</option>
+              <option value="6+" data-i18n-key="filter.days6p">6+ días</option>
             </select>
           </div>
         </div>
@@ -538,6 +538,7 @@
     ></script>
     <script src="../js/gsap.min.js"></script>
     <script src="../js/ScrollTrigger.min.js"></script>
+    <script src="../js/i18n.js"></script>
 
     <!-- i18n Script -->
     <script type="module">

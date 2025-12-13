@@ -427,6 +427,7 @@ function applyFilters() {
  * Apply language to all dynamic elements
  */
 function applyLanguageToDynamicElements(lang) {
+  // 1. Existing logic: data-i18n-[lang]
   const elements = document.querySelectorAll('.dynamic-i18n');
   elements.forEach(el => {
     const text = el.getAttribute(`data-i18n-${lang}`);
@@ -434,6 +435,18 @@ function applyLanguageToDynamicElements(lang) {
       el.textContent = text;
     }
   });
+
+  // 2. New logic: data-i18n-key (using global dictionary)
+  if (window.NT_I18N && window.NT_I18N.dict) {
+    const dict = window.NT_I18N.dict[lang] || window.NT_I18N.dict['es'];
+    
+    document.querySelectorAll('[data-i18n-key]').forEach(el => {
+      const key = el.getAttribute('data-i18n-key');
+      if (dict[key]) {
+        el.textContent = dict[key];
+      }
+    });
+  }
 
   // Update page title and subtitle
   const pageTitle = document.querySelector('[data-i18n-key="page.tours.title"]');
