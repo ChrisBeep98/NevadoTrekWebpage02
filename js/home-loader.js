@@ -149,6 +149,7 @@ function updateCard(wrapper, tour, allDepartures, lang = 'es') {
 
 // Helper to handle language switching for our dynamic elements
 function applyLanguageToDynamicElements(lang) {
+  // 1. Handle .dynamic-i18n elements (Specific per-card translations)
   const elements = document.querySelectorAll('.dynamic-i18n');
   elements.forEach(el => {
     const text = el.getAttribute(`data-i18n-${lang}`);
@@ -156,7 +157,37 @@ function applyLanguageToDynamicElements(lang) {
       el.textContent = text;
     }
   });
+
+  // 2. Handle data-i18n-key elements (Global dictionary lookups)
+  // This is required for the mobile menu and other static elements
+  if (window.NT_I18N && window.NT_I18N.dict) {
+    const dict = window.NT_I18N.dict[lang];
+    if (dict) {
+      document.querySelectorAll('[data-i18n-key]').forEach(el => {
+        const key = el.getAttribute('data-i18n-key');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+    }
+  }
 }
+
+// Listen for global language change events
+window.addEventListener('languageChange', (e) => {
+  if (e.detail && e.detail.lang) {
+    applyLanguageToDynamicElements(e.detail.lang);
+  }
+});
+
+// Update initial static content on load (in case it wasn't caught)
+document.addEventListener('DOMContentLoaded', () => {
+   // Wait a tick for i18n dictionary to load
+   setTimeout(() => {
+     const savedLang = localStorage.getItem('language') || 'es';
+     applyLanguageToDynamicElements(savedLang);
+   }, 50);
+});
 
 // Expose for other scripts if needed
 window.updateDynamicContent = applyLanguageToDynamicElements;
