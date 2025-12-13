@@ -81,7 +81,7 @@
          // When mainRect.bottom <= windowHeight, footer starts showing
          const footerVisibleHeight = windowHeight - mainRect.bottom;
          
-         if (footerVisibleHeight > 0) {
+         if (footerVisibleHeight > 400) {
             // Footer is revealing, fade out TOC
             tocElement.style.opacity = '0';
             tocElement.style.pointerEvents = 'none';
