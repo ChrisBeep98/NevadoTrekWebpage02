@@ -37,6 +37,19 @@
   text-align: left; 
 }
 
+/* 
+   SAFEGUARD: Prevent residual animation/hiding on split text 
+   Since we removed the Webflow trigger, we must ensure any split spans stay visible
+*/
+.split-lines_large span, 
+.split-lines_large .word-span, 
+.split-lines_large .letter-span {
+  opacity: 1 !important;
+  color: inherit !important;
+  transform: none !important;
+  filter: none !important;
+}
+
 /* =====================================================
    NAVBAR FIXED CON EFECTO EXCLUSIÓN
    El texto cambia de color automáticamente según el fondo
