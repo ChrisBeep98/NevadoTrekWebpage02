@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Sync localStorage with current choice
   localStorage.setItem('language', currentLang);
   
-  console.log('Home-loader using language:', currentLang);
+
 
   // 2. Fetch Data
   const [tours, departures] = await Promise.all([

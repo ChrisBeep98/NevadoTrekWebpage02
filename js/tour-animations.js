@@ -63,7 +63,7 @@
     const closeBtn = document.getElementById('mobile-menu-close');
     
     if (!toggle || !menu) {
-      console.log('Mobile menu elements not found (normal on desktop)');
+
       return;
     }
     

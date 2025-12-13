@@ -152,7 +152,7 @@ export function initBookingModal(tour, departures) {
     updateModalLanguage();
   });
 
-  console.log('📅 Booking modal initialized with', currentDepartures.length, 'departures');
+
 }
 
 // ==================== CREATE MODAL HTML ====================
@@ -492,7 +492,7 @@ async function openModal() {
   // IMPORTANT: Refresh departures from API to get latest availability
   // Use forceRefresh to bypass CDN cache (especially after a booking)
   try {
-    console.log('🔄 Refreshing departures data...');
+
     const freshDepartures = await apiService.getDepartures(true); // Always bypass cache when opening modal
     
     // Update currentDepartures with fresh data for this tour
@@ -505,7 +505,7 @@ async function openModal() {
         available > 0; // Only show departures with available spots
     }).sort((a, b) => a.date._seconds - b.date._seconds);
     
-    console.log('✅ Departures refreshed:', currentDepartures.length, 'available');
+
     needsForceRefresh = false; // Reset flag
   } catch (error) {
     console.error('❌ Failed to refresh departures:', error);
@@ -518,7 +518,7 @@ async function openModal() {
   goToStep(1);
   resetForm();
 
-  console.log('📋 Modal opened for:', currentTour.name[currentLang]);
+
 }
 
 function closeModal() {
@@ -988,7 +988,7 @@ async function handleSubmit() {
 
     // Show success
     showSuccess(result.bookingId);
-    console.log('✅ Booking created:', result.bookingId);
+
 
   } catch (error) {
     console.error('❌ Booking error:', error);

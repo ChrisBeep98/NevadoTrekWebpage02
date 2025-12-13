@@ -8,7 +8,7 @@ import { initBookingModal } from './booking-modal.js';
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('🚀 Initializing Tour Page Loader...');
+
 
   // 1. Get Tour ID from URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    console.log('✅ Tour loaded:', tour.name.es);
+
 
     // 3. Render Content
     renderTourPage(tour, departures);
@@ -892,7 +892,7 @@ function applyLanguageToDynamicElements(lang) {
     });
   }
   
-  console.log(`🌐 Language applied: ${lang}`);
+
 }
 
 /**

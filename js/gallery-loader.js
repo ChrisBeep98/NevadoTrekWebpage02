@@ -8,7 +8,7 @@ import { apiService } from './services/api.js';
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Initializing Gallery Page Loader v2...');
+
     
     // 1. Initialize Header Animations (Title Reveal + Subtitle Fade)
     // Starts at 200ms
@@ -353,7 +353,7 @@ function initLightbox() {
         return;
     }
     
-    console.log('✅ Lightbox initialized');
+
     
     // Event Delegation: Listen on grid for clicks on gallery items
     grid.addEventListener('click', (e) => {
@@ -363,7 +363,7 @@ function initLightbox() {
             if (img && img.src && img.src !== '') {
                 // Find index in allImages array
                 currentLightboxIndex = allImages.indexOf(img.src);
-                console.log('Opening lightbox at index:', currentLightboxIndex);
+
                 openLightbox();
             }
         }
@@ -380,7 +380,7 @@ function initLightbox() {
     
     // Close lightbox
     const closeLightbox = () => {
-        console.log('Closing lightbox');
+
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
         currentLightboxIndex = -1;

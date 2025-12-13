@@ -94,7 +94,7 @@
       });
     }
 
-    console.log('Footer Reveal Initialized');
+
   }
 
   // --- Animation Logic (Copied/Adapted from index-animations.js) ---

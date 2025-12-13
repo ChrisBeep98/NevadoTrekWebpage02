@@ -14,11 +14,11 @@ let currentFilters = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('🚀 Initializing Tours Page Loader...');
+
 
   // 1. Determine Initial Language
   const savedLang = localStorage.getItem('lang') || 'es';
-  console.log('Using language:', savedLang);
+
 
   // 2. Fetch Data
   try {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       apiService.getDepartures()
     ]);
 
-    console.log(`✅ Loaded ${allTours.length} tours`);
+
 
     // 3. Initial Render
     renderToursGrid(allTours, savedLang);
@@ -304,7 +304,7 @@ function initSmartFilters() {
     }
   });
 
-  console.log('Available difficulties:', foundDifficulties);
+
 
   const chips = document.querySelectorAll('.filter-chip');
   let hasVisibleChips = false;
@@ -419,7 +419,7 @@ function applyFilters() {
     });
   }
 
-  console.log(`Filtered: ${filteredTours.length} tours`);
+
   renderToursGrid(filteredTours, lang);
   
   // Re-initialize animations
@@ -736,7 +736,7 @@ function initMobileMenu() {
   const closeBtn = document.getElementById('mobile-menu-close');
   
   if (!toggle || !menu) {
-    console.log('Mobile menu elements not found (normal on desktop)');
+
     return;
   }
   

@@ -19,7 +19,7 @@ export const apiService = {
       if (cached) {
         const { data, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          console.log('Using cached tours');
+
           return data;
         }
       }
@@ -54,7 +54,7 @@ export const apiService = {
       // Bypass cache if force refresh requested (after booking)
       if (forceRefresh) {
         url += `?t=${Date.now()}`;
-        console.log('🔄 Fetching departures with cache bypass');
+
       }
       
       const response = await fetch(url);
