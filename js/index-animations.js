@@ -86,32 +86,29 @@
     const titleEl = document.querySelector('.main-heading .italic-text-4');
     if (!titleEl) return;
 
-    // Use current logic for Hero
-    const text = titleEl.textContent.trim();
-    const cleanText = text.replace(/\s+/g, ' ').trim();
-    const words = cleanText.split(' ').filter(w => w.length > 0);
-    
-    titleEl.innerHTML = ''; 
-    let letterIndex = 0;
-    
-    words.forEach((word) => {
-      const wordWrapper = document.createElement('span');
-      wordWrapper.className = 'word-wrapper';
-      wordWrapper.style.display = 'block';
-      
-      for (let i = 0; i < word.length; i++) {
-        const char = word[i];
-        const letterSpan = document.createElement('span');
-        letterSpan.className = 'letter';
-        letterSpan.textContent = char;
-        const delay = letterIndex * 70;
-        letterSpan.style.animationDelay = `${delay}ms`;
-        wordWrapper.appendChild(letterSpan);
-        letterIndex++;
-      }
-      
-      titleEl.appendChild(wordWrapper);
-    });
+    // Optimized Block Animation for Hero (No Scrub, Auto-play)
+    if (hasGSAP) {
+      gsap.fromTo(titleEl, 
+        { 
+          opacity: 0, 
+          y: 50, 
+          filter: 'blur(10px)',
+          clipPath: 'inset(0% 0% 100% 0%)' 
+        },
+        {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          clipPath: 'inset(0% 0% 0% 0%)',
+          duration: 1.5,
+          ease: 'power3.out',
+          delay: 0.2 // Small start delay
+        }
+      );
+    } else {
+      // Fallback
+      titleEl.style.opacity = 1;
+    }
   }
 
   /**
@@ -125,23 +122,27 @@
 
     // Ensure initial state (handled by CSS usually, but enforce here)
     if (hasGSAP) {
-      // Animate with fromTo for better control over reset
+      // Animate with fromTo + Scrub + ClipPath
+      // ClipPath creates a "reveal" effect like a curtain rising
       gsap.fromTo(element, 
         { 
           opacity: 0, 
-          y: 30, 
-          filter: 'blur(10px)' 
+          y: 50, // Increased movement for dramatic scrub effect
+          filter: 'blur(10px)',
+          clipPath: 'inset(0% 0% 100% 0%)' // Fully masked from bottom
         },
         {
           opacity: 1,
           y: 0,
           filter: 'blur(0px)',
-          duration: 1.2,
-          ease: 'power3.out',
+          clipPath: 'inset(0% 0% 0% 0%)', // Fully visible
+          ease: 'none', // Scrub needs linear ease for direct control
+          delay: 0.1, // 100ms delay restored
           scrollTrigger: {
             trigger: element,
-            start: 'top 85%', // Trigger slightly before it's fully in view
-            toggleActions: 'play none none reverse' // Play on enter, reverse on leave back
+            start: 'top 95%', 
+            end: 'top 75%', // Finishes much earlier (lower on screen)
+            scrub: 0.5, // Reduced lag (was 1) for faster response
           }
         }
       );

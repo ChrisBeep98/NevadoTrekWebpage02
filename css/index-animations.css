@@ -55,10 +55,12 @@
   opacity: 1; /* Handled by GSAP, removed !important */
 }
 
-/* Word wrapper for hero title - each word on its own line */
-.italic-text-4 .word-wrapper {
-  display: block; /* Each word on a new line */
-  line-height: 1.1em; /* Compact line height */
+/* Hero Title - Ensure it handles transforms/clip-path correctly */
+.italic-text-4 {
+  display: inline-block; /* Crucial for transform/clip-path */
+  line-height: 1.25; /* Restore spacing destroyed by removing .word-wrapper */
+  will-change: transform, opacity, filter;
+  text-align: left; 
 }
 
 /* =====================================================
