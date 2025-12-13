@@ -4157,8 +4157,31 @@
         }
         function apply(l) {
           var dict = t[l] || t.es;
+          // 1. Generic replacement for ALL elements with data-i18n-key
           document.querySelectorAll("[data-i18n-key]").forEach(function (n) {
             var k = n.getAttribute("data-i18n-key");
+
+            // Special handling for Services Lead to preserve word spans
+            if (k === "services.lead" || k === "services.lead.bottom") {
+              // Use the key 'services.lead' for lookup if available, attempting fallback
+              var text = dict["services.lead"] || dict["services.lead.bottom"];
+              if (text) {
+                var words = text.split(" ");
+                var html = "";
+                words.forEach(function (word, index) {
+                  // Replicate the manual structure: space INSIDE the span
+                  html +=
+                    '<span class="word-span-' +
+                    (index + 1) +
+                    '">' +
+                    word +
+                    " </span>";
+                });
+                n.innerHTML = html;
+              }
+              return; // Skip standard text replacement
+            }
+
             if (dict[k]) n.textContent = dict[k];
           });
           // Update dynamic tour content loaded by home-loader.js
@@ -4232,167 +4255,26 @@
             fLinks[2].textContent = dict["footer.link3"];
             fLinks[3].textContent = dict["footer.link4"];
           }
-          var pairs = [];
-          if (l === "en") {
-            pairs = [
-              ["( Comentarios )", dict["section.comments"]],
-              ["Opiniones de Aventureros", dict["comments.heading"]],
-              ["( Servicios )", dict["section.services"]],
-              ["Seguridad primero", dict["service.h1"]],
-              [
-                "Nuestros guías están certificados, usamos equipos de primeras marcas y seguimos protocolos de seguridad en cada expedición.",
-                dict["service.p1"],
-              ],
-              ["Guías certificados", dict["service.tag2"]],
-              ["Equipos de alta calidad", dict["service.tag3"]],
-              ["+ 150 Expediciones Exitosas", dict["service.tag1"]],
-              ["Guías locales expertos", dict["service2.h1"]],
-              [
-                "Más que acompañantes, son conocedores del territorio, su cultura y sus senderos, garantizando experiencias auténticas.",
-                dict["service2.p1"],
-              ],
-              ["Conocimiento cultural", dict["service2.tag1"]],
-              ["Experiencia en montaña", dict["service2.tag2"]],
-              ["Atención cercana", dict["service2.tag3"]],
-              ["Experiencias auténticas", dict["service3.h1"]],
-              [
-                "Diseñamos rutas responsables que respetan la naturaleza y apoyan a las comunidades locales.",
-                dict["service3.p1"],
-              ],
-              ["Turismo responsable", dict["service3.tag1"]],
-              ["Conexión con la naturaleza", dict["service3.tag2"]],
-              ["Apoyo a comunidades", dict["service3.tag3"]],
-              ["Confianza y respaldo", dict["service4.h1"]],
-              [
-                "Nos adaptamos a tus tiempos y necesidades, con cobertura integral y acompañamiento antes, durante y después de tu aventura.",
-                dict["service4.p1"],
-              ],
-              ["Itinerarios flexibles", dict["service4.tag1"]],
-              ["Seguro contra todo riesgo", dict["service4.tag2"]],
-              ["Soporte 24/7", dict["service4.tag3"]],
-              ["( Nosotros )", dict["about.title"]],
-              [
-                "Nevado Trek nace en Salento, corazón del Eje Cafetero. Nuestra misión es llevar a cada viajero a descubrir la grandeza de los Andes colombianos. Somos guías locales apasionados por la montaña y comprometidos con un turismo auténtico y responsable.",
-                dict["about.p1"],
-              ],
-              [
-                "Caminar estas montañas es entrar en un universo natural que cambia a cada paso. Los senderos cruzan bosques de niebla, donde crecen orquídeas y musgos, hasta llegar a páramos cubiertos de frailejones. Allí, el silencio, el viento y el agua revelan la fuerza viva de la montaña.",
-                dict["about.p2"],
-              ],
-              [
-                "En el camino, la fauna aparece con sutileza y asombro. Vuelan cóndores, colibríes y mariposas que iluminan el sendero. Cada especie nos recuerda que viajar también es cuidar.",
-                dict["about.p3"],
-              ],
-              ["Salento, Quindìo 2025", dict["about.last"]],
-              [
-                "Donde el frailejón guarda silencio y el páramo te desafía, allí comienza tu mejor historia. ¿Subimos?",
-                dict["mg.last"],
-              ],
-              [
-                "No importa la ruta que elijas, lo más valioso es como la vives y quien te acompaña.",
-                dict["experiences.lead"],
-              ],
-              ["( Experiencias )", dict["section.experiences"]],
-              ["( Próximas Salidas)", dict["section.upcoming"]],
-            ];
-          } else {
-            pairs = [
-              ["( Comments )", dict["section.comments"]],
-              ["Adventurers’ reviews", dict["comments.heading"]],
-              ["( Services )", dict["section.services"]],
-              ["Safety first", dict["service.h1"]],
-              [
-                "Our guides are certified, we use top‑brand equipment and follow safety protocols on every expedition.",
-                dict["service.p1"],
-              ],
-              ["Certified guides", dict["service.tag2"]],
-              ["High‑quality gear", dict["service.tag3"]],
-              ["+ 150 Successful Expeditions", dict["service.tag1"]],
-              ["Local expert guides", dict["service2.h1"]],
-              [
-                "More than companions, they know the land, its culture and trails, ensuring authentic experiences.",
-                dict["service2.p1"],
-              ],
-              ["Cultural knowledge", dict["service2.tag1"]],
-              ["Mountain experience", dict["service2.tag2"]],
-              ["Close attention", dict["service2.tag3"]],
-              ["Authentic experiences", dict["service3.h1"]],
-              [
-                "We design responsible routes that respect nature and support local communities.",
-                dict["service3.p1"],
-              ],
-              ["Responsible tourism", dict["service3.tag1"]],
-              ["Nature connection", dict["service3.tag2"]],
-              ["Community support", dict["service3.tag3"]],
-              ["Trust and support", dict["service4.h1"]],
-              [
-                "We adapt to your time and needs, with comprehensive coverage and support before, during and after your adventure.",
-                dict["service4.p1"],
-              ],
-              ["Flexible itineraries", dict["service4.tag1"]],
-              ["All‑risk insurance", dict["service4.tag2"]],
-              ["24/7 support", dict["service4.tag3"]],
-              ["( About )", dict["about.title"]],
-              [
-                "Nevado Trek was born in Salento, heart of the Coffee Axis. Our mission is to lead every traveler to discover the greatness of the Colombian Andes. We are local guides passionate about the mountains and committed to authentic, responsible tourism.",
-                dict["about.p1"],
-              ],
-              [
-                "Walking these mountains is entering a natural universe that changes at every step. Trails cross cloud forests, where orchids and mosses grow, until reaching páramos covered with frailejones. There, silence, wind and water reveal the mountain’s living force.",
-                dict["about.p2"],
-              ],
-              [
-                "Along the way, wildlife appears with subtlety and wonder. Condors, hummingbirds and butterflies brighten the path. Each species reminds us that traveling is also caring.",
-                dict["about.p3"],
-              ],
-              ["Salento, Quindío 2025", dict["about.last"]],
-              [
-                "Where the frailejón keeps silence and the páramo challenges you, your best story begins. Shall we climb?",
-                dict["mg.last"],
-              ],
-              ["( Experiences )", dict["section.experiences"]],
-              ["( Upcoming Departures )", dict["section.upcoming"]],
-            ];
-          }
-          replacePairs(pairs);
-          var servLead = document.querySelector(
-            ".heading_wrap-2.services .split-lines_large"
-          );
-          if (servLead) servLead.textContent = dict["services.lead"];
-          var intro1 = document.querySelector(
-            "#intro .div-block-50 .style-h1._01"
-          );
+          // Manual pairs/logic replaced with robust handlers
+
+          // Intro Text specific handling
+          var intro1 = document.querySelector(".div-block-50 h1");
           if (intro1) intro1.textContent = dict["intro.t1"];
-          var intro2 = document.querySelector(
-            "#intro .div-block-49 .style-h1.italic._03"
-          );
+
+          var intro2 = document.querySelector(".div-block-49 h1");
           if (intro2) intro2.textContent = dict["intro.t2"];
-          var aboutTitle = document.querySelector(
-            ".body-large.italic.absolute-heading"
+
+          // Footer Links
+          var fLinks = document.querySelectorAll(
+            ".footer_right-2 .footer_link-2"
           );
-          if (aboutTitle) aboutTitle.textContent = dict["about.title"];
-          var aboutP1 = document.querySelector(
-            "#w-node-a64b1845-cc52-dab4-b52c-ce657d24489f-6edac1ae"
-          );
-          if (aboutP1) aboutP1.textContent = dict["about.p1"];
-          var aboutP2 = document.querySelector(
-            "#w-node-_436fece6-45bb-1dd2-3e76-6a700121acf4-6edac1ae"
-          );
-          if (aboutP2) aboutP2.textContent = dict["about.p2"];
-          var aboutP3 = document.querySelector(
-            "#w-node-_4df0cf00-9023-cad1-a790-972aad7bcdd8-6edac1ae"
-          );
-          if (aboutP3) aboutP3.textContent = dict["about.p3"];
-          var aboutLast = document.querySelector(
-            ".div-block-101 .body-large:last-of-type"
-          );
-          if (aboutLast) aboutLast.textContent = dict["about.last"];
-          var mgLast = document.querySelector(".moving-gallery .last-heading");
-          if (mgLast) mgLast.textContent = dict["mg.last"];
-          var commentsHead = document.querySelector(
-            ".comments-heading-container .split-lines_large"
-          );
-          if (commentsHead) commentsHead.textContent = dict["comments.heading"];
+          if (fLinks.length >= 4) {
+            fLinks[0].textContent = dict["footer.link1"];
+            fLinks[1].textContent = dict["footer.link2"];
+            fLinks[2].textContent = dict["footer.link3"];
+            fLinks[3].textContent = dict["footer.link4"];
+          }
+
           units(l);
         }
         apply(lang);

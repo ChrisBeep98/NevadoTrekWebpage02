@@ -576,3 +576,14 @@ h2.style-h1._03.italic {
   width: fit-content !important;
   min-width: fit-content !important;
 }
+
+/* ===== FIX INTRO TEXT WRAPPING ===== */
+/* Force the specific headings in the scrolling text section to match content width */
+#intro .div-block-50 .style-h1._01,
+#intro .div-block-49 .style-h1.italic._03,
+.style-h1._01,
+.style-h1.italic._03 {
+  width: fit-content !important;
+  max-width: none !important;
+  white-space: nowrap !important;
+}
