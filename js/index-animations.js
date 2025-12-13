@@ -79,8 +79,8 @@
 
   /**
    * 1. Hero Title: "Un Paraíso En Salento"
-   * KEPT: Letter-by-letter (It's the main hero, worth the cost)
-   * This matches the specific premium request for the hero section.
+   * REPLACED: Optimized Block Animation (Requested by User)
+   * Auto-playing reveal without scrub, clean standard spacing.
    */
   function initHeroTitleReveal(hasGSAP) {
     const titleEl = document.querySelector('.main-heading .italic-text-4');

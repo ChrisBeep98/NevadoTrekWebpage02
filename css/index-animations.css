@@ -4,33 +4,7 @@
    Exact same effect as TourPage
    =================================== */
 
-/* Letter Reveal Animation - SAME AS TOUR PAGE */
-.letter {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(20px) scale(0.98);
-  filter: blur(8px);
-  animation: letterRevealSmooth 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  will-change: transform, opacity, filter;
-}
-
-/* Premium smooth reveal animation - Blur + Fade + Gentle Slide */
-@keyframes letterRevealSmooth {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-    filter: blur(8px);
-  }
-  50% {
-    opacity: 0.6;
-    filter: blur(2px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-}
+/* CSS Cleaned: Letter-by-letter animation removed */
 
 /* Hide text elements initially to prevent flash before animation */
 [data-i18n-key="experiences.lead"],
