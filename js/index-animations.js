@@ -140,9 +140,9 @@
           delay: 0.1, // 100ms delay restored
           scrollTrigger: {
             trigger: element,
-            start: 'top 95%', 
-            end: 'top 75%', // Finishes much earlier (lower on screen)
-            scrub: 0.5, // Reduced lag (was 1) for faster response
+            start: 'top 95%', // Starts when entering viewport
+            end: 'top 50%', // Finishes exactly at middle of viewport
+            scrub: 0.5,
           }
         }
       );
