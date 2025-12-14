@@ -38,11 +38,6 @@
       rel="stylesheet"
       type="text/css"
     />
-    <!-- Swiper CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-    />
     <!-- Custom Index Animations CSS -->
     <link href="css/index-animations.css" rel="stylesheet" type="text/css" />
     <link href="css/index-mobile-menu.css" rel="stylesheet" type="text/css" />
@@ -4332,8 +4327,6 @@
         }
       })();
     </script>
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/index-animations.js"></script>
     <script type="module" src="js/home-loader.js"></script>
     <script src="js/index-mobile-menu.js"></script>
