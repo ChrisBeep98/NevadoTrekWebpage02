@@ -46,6 +46,11 @@
     <!-- Custom Index Animations CSS -->
     <link href="css/index-animations.css" rel="stylesheet" type="text/css" />
     <link href="css/index-mobile-menu.css" rel="stylesheet" type="text/css" />
+    <link href="css/optimized-carousel.css" rel="stylesheet" type="text/css" />
+    <script
+      src="https://use.typekit.net/jnm0cop.js"
+      type="text/javascript"
+    ></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link
       href="https://fonts.gstatic.com"
@@ -1728,33 +1733,53 @@
           </div>
         </section>
         <section id="intro" class="section-2 bottom">
+          <!-- Row 1: Moved left (Standard) -->
           <div class="div-block-50">
-            <div class="slide-carreell _01">
-              <h2 class="style-h1 _01">as the Meaning of LifeTravel</h2>
-              <h2 class="style-h1 f-blue-2">*</h2>
-              <h2 class="style-h1 _01">as the Meaning of LifeTravel</h2>
+            <div class="horizontal-loop" dir="ltr" data-speed="25">
+              <div class="track">
+                <div class="item">
+                  <h2 class="style-h1 _01">as the Meaning of LifeTravel</h2>
+                </div>
+                <div class="item">
+                  <h2 class="style-h1 f-blue-2">*</h2>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- Row 2: Moved right (RTL) -->
           <div class="div-block-49">
-            <div class="slide-carreell _02">
-              <h2 class="style-h1 italic _03">Know yourself through travel</h2>
-              <h2 class="style-h1 f-blue-2">*</h2>
-              <h2 class="style-h1 italic _03">Know yourself through travel</h2>
+            <div class="horizontal-loop" dir="rtl" data-speed="25">
+              <div class="track">
+                <div class="item">
+                  <h2 class="style-h1 italic _03">
+                    Know yourself through travel
+                  </h2>
+                </div>
+                <div class="item">
+                  <h2 class="style-h1 f-blue-2">*</h2>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- Row 3: Moved left (Standard) -->
           <div class="div-block-108">
-            <div class="slide-carreell _03">
-              <h2 class="style-h1">COCORA</h2>
-              <h2 class="style-h1 f-blue-2">*</h2>
-              <h2 class="style-h1">PÀRAMO</h2>
-              <h2 class="style-h1 f-blue-2">*</h2>
-              <h2 class="style-h1">CARBONERA</h2>
-              <h2 class="style-h1 f-blue-2">*</h2>
-              <h2 class="style-h1">TAPIR</h2>
-              <h2 class="style-h1 f-blue-2">*</h2>
-              <h2 class="style-h1">PARAMILLO</h2>
-              <h2 class="style-h1 f-blue-2">*</h2>
-              <h2 class="style-h1">SALENTO</h2>
+            <div class="horizontal-loop" dir="ltr" data-speed="35">
+              <div class="track">
+                <div class="item"><h2 class="style-h1">COCORA</h2></div>
+                <div class="item"><h2 class="style-h1 f-blue-2">*</h2></div>
+                <div class="item"><h2 class="style-h1">PÀRAMO</h2></div>
+                <div class="item"><h2 class="style-h1 f-blue-2">*</h2></div>
+                <div class="item"><h2 class="style-h1">CARBONERA</h2></div>
+                <div class="item"><h2 class="style-h1 f-blue-2">*</h2></div>
+                <div class="item"><h2 class="style-h1">TAPIR</h2></div>
+                <div class="item"><h2 class="style-h1 f-blue-2">*</h2></div>
+                <div class="item"><h2 class="style-h1">PARAMILLO</h2></div>
+                <div class="item"><h2 class="style-h1 f-blue-2">*</h2></div>
+                <div class="item"><h2 class="style-h1">SALENTO</h2></div>
+                <div class="item"><h2 class="style-h1 f-blue-2">*</h2></div>
+              </div>
             </div>
           </div>
         </section>
@@ -4425,5 +4450,6 @@
         }
       })();
     </script>
+    <script src="js/optimized-carousel.js" type="text/javascript"></script>
   </body>
 </html>

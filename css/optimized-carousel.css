@@ -1,0 +1,44 @@
+/* Optimized Carousel Styles */
+
+.horizontal-loop {
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* Center content initially */
+  position: relative;
+  /* Prevent interaction if needed, or allow selecting text */
+  user-select: none;
+}
+
+.track {
+  display: flex;
+  /* Critical for performance */
+  will-change: transform; 
+  /* Ensure width fits content so we can calculate proper scrolling */
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.item {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  /* Spacing between items - adjust as needed to match original look */
+  padding-right: 0.5em; 
+}
+
+/* Ensure original typography styles work within the new structure */
+.horizontal-loop .style-h1 {
+  margin: 0;
+  /* Ensure no line breaks */
+  white-space: nowrap;
+}
+
+/* Responsive adjustments if necessary */
+@media screen and (max-width: 768px) {
+  .horizontal-loop .style-h1 {
+     /* Allow fonts to scale naturally or add specific overrides if "textos largos" become an issue */
+  }
+}
