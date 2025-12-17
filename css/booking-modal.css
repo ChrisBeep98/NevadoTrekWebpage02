@@ -555,6 +555,10 @@
   flex-shrink: 0;
 }
 
+.date-card-icon {
+  display: none;
+}
+
 @media screen and (min-width: 1025px) {
   .date-card-left {
     flex-direction: row;
@@ -578,6 +582,7 @@
     color: var(--color--blue-dark, #8fbbd3);
   }
 }
+
 
 .date-card-weekday {
   color: rgba(255, 255, 255, 0.5);
@@ -677,9 +682,6 @@
   }
 }
 
-.date-card-icon {
-  display: none;
-}
 
 /* Private date toggle with switch */
 .private-date-toggle {
