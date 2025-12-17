@@ -784,7 +784,7 @@
 @media screen and (min-width: 1025px) {
   .custom-calendar-popup {
     width: 320px;
-    left: calc(100% + 16px); /* Flyout to the right */
+    left: calc(100% - 184px); /* Shifted 100px to the left from previous calc(100% + 16px) */
     top: auto;
     bottom: 50%; /* Align bottom to vertically-middle of trigger */
     transform: translateY(50%) translateX(-10px);
@@ -1520,6 +1520,7 @@
   width: 40%;
 }
 
+.pricing-table th:last-child,
 .pricing-table td.price-col {
   text-align: right;
   font-feature-settings: "tnum";
