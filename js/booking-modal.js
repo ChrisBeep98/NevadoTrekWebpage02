@@ -63,6 +63,7 @@ const translations = {
     privateDateExplain: 'O solicita una fecha privada exclusiva para tu grupo:',
     currency: 'COP',
     bookYourTour: 'RESERVA TU AVENTURA', /* Using "Aventura" sounds better/premium */
+    bookAdventure: 'RESERVA TU AVENTURA',
     priceTablePax: 'Personas',
     priceTablePrice: 'Precio',
     priceTable4plus: '4 - 8',
@@ -122,6 +123,7 @@ const translations = {
     privateDateExplain: 'Or request a private date exclusive for your group:',
     currency: 'USD',
     bookYourTour: 'BOOK YOUR ADVENTURE',
+    bookAdventure: 'BOOK YOUR ADVENTURE',
     priceTablePax: 'Guests',
     priceTablePrice: 'Price',
     priceTable4plus: '4 - 8',
@@ -210,229 +212,233 @@ function createModalHTML() {
           </svg>
         </button>
 
-        <!-- HERO SECTION - Visual Tour Preview -->
-        <div class="booking-hero" id="booking-hero">
-          <div class="booking-hero-image" id="booking-hero-image">
-            <!-- Image set dynamically -->
+        <!-- COMPACT HEADER -->
+        <div class="booking-modal-header-new">
+          <div class="booking-header-info-row">
+            <p class="booking-header-subtitle" data-i18n="bookYourTour">${t.bookYourTour}</p>
+            <div class="booking-header-chips">
+              <span class="header-chip"><span id="booking-duration-text"></span></span>
+              <span class="header-chip"><span id="booking-altitude-text"></span></span>
+              <span class="header-chip"><span id="booking-difficulty-text"></span></span>
+            </div>
           </div>
-          <div class="booking-hero-overlay"></div>
-          <div class="booking-hero-content">
-            <p class="booking-hero-subtitle" data-i18n="bookYourTour">${t.bookYourTour}</p>
-            <h2 class="booking-hero-title" id="booking-hero-title">Nombre del Tour</h2>
-          </div>
+          <h2 class="booking-header-title" id="booking-hero-title">Nombre del Tour</h2>
         </div>
 
-        <!-- Main Content - Single Column Focus -->
-        <div class="booking-modal-main">
-          <!-- Steps Progress -->
-          <div class="booking-modal-form">
-            <!-- Error Message -->
-            <div class="booking-error" id="booking-error">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="12"></line>
-                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-              </svg>
-              <p></p>
-            </div>
-
-            <!-- Steps Indicator -->
-            <div class="booking-steps">
-              <div class="booking-progress-fill" id="booking-progress-fill"></div>
-            </div>
-
-            <!-- Step 1: Date Selection -->
-            <div class="booking-step active" id="booking-step-1">
-              
-              <!-- Pricing Table (New) -->
-              <div class="pricing-table-container">
-                <table class="pricing-table">
-                  <thead>
-                    <tr>
-                      <th data-i18n="priceTablePax">${t.priceTablePax}</th>
-                      <th data-i18n="priceTablePrice">${t.priceTablePrice}</th>
-                    </tr>
-                  </thead>
-                  <tbody id="pricing-table-body">
-                    <!-- Injected via renderPricingTable() -->
-                  </tbody>
-                </table>
-              </div>
-
-              <p class="step-explanation" id="public-dates-explanation" data-i18n="publicDatesExplain">${t.publicDatesExplain}</p>
-              
-              <div id="date-cards-container" class="date-cards-container">
-                <!-- Date cards injected here -->
-              </div>
-              
-              <div class="booking-divider">
-                <span data-i18n="or">${t.or}</span>
-              </div>
-
-              <p class="step-explanation" id="private-dates-explanation" data-i18n="privateDateExplain">${t.privateDateExplain}</p>
-
-              <div class="private-date-input" id="private-date-input">
-                <div class="custom-date-group">
-                  <label class="custom-date-label" data-i18n="selectDate">${t.selectDate}</label>
-                  
-                  <!-- Hidden native input -->
-                  <input type="date" id="booking-private-date" min="${getMinDate()}" style="display:none">
-                  
-                  <!-- Custom Trigger -->
-                  <div class="custom-date-trigger" id="custom-date-trigger">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    <span id="custom-date-text">dd/mm/aaaa</span>
-                  </div>
-
-                  <!-- Custom Calendar Popup -->
-                  <div class="custom-calendar-popup" id="custom-calendar-popup"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Step 2: Customer Details -->
-            <div class="booking-step" id="booking-step-2">
-              <button class="booking-back-btn" id="back-to-step-1" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-                <span data-i18n="back">${t.back}</span>
-              </button>
-
-              <div class="form-group">
-                <label data-i18n="fullName">${t.fullName} *</label>
-                <input type="text" id="booking-name" placeholder="Juan Pérez" required>
-              </div>
-
-              <div class="form-group">
-                <label data-i18n="email">${t.email} *</label>
-                <input type="email" id="booking-email" placeholder="correo@ejemplo.com" required>
-              </div>
-
-              <div class="form-group">
-                <label data-i18n="phone">${t.phone} *</label>
-                <input type="tel" id="booking-phone" placeholder="+57 300 123 4567" required>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label data-i18n="document">${t.document} *</label>
-                  <input type="text" id="booking-document" placeholder="1234567890" required>
-                </div>
-                <div class="form-group">
-                  <label data-i18n="guests">${t.guests} *</label>
-                  <select id="booking-pax" required>
-                    ${[1,2,3,4,5,6,7,8].map(n => `<option value="${n}">${n}</option>`).join('')}
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label data-i18n="notes">${t.notes}</label>
-                <textarea id="booking-notes" rows="2" placeholder="Dietas especiales, requisitos..."></textarea>
-              </div>
-
-              <button class="booking-btn primary" id="continue-to-summary" type="button">
-                <span data-i18n="continue">${t.continue}</span>
-              </button>
-            </div>
-
-            <!-- Step 3: Summary -->
-            <div class="booking-step" id="booking-step-3">
-              <button class="booking-back-btn" id="back-to-step-2" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-                <span data-i18n="back">${t.back}</span>
-              </button>
-
-              <div class="booking-summary" id="booking-summary">
-                <h4 data-i18n="summaryTitle">${t.summaryTitle}</h4>
-                
-                <div class="summary-row">
-                  <div class="summary-label-wrapper">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    <span class="summary-label" data-i18n="tourName">${t.tourName}</span>
-                  </div>
-                  <span class="summary-value" id="summary-tour"></span>
-                </div>
-
-                <div class="summary-row">
-                  <div class="summary-label-wrapper">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    <span class="summary-label" data-i18n="selectedDate">${t.selectedDate}</span>
-                  </div>
-                  <span class="summary-value" id="summary-date"></span>
-                </div>
-
-                <div class="summary-row">
-                  <div class="summary-label-wrapper">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    <span class="summary-label" data-i18n="guestCount">${t.guestCount}</span>
-                  </div>
-                  <span class="summary-value" id="summary-pax"></span>
-                </div>
-
-                <div class="summary-row">
-                  <div class="summary-label-wrapper">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                    <span class="summary-label" data-i18n="pricePerPerson">${t.pricePerPerson}</span>
-                  </div>
-                  <span class="summary-value" id="summary-price-per"></span>
-                </div>
-
-                <div class="summary-row total">
-                  <div class="summary-label-wrapper">
-                    <span class="summary-label" data-i18n="totalPrice">${t.totalPrice}</span>
-                  </div>
-                  <span class="summary-value" id="summary-total"></span>
-                </div>
-              </div>
-
-              <button class="booking-submit-btn" id="booking-submit" type="button">
-                <span class="spinner"></span>
-                <span class="btn-text" data-i18n="submit">${t.submit}</span>
-              </button>
-            </div>
-
-            <!-- Success State -->
-            <div class="booking-success" id="booking-success">
-              <div class="booking-success-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </div>
-              <h3 data-i18n="successTitle">${t.successTitle}</h3>
-              <p data-i18n="successMessage">${t.successMessage}</p>
-              
-              <!-- Booking Summary in Success -->
-              <div class="success-booking-summary">
-                <div class="success-summary-row">
-                  <span class="success-summary-label" data-i18n="selectedDate">${t.selectedDate}</span>
-                  <span class="success-summary-value" id="success-date"></span>
-                </div>
-                <div class="success-summary-row">
-                  <span class="success-summary-label" data-i18n="guestCount">${t.guestCount}</span>
-                  <span class="success-summary-value" id="success-pax"></span>
-                </div>
-                <div class="success-summary-row total">
-                  <span class="success-summary-label" data-i18n="totalPrice">${t.totalPrice}</span>
-                  <span class="success-summary-value" id="success-total"></span>
-                </div>
-              </div>
-              
-              <p><span data-i18n="bookingId">${t.bookingId}</span>:</p>
-              <span class="booking-id" id="booking-ref-id"></span>
-              <div class="booking-success-actions">
-                <button class="booking-btn" id="close-modal-btn" type="button">
-                  <span data-i18n="closeModal">${t.closeModal}</span>
-                </button>
-              </div>
+        <div class="booking-body-layout">
+          <!-- LEFT PANEL: Pricing Sidebar -->
+          <div class="booking-panel-left">
+            <div class="pricing-table-container">
+              <table class="pricing-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="priceTablePax">${t.priceTablePax}</th>
+                    <th data-i18n="priceTablePrice">${t.priceTablePrice}</th>
+                  </tr>
+                </thead>
+                <tbody id="pricing-table-body">
+                  <!-- Injected via renderPricingTable() -->
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+
+          <!-- MAIN PANEL: Form & Dates -->
+          <div class="booking-panel-main">
+            <div class="booking-modal-main">
+              <!-- Steps Progress -->
+              <div class="booking-modal-form">
+                <!-- Error Message -->
+                <div class="booking-error" id="booking-error">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <p></p>
+                </div>
+
+                <!-- Steps Indicator -->
+                <div class="booking-steps">
+                  <div class="booking-progress-fill" id="booking-progress-fill"></div>
+                </div>
+
+                <!-- Step 1: Date Selection -->
+                <div class="booking-step active" id="booking-step-1">
+                  <div class="step-content-scroll">
+                    <p class="step-explanation" id="public-dates-explanation" data-i18n="publicDatesExplain">${t.publicDatesExplain}</p>
+                    
+                    <div id="date-cards-container" class="date-cards-container">
+                      <!-- Date cards injected here -->
+                    </div>
+
+                    <!-- SHARED: Private Date Dropdown Flow -->
+                    <div class="private-date-flow">
+                      <div class="booking-divider">
+                        <span data-i18n="or">${t.or}</span>
+                      </div>
+                      <p class="step-explanation" data-i18n="privateDateExplain">${t.privateDateExplain}</p>
+                      <div class="private-date-input" id="private-date-input">
+                         <div class="custom-date-trigger" id="custom-date-trigger">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <span id="custom-date-text">dd/mm/aaaa</span>
+                         </div>
+                         <!-- Custom Calendar Popup Shared -->
+                         <div class="custom-calendar-popup" id="custom-calendar-popup"></div>
+                      </div>
+                    </div>
+
+                    <!-- Hidden native input shared -->
+                    <input type="date" id="booking-private-date" min="${getMinDate()}" style="display:none">
+                  </div>
+                </div>
+
+                <!-- Step 2: Customer Details -->
+                <div class="booking-step" id="booking-step-2">
+                  <button class="booking-back-btn" id="back-to-step-1" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span data-i18n="back">${t.back}</span>
+                  </button>
+
+                  <div class="form-group">
+                    <label data-i18n="fullName">${t.fullName} *</label>
+                    <input type="text" id="booking-name" placeholder="Juan Pérez" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label data-i18n="email">${t.email} *</label>
+                    <input type="email" id="booking-email" placeholder="correo@ejemplo.com" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label data-i18n="phone">${t.phone} *</label>
+                    <input type="tel" id="booking-phone" placeholder="+57 300 123 4567" required>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label data-i18n="document">${t.document} *</label>
+                      <input type="text" id="booking-document" placeholder="1234567890" required>
+                    </div>
+                    <div class="form-group">
+                      <label data-i18n="guests">${t.guests} *</label>
+                      <select id="booking-pax" required>
+                        ${[1,2,3,4,5,6,7,8].map(n => `<option value="${n}">${n}</option>`).join('')}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label data-i18n="notes">${t.notes}</label>
+                    <textarea id="booking-notes" rows="2" placeholder="Dietas especiales, requisitos..."></textarea>
+                  </div>
+
+                  <button class="booking-btn primary" id="continue-to-summary" type="button">
+                    <span data-i18n="continue">${t.continue}</span>
+                  </button>
+                </div>
+
+                <!-- Step 3: Summary -->
+                <div class="booking-step" id="booking-step-3">
+                  <button class="booking-back-btn" id="back-to-step-2" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span data-i18n="back">${t.back}</span>
+                  </button>
+
+                  <div class="booking-summary" id="booking-summary">
+                    <h4 data-i18n="summaryTitle">${t.summaryTitle}</h4>
+                    
+                    <div class="summary-row">
+                      <div class="summary-label-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span class="summary-label" data-i18n="tourName">${t.tourName}</span>
+                      </div>
+                      <span class="summary-value" id="summary-tour"></span>
+                    </div>
+
+                    <div class="summary-row">
+                      <div class="summary-label-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span class="summary-label" data-i18n="selectedDate">${t.selectedDate}</span>
+                      </div>
+                      <span class="summary-value" id="summary-date"></span>
+                    </div>
+
+                    <div class="summary-row">
+                      <div class="summary-label-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span class="summary-label" data-i18n="guestCount">${t.guestCount}</span>
+                      </div>
+                      <span class="summary-value" id="summary-pax"></span>
+                    </div>
+
+                    <div class="summary-row">
+                      <div class="summary-label-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="summary-icon"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        <span class="summary-label" data-i18n="pricePerPerson">${t.pricePerPerson}</span>
+                      </div>
+                      <span class="summary-value" id="summary-price-per"></span>
+                    </div>
+
+                    <div class="summary-row total">
+                      <div class="summary-label-wrapper">
+                        <span class="summary-label" data-i18n="totalPrice">${t.totalPrice}</span>
+                      </div>
+                      <span class="summary-value" id="summary-total"></span>
+                    </div>
+                  </div>
+
+                  <button class="booking-submit-btn" id="booking-submit" type="button">
+                    <span class="spinner"></span>
+                    <span class="btn-text" data-i18n="submit">${t.submit}</span>
+                  </button>
+                </div>
+
+                <!-- Success State -->
+                <div class="booking-success" id="booking-success">
+                  <div class="booking-success-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <h3 data-i18n="successTitle">${t.successTitle}</h3>
+                  <p data-i18n="successMessage">${t.successMessage}</p>
+                  
+                  <!-- Booking Summary in Success -->
+                  <div class="success-booking-summary">
+                    <div class="success-summary-row">
+                      <span class="success-summary-label" data-i18n="selectedDate">${t.selectedDate}</span>
+                      <span class="success-summary-value" id="success-date"></span>
+                    </div>
+                    <div class="success-summary-row">
+                      <span class="success-summary-label" data-i18n="guestCount">${t.guestCount}</span>
+                      <span class="success-summary-value" id="success-pax"></span>
+                    </div>
+                    <div class="success-summary-row total">
+                      <span class="success-summary-label" data-i18n="totalPrice">${t.totalPrice}</span>
+                      <span class="success-summary-value" id="success-total"></span>
+                    </div>
+                  </div>
+                  
+                  <p><span data-i18n="bookingId">${t.bookingId}</span>:</p>
+                  <span class="booking-id" id="booking-ref-id"></span>
+                  <div class="booking-success-actions">
+                    <button class="booking-btn" id="close-modal-btn" type="button">
+                      <span data-i18n="closeModal">${t.closeModal}</span>
+                    </button>
+                  </div>
+                </div>
+              </div> <!-- booking-modal-form -->
+            </div> <!-- booking-modal-main -->
+          </div> <!-- booking-panel-main -->
+        </div> <!-- booking-body-layout -->
+
+    </div> <!-- booking-modal-content -->
+  </div> <!-- booking-modal -->
 
     <!-- Toast Notification -->
     <div class="booking-toast" id="booking-toast">
@@ -791,11 +797,10 @@ function initCustomDatePicker() {
   const trigger = document.getElementById('custom-date-trigger');
   const popup = document.getElementById('custom-calendar-popup');
   const dateInput = document.getElementById('booking-private-date');
-  const dateText = document.getElementById('custom-date-text');
 
   if (!trigger || !popup) return;
 
-  // Toggle calendar
+  // Toggle calendar popup
   trigger.addEventListener('click', (e) => {
     e.stopPropagation();
     const isActive = popup.classList.contains('active');
@@ -806,26 +811,26 @@ function initCustomDatePicker() {
     if (!isActive) {
       popup.classList.add('active');
       renderCalendar(calendarCurrentDate);
-    }
-  });
-
-  // Close on outside click
-  document.addEventListener('click', (e) => {
-    if (!popup.contains(e.target) && !trigger.contains(e.target)) {
+    } else {
       popup.classList.remove('active');
     }
   });
 
-  // Prevent closing when clicking inside popup
-  popup.addEventListener('click', (e) => e.stopPropagation());
+  // Global close on outside click
+  document.addEventListener('click', (e) => {
+    if (popup && !popup.contains(e.target) && !trigger.contains(e.target)) {
+      popup.classList.remove('active');
+    }
+  });
 }
 
 function renderCalendar(date) {
-  const popup = document.getElementById('custom-calendar-popup');
-  if (!popup) return;
+  const container = document.getElementById('custom-calendar-popup');
+  if (!container) return;
   
   const year = date.getFullYear();
   const month = date.getMonth();
+  const t = translations[currentLang];
   
   // Month names
   const monthNames = {
@@ -852,11 +857,11 @@ function renderCalendar(date) {
   
   let html = `
     <div class="calendar-header">
-      <button class="calendar-month-btn" id="prev-month">
+      <button class="calendar-month-btn prev-month-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="calendar-current-month">${currentMonthName} ${year}</span>
-      <button class="calendar-month-btn" id="next-month">
+      <button class="calendar-month-btn next-month-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
     </div>
@@ -888,21 +893,24 @@ function renderCalendar(date) {
   }
   
   html += `</div>`;
-  popup.innerHTML = html;
+  container.innerHTML = html;
   
   // Bind calendar events
-  document.getElementById('prev-month').addEventListener('click', () => {
+  container.querySelector('.prev-month-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
     calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() - 1);
     renderCalendar(calendarCurrentDate);
   });
   
-  document.getElementById('next-month').addEventListener('click', () => {
+  container.querySelector('.next-month-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
     calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() + 1);
     renderCalendar(calendarCurrentDate);
   });
   
-  popup.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
+  container.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
     day.addEventListener('click', (e) => {
+      e.stopPropagation();
       const selectedDate = e.target.getAttribute('data-date');
       selectCustomDate(selectedDate);
     });
@@ -919,20 +927,23 @@ function selectCustomDate(dateString) {
   // Update native input
   dateInput.value = dateString;
   
-  // Manually trigger change event handler since programmatic change doesn't fire it
-  // and we also need to update global state and UI
-  // Reuse handlePrivateDateSelect logic or better yet, trigger the event
-  // BUT custom event dispatch might be tricky if reference is lost.
-  // Let's call the handler directly if exposed or just dispatch.
+  // Dispatch change for global state handling
   dateInput.dispatchEvent(new Event('change', { bubbles: true }));
   
-  // Update text
-  const [y, m, d] = dateString.split('-');
-  dateText.textContent = `${d}/${m}/${y}`;
-  dateText.style.color = 'white';
+  // Update UI trigger text
+  if (dateText) {
+    const [y, m, d] = dateString.split('-');
+    dateText.textContent = `${d}/${m}/${y}`;
+    dateText.style.color = 'white';
+  }
   
   // Close popup
-  popup.classList.remove('active');
+  if (popup) {
+    popup.classList.remove('active');
+  }
+
+  // Refresh calendar view to show selection
+  renderCalendar(calendarCurrentDate);
 }
 
 function updateStep2DateDisplay() {

@@ -41,6 +41,7 @@
 @media screen and (min-width: 1025px) {
   .booking-modal {
     padding: 24px;
+    overflow-y: auto; /* Allow scrolling the whole modal if it grows */
   }
 }
 
@@ -56,7 +57,7 @@
   background: linear-gradient(145deg, #042e4d 0%, #021c2e 100%);
   border-radius: 24px;
   width: 100%;
-  max-width: 600px;
+  max-width: 1000px; /* Reduced for 2-column Layout */
   max-height: 92vh;
   overflow: hidden;
   position: relative;
@@ -98,45 +99,65 @@
 }
 
 /* ===== HERO SECTION ===== */
-.booking-hero {
-  position: relative;
-  height: 180px;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 24px 24px 0 0; /* Match content radius */
+/* COMPACT HEADER NEW STYLE */
+.booking-modal-header-new {
+  padding: 40px 48px 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.booking-hero-image {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transform: scale(1.05);
-  transition: transform 8s ease-out;
+.booking-header-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
-.booking-modal.active .booking-hero-image {
-  transform: scale(1);
+.booking-header-subtitle {
+  color: #3b82f6;
+  font-family: Inter, sans-serif;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
 }
 
-.booking-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(4, 46, 77, 0.3) 0%,
-    rgba(4, 46, 77, 0.7) 60%,
-    rgba(4, 46, 77, 1) 100%
-  );
+.booking-header-chips {
+  display: flex;
+  gap: 12px;
 }
 
-.booking-hero-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 28px;
-  z-index: 2;
+.header-chip {
+  font-family: Inter, sans-serif;
+  font-size: 0.75em;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.booking-header-title {
+  color: white;
+  font-family: Inter, sans-serif;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .booking-modal-header-new {
+    padding: 32px 24px 20px;
+  }
+  .booking-header-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .booking-header-title {
+    font-size: 1.5em;
+  }
 }
 
 /* DESKTOP ALIGNMENT: Match form margins */
@@ -184,27 +205,78 @@
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* ===== MAIN CONTENT AREA ===== */
-.booking-modal-main {
+/* ===== BODY LAYOUT (SIDEBAR + MAIN) ===== */
+.booking-body-layout {
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  overflow-y: auto;
-  padding: 0;
+  overflow-y: auto; /* Fix: Allow scroll on mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
-/* DESKTOP: Remove internal scrolling to allow popups to overflow */
+/* Base styles for panels (Mobile/Stacked) */
+.booking-panel-left {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.booking-panel-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* DESKTOP GRID */
+@media screen and (min-width: 1025px) {
+  .booking-body-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr; /* 2 Columns: Prices | Main Form */
+    overflow: hidden;
+  }
+
+  .booking-panel-left {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 48px 48px;
+    overflow-y: auto;
+  }
+
+  .booking-panel-main {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .booking-modal-main {
+    padding: 48px 60px;
+  }
+
+  .booking-modal-form {
+    padding: 0;
+  }
+
+  /* Private Date Flow Integration */
+  .private-date-flow {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Unified Private Date Flow Visibility */
+.private-date-flow {
+  display: block;
+}
+
+
+/* Previous Desktop visibility overrides updated to target panels */
 @media screen and (min-width: 1025px) {
   .booking-modal-content,
-  .booking-modal-main,
-  .booking-modal-grid,
-  .booking-modal-info {
+  .booking-panel-left,
+  .booking-panel-main,
+  .booking-modal-main {
     overflow: visible !important;
     max-height: none !important;
-  }
-  
-  /* Ensure the grid doesn't restrict height */
-  .booking-modal-grid {
-    display: grid;
-    height: auto;
   }
 }
 
@@ -240,8 +312,7 @@
 
 /* ===== HEADER ===== */
 .booking-modal-header {
-  margin-bottom: 32px;
-  padding-top: 16px;
+  margin-bottom: 24px;
   flex-shrink: 0;
 }
 
@@ -263,19 +334,11 @@
   margin: 0;
 }
 
-/* ===== LAYOUT GRID ===== */
+/* ===== LAYOUT GRID (Unified in Panels) ===== */
 .booking-modal-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 56px;
-  flex: 1;
-  overflow: hidden;
-}
-
-@media screen and (min-width: 1025px) {
-  .booking-modal-grid {
-    overflow: visible;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 /* ===== LEFT COLUMN (Info + Pricing) ===== */
@@ -374,9 +437,7 @@
 
 /* DESKTOP ONLY: Large margins for form */
 @media screen and (min-width: 1025px) {
-  .booking-modal-form {
-    padding: 40px 48px 0 48px; /* Increased top padding + horizontal margins */
-  }
+  
 }
 
 /* Gray track background - Dynamic positioning */
@@ -687,15 +748,15 @@
   height: 20px;
 }
 
-/* CUSTOM CALENDAR POPUP */
+/* CUSTOM CALENDAR POPUP (Mobile Only) */
 .custom-calendar-popup {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
   margin-top: 8px;
-  background: rgba(4, 46, 77, 0.95);
-  backdrop-filter: blur(12px);
+  background: rgba(4, 46, 77, 0.98);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   padding: 16px;
@@ -708,6 +769,7 @@
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 
 .custom-calendar-popup.active {
   opacity: 1;
@@ -1401,7 +1463,7 @@
 
 /* ===== PRICING TABLE (STEP 1) ===== */
 .pricing-table-container {
-  margin-bottom: 24px;
+  margin-bottom: 0; /* Managed by sidebar padding */
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
