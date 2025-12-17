@@ -782,6 +782,16 @@ function goToStep(stepNumber) {
   const targetStep = document.getElementById(`booking-step-${stepNumber}`);
   if (targetStep) targetStep.classList.add('active');
 
+  // Success state layout toggle
+  const modal = document.getElementById('booking-modal');
+  if (modal) {
+    if (stepNumber === 3) {
+      modal.classList.add('is-success');
+    } else {
+      modal.classList.remove('is-success');
+    }
+  }
+
   // Update progress bar width
   const progressFill = document.getElementById('booking-progress-fill');
   if (progressFill) {

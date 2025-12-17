@@ -13,12 +13,14 @@
   -webkit-backdrop-filter: blur(12px);
   opacity: 0;
   visibility: hidden;
+  overflow: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .booking-modal-overlay.active {
   opacity: 1;
   visibility: visible;
+  overflow: hidden;
 }
 
 /* ===== MODAL CONTAINER ===== */
@@ -35,6 +37,7 @@
   transform: scale(0.95) translateY(20px);
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   pointer-events: none;
+  overflow: hidden;
 }
 
 /* Desktop only - centered card with padding */
@@ -250,6 +253,21 @@
 
   .booking-modal-main {
     padding: 48px 60px;
+  }
+
+  /* Success State: Full width content, hides sidebar */
+  #booking-modal.is-success .booking-body-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #booking-modal.is-success .booking-panel-left {
+    display: none;
+  }
+
+  #booking-modal.is-success .booking-modal-main {
+    padding: 60px 80px;
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   .booking-modal-form {
