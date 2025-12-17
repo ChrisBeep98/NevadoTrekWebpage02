@@ -257,6 +257,11 @@ function createModalHTML() {
                 <!-- Steps Indicator -->
                 <div class="booking-steps">
                   <div class="booking-progress-fill" id="booking-progress-fill"></div>
+                  <div class="booking-checkpoints">
+                    <div class="checkpoint active" data-step="1"></div>
+                    <div class="checkpoint" data-step="2"></div>
+                    <div class="checkpoint" data-step="3"></div>
+                  </div>
                 </div>
 
                 <!-- Step 1: Date Selection -->
@@ -792,13 +797,25 @@ function goToStep(stepNumber) {
     }
   }
 
-  // Update progress bar width
+  // Update progress bar width and checkpoints
   const progressFill = document.getElementById('booking-progress-fill');
+  const checkpoints = document.querySelectorAll('.checkpoint');
+  
   if (progressFill) {
-    if (stepNumber === 1) progressFill.style.width = '33%';
-    if (stepNumber === 2) progressFill.style.width = '66%';
+    if (stepNumber === 1) progressFill.style.width = '0%';
+    if (stepNumber === 2) progressFill.style.width = '50%';
     if (stepNumber === 3) progressFill.style.width = '100%';
+    if (stepNumber === 4) progressFill.style.width = '100%';
   }
+
+  checkpoints.forEach(cp => {
+    const cpStep = parseInt(cp.dataset.step);
+    if (cpStep <= stepNumber) {
+      cp.classList.add('active');
+    } else {
+      cp.classList.remove('active');
+    }
+  });
 }
 
 // ==================== CUSTOM DATE PICKER LOGIC ====================

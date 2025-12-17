@@ -62,7 +62,7 @@
   width: 100%;
   max-width: 80vw; /* Reduced for 2-column Layout */
   max-height: 92vh;
-  min-height: 80vh;
+  min-height: 76vh;
   overflow: hidden;
   position: relative;
   box-shadow: 
@@ -466,37 +466,69 @@
   display: flex;
   justify-content: center;
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  margin-top: 8px;
   width: 100%;
   padding: 0;
-  height: 4px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
+  border-radius: 8px;
+  /* Removed overflow hidden to allow dots to be slightly larger if needed */
 }
 
-/* New Progress Track Container - Simplified */
-.booking-progress-track {
-  display: none; /* Removed old track */
-}
-
-/* Animated Fill Bar - Continuous */
+/* Progress Fill */
 .booking-progress-fill {
   position: absolute;
   left: 0;
   top: 0;
   height: 100%;
-  width: 33%; /* Initial - Step 1 */
-  background: linear-gradient(90deg, #2563eb, #10b981);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+  width: 0%;
+  background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+  border-radius: 8px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
 }
 
-/* Hide old bubbles */
-.booking-step-indicator {
-  display: none;
+/* Checkpoints Container */
+.booking-checkpoints {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
 }
+
+/* Checkpoint Dot */
+.checkpoint {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transition: all 0.4s ease;
+  transform: scale(1);
+}
+
+/* Specific positioning to align with progress percentages (0%, 50%, 100%) */
+.checkpoint[data-step="1"] { margin-left: -2px; }
+.checkpoint[data-step="3"] { margin-right: -2px; }
+
+.checkpoint.active {
+  background: #10b981;
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+  transform: scale(1.2);
+}
+
+.checkpoint[data-step="1"].active {
+  background: #3b82f6;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+}
+
+
 
 /* ===== DATE SELECTION (Step 1) ===== */
 .booking-step {
