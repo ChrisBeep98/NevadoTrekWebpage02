@@ -46,20 +46,22 @@
 
 /* ===================================
    MAIN IMAGE SCROLL ZOOM ANIMATION
-   Starts at 70vw, grows to 100vw on scroll
+   GPU-ACCELERATED using transform:scale instead of width
    =================================== */
 
 .scroll-zoom-image {
-  width: 60vw;
-  height: 1000px !important;  /* Force specific height as requested */
-  min-height: 1000px !important; /* Double force */
-  max-width: 100%;
+  width: 100vw;                      /* Full width from start */
+  height: 1000px !important;
+  min-height: 1000px !important;
+  max-width: 100vw;
   display: block;
   margin: 0 auto;
-  object-fit: cover;          /* Prevent distortion */
-  /* Performance optimizations */
-  will-change: width;
-  contain: layout;  /* Isolate layout calculations */
+  object-fit: cover;
+  /* GPU ACCELERATED - scale instead of width */
+  transform: scale(0.6);             /* Initial scale = 60% visual width */
+  transform-origin: center center;
+  will-change: transform;            /* Optimize transform, not layout */
+  /* Removed contain:layout - not needed with transform */
 }
 
 /* OVERRIDE: Image 6 (Medium) specific height */
@@ -251,22 +253,11 @@
 
 /* ===================================
    MAIN IMAGE SCROLL ZOOM ANIMATION
-   Starts at 70vw, grows to 100vw on scroll
+   GPU-ACCELERATED - Duplicate definition removed
+   See primary definition above (around line 47)
    =================================== */
-
-.scroll-zoom-image {
-  width: 60vw;
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-  transition: width 0.1s linear;
-  will-change: width;
-}
-
-/* Full width state when scrolled */
-.scroll-zoom-image.full-width {
-  width: 100vw;
-}
+/* NOTE: .scroll-zoom-image is now defined only once above for clarity */
+/* .full-width class removed - no longer needed with transform animation */
 
 /* Subtitle fade in */
 .tour-subtitle.reveal {

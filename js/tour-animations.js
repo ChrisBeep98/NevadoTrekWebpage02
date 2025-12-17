@@ -600,7 +600,8 @@
 
   /**
    * Initialize image scroll zoom animation using GSAP ScrollTrigger
-   * Configurations separated for easy editing
+   * GPU-ACCELERATED: Uses transform:scale instead of width
+   * This avoids layout recalculation and uses the GPU compositor
    */
   function initImageScrollZoom() {
     const zoomImages = document.querySelectorAll('.scroll-zoom-image');
@@ -613,25 +614,22 @@
     // Check if GSAP and ScrollTrigger are available
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
       console.warn('GSAP or ScrollTrigger not loaded');
+      // Fallback: set scale to 1 immediately
+      zoomImages.forEach(img => img.style.transform = 'scale(1)');
       return;
     }
-
-
-    
-    // Debug: Log which images were found
-
 
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
     // ====================================
     // CONFIGURACIÓN PARA CADA IMAGEN
-    // Edita estos valores para controlar el zoom
+    // GPU-ACCELERATED: scale en lugar de width
     // ====================================
     const imageConfigs = {
       'main-tour-image': {
         start: 'top bottom',
-        end: 'center 75%',     // Finishes early (in bottom quarter)
+        end: 'center 75%',
         scrub: 0.5
       },
       'fullscreen-img2': {
@@ -646,8 +644,8 @@
       }
     };
 
-    // Apply scroll zoom effect to each image
-    zoomImages.forEach((image, index) => {
+    // Apply GPU-accelerated scroll zoom effect to each image
+    zoomImages.forEach((image) => {
       // Get configuration for this image (or use default)
       const config = imageConfigs[image.id] || {
         start: 'top bottom',
@@ -655,19 +653,19 @@
         scrub: 1
       };
       
+      // GPU-ACCELERATED: animate scale instead of width
+      // CSS sets initial scale(0.6), we animate to scale(1)
       gsap.to(image, {
-        width: '100vw',
+        scale: 1,           // From 0.6 (CSS) → 1 (GPU accelerated!)
         ease: 'none',
         scrollTrigger: {
           trigger: image,
           start: config.start,
           end: config.end,
           scrub: config.scrub,
-          markers: false  // Cambia a true para debugging
+          markers: false
         }
       });
-      
-
     });
   }
 
