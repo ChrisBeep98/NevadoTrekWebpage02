@@ -277,8 +277,6 @@
   /* Private Date Flow Integration */
   .private-date-flow {
     margin-top: 32px;
-    padding-top: 32px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -443,7 +441,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 24px 0 0 0; /* Removed padding */
+  padding: 0px 0 0 0; /* Removed padding */
   background: transparent;
   border: none; /* Removed border */
   border-radius: 0;
