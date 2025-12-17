@@ -499,6 +499,15 @@
   gap: 12px;
 }
 
+@media screen and (min-width: 1025px) {
+  .date-cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+}
+
 .date-card {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
@@ -511,6 +520,17 @@
   justify-content: space-between;
   gap: 16px;
   width: 100%;
+}
+
+@media screen and (min-width: 1025px) {
+  .date-card {
+    flex-direction: column;
+    padding: 20px 18px;
+    height: auto;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+  }
 }
 
 .date-card:hover {
@@ -533,6 +553,30 @@
   align-items: baseline;
   gap: 8px;
   flex-shrink: 0;
+}
+
+@media screen and (min-width: 1025px) {
+  .date-card-left {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .date-card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .date-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4px;
+    color: var(--color--blue-dark, #8fbbd3);
+  }
 }
 
 .date-card-weekday {
@@ -565,6 +609,14 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+}
+
+@media screen and (min-width: 1025px) {
+  .date-card-center {
+    align-items: flex-start;
+    margin-top: 16px;
+    width: 100%;
+  }
 }
 
 .date-card-slots {
@@ -617,6 +669,16 @@
 
 .date-card.selected .date-card-right {
   color: #2563eb;
+}
+
+@media screen and (min-width: 1025px) {
+  .date-card-right {
+    display: none; /* Hide arrow on square desktop cards */
+  }
+}
+
+.date-card-icon {
+  display: none;
 }
 
 /* Private date toggle with switch */

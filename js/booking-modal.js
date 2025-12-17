@@ -690,9 +690,14 @@ function renderDateCards() {
     return `
       <div class="date-card" data-departure-id="${dep.departureId}">
         <div class="date-card-left">
-          <span class="date-card-weekday">${new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', { weekday: 'short' }).format(date)}</span>
-          <span class="date-card-day">${day}</span>
-          <span class="date-card-month">${month}</span>
+          <div class="date-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </div>
+          <div class="date-card-info">
+            <span class="date-card-weekday">${new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', { weekday: 'short' }).format(date)}</span>
+            <span class="date-card-day">${day}</span>
+            <span class="date-card-month">${month}</span>
+          </div>
         </div>
         <div class="date-card-center">
           <div class="date-card-slots ${isLow ? 'low' : ''}">
