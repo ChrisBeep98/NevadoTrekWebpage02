@@ -1018,39 +1018,52 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+/* Continue Button (Step 2) - Matches 'Reservar Tour' style */
 .booking-btn.primary {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
 }
 
 .booking-btn.primary:hover {
-  background: #1d4ed8;
-  border-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 }
 
+/* REVERTED: Confirm Button (Step 3) */
 .booking-submit-btn {
-  display: flex;
+  display: flex !important; /* Keep distinct from previous edit */
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 100%;
   padding: 18px 32px;
-  margin-top: 8px;
+  margin-top: 16px;
   background: #2563eb;
   border: none;
-  border-radius: 8px;
+  border-radius: 1000px;
   color: white;
   font-family: Inter, sans-serif;
   font-size: 1em;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
 }
 
 .booking-submit-btn:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
+  background: #1d4ed8 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.5);
+  color: white !important;
 }
 
 .booking-submit-btn:disabled {
@@ -1398,9 +1411,27 @@
   }
   
   .booking-modal-form {
-    padding: 24px 16px !important; /* Top/Bottom 24px, Left/Right 16px */
+    padding: 24px 16px !important;
     width: 100%;
     box-sizing: border-box;
+  }
+
+  /* Tighter form spacing on mobile */
+  .form-group {
+    gap: 4px; /* Reduced from 8px */
+    margin-bottom: 12px;
+  }
+  
+  .form-group label {
+    font-size: 0.8em;
+    margin-bottom: 2px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 14px;
+    font-size: 14px; /* Prevent zoom on iOS */
   }
 }
 
