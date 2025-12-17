@@ -219,10 +219,10 @@
 
 /* Base styles for panels (Mobile/Stacked) */
 .booking-panel-left {
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
   width: 100%;
   padding: 48px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
 }
 
 .booking-panel-right {
@@ -240,8 +240,8 @@
   }
 
   .booking-panel-left {
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.1);
+    border-right: none;
+    background: transparent;
     padding: 48px 48px;
     overflow-y: auto;
   }
