@@ -57,7 +57,7 @@
   background: linear-gradient(145deg, #042e4d 0%, #021c2e 100%);
   border-radius: 24px;
   width: 100%;
-  max-width: 1000px; /* Reduced for 2-column Layout */
+  max-width: 1200px; /* Reduced for 2-column Layout */
   max-height: 92vh;
   overflow: hidden;
   position: relative;
@@ -217,6 +217,7 @@
 /* Base styles for panels (Mobile/Stacked) */
 .booking-panel-left {
   background: rgba(0, 0, 0, 0.2);
+  width: 100%;
   padding: 48px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -231,8 +232,8 @@
 @media screen and (min-width: 1025px) {
   .booking-body-layout {
     display: grid;
-    grid-template-columns: 320px 1fr; /* 2 Columns: Prices | Main Form */
-    overflow: hidden;
+    grid-template-columns: 420px 1fr; /* 2 Columns: Prices | Main Form */
+    overflow: visible; /* Changed from hidden to allow flyouts */
   }
 
   .booking-panel-left {
@@ -272,6 +273,7 @@
 /* Previous Desktop visibility overrides updated to target panels */
 @media screen and (min-width: 1025px) {
   .booking-modal-content,
+  .booking-body-layout,
   .booking-panel-left,
   .booking-panel-main,
   .booking-modal-main {
@@ -348,6 +350,7 @@
   gap: 28px;
   overflow-y: auto;
   padding-right: 16px;
+
 }
 
 .booking-info-section h4 {
@@ -698,9 +701,10 @@
 .private-date-input {
   display: none;
   margin-top: 16px;
-  padding: 0; /* Remove padding from wrapper to fix margin issues */
+  padding: 0; 
   width: 100%;
   box-sizing: border-box;
+  position: relative; /* Added for popup alignment */
 }
 
 .private-date-input.active {
@@ -760,7 +764,7 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   padding: 16px;
-  z-index: 100;
+  z-index: 999; /* Increased to ensure it's above everything */
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   
   /* Animation */
@@ -770,11 +774,26 @@
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-
 .custom-calendar-popup.active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+/* DESKTOP: Refined size and flyout position */
+@media screen and (min-width: 1025px) {
+  .custom-calendar-popup {
+    width: 320px;
+    left: calc(100% + 16px); /* Flyout to the right */
+    top: auto;
+    bottom: 50%; /* Align bottom to vertically-middle of trigger */
+    transform: translateY(50%) translateX(-10px);
+    margin-top: 0;
+  }
+
+  .custom-calendar-popup.active {
+    transform: translateY(50%) translateX(0);
+  }
 }
 
 /* Calendar Header */

@@ -216,11 +216,7 @@ function createModalHTML() {
         <div class="booking-modal-header-new">
           <div class="booking-header-info-row">
             <p class="booking-header-subtitle" data-i18n="bookYourTour">${t.bookYourTour}</p>
-            <div class="booking-header-chips">
-              <span class="header-chip"><span id="booking-duration-text"></span></span>
-              <span class="header-chip"><span id="booking-altitude-text"></span></span>
-              <span class="header-chip"><span id="booking-difficulty-text"></span></span>
-            </div>
+            
           </div>
           <h2 class="booking-header-title" id="booking-hero-title">Nombre del Tour</h2>
         </div>
