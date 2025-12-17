@@ -1,5 +1,5 @@
 import { apiService } from './../js/services/api.js';
-import { initBookingModal } from './booking-modal.js';
+import { initBookingModal } from './booking-modal.js?v=2';
 
 /**
  * TOUR PAGE LOADER

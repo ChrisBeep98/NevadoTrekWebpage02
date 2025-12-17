@@ -145,6 +145,9 @@ export function initBookingModal(tour, departures) {
 
   // Bind events
   bindEvents();
+  
+  // Initialize custom date picker
+  initCustomDatePicker();
 
   // Listen for language changes
   window.addEventListener('languageChange', (e) => {
@@ -171,42 +174,34 @@ function createModalHTML() {
           </svg>
         </button>
 
-        <!-- Header -->
-        <div class="booking-modal-header">
-          <h2 class="booking-modal-title" data-i18n="title">${t.title}</h2>
-          <p class="booking-modal-tour-name" id="booking-tour-name"></p>
+        <!-- HERO SECTION - Visual Tour Preview -->
+        <div class="booking-hero" id="booking-hero">
+          <div class="booking-hero-image" id="booking-hero-image">
+            <!-- Image set dynamically -->
+          </div>
+          <div class="booking-hero-overlay"></div>
+          <div class="booking-hero-content">
+            <div class="booking-hero-chips">
+              <span class="booking-chip" id="booking-chip-duration">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span id="booking-duration-text">2 días</span>
+              </span>
+              <span class="booking-chip" id="booking-chip-altitude">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>
+                <span id="booking-altitude-text">4,750 msnm</span>
+              </span>
+              <span class="booking-chip" id="booking-chip-difficulty">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                <span id="booking-difficulty-text">Moderado</span>
+              </span>
+            </div>
+            <h2 class="booking-hero-title" id="booking-hero-title">Nombre del Tour</h2>
+          </div>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="booking-modal-grid">
-          <!-- Left: Info + Pricing -->
-          <div class="booking-modal-info">
-            <!-- Pricing Tiers -->
-            <div class="booking-info-section pricing-tiers-section" id="pricing-tiers">
-              <h4 data-i18n="pricingTitle">${t.pricingTitle}</h4>
-              <div id="pricing-tiers-list"></div>
-            </div>
-            
-            <!-- Selected Date Summary (shown when date is selected) -->
-            <div class="booking-info-section selected-date-summary" id="selected-date-summary" style="display: none;">
-              <h4 data-i18n="yourSelectedDate">${t.yourSelectedDate}</h4>
-              <div class="selected-date-display">
-                <span class="summary-date-value" id="step2-date-display"></span>
-                <button type="button" class="change-date-btn" id="change-date-btn" data-i18n="changeDate">${t.changeDate}</button>
-              </div>
-            </div>
-            <div class="booking-info-section">
-              <h4 data-i18n="whyBook">${t.whyBook}</h4>
-              <ul>
-                <li data-i18n-key="booking.benefit1">Mejor precio garantizado</li>
-                <li data-i18n-key="booking.benefit2">Atención personalizada</li>
-                <li data-i18n-key="booking.benefit3">Flexibilidad en cambios</li>
-                <li data-i18n-key="booking.benefit4">Soporte 24/7</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Right: Form -->
+        <!-- Main Content - Single Column Focus -->
+        <div class="booking-modal-main">
+          <!-- Steps Progress -->
           <div class="booking-modal-form">
             <!-- Error Message -->
             <div class="booking-error" id="booking-error">
@@ -220,22 +215,7 @@ function createModalHTML() {
 
             <!-- Steps Indicator -->
             <div class="booking-steps">
-              <div class="booking-progress-track">
-                <div class="booking-progress-fill" id="booking-progress-fill"></div>
-              </div>
-              
-              <div class="booking-step-indicator active" data-step="1">
-                <span class="step-number">1</span>
-                <span data-i18n="step1">${t.step1}</span>
-              </div>
-              <div class="booking-step-indicator" data-step="2">
-                <span class="step-number">2</span>
-                <span data-i18n="step2">${t.step2}</span>
-              </div>
-              <div class="booking-step-indicator" data-step="3">
-                <span class="step-number">3</span>
-                <span data-i18n="step3">${t.step3}</span>
-              </div>
+              <div class="booking-progress-fill" id="booking-progress-fill"></div>
             </div>
 
             <!-- Step 1: Date Selection -->
@@ -252,10 +232,21 @@ function createModalHTML() {
 
               <p class="step-explanation" id="private-dates-explanation" data-i18n="privateDateExplain">${t.privateDateExplain}</p>
 
-              <div class="private-date-input" id="private-date-input" style="display: block;">
-                <div class="form-group">
-                  <label data-i18n="selectDate">${t.selectDate}</label>
-                  <input type="date" id="booking-private-date" min="${getMinDate()}">
+              <div class="private-date-input" id="private-date-input">
+                <div class="custom-date-group">
+                  <label class="custom-date-label" data-i18n="selectDate">${t.selectDate}</label>
+                  
+                  <!-- Hidden native input -->
+                  <input type="date" id="booking-private-date" min="${getMinDate()}" style="display:none">
+                  
+                  <!-- Custom Trigger -->
+                  <div class="custom-date-trigger" id="custom-date-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span id="custom-date-text">dd/mm/aaaa</span>
+                  </div>
+
+                  <!-- Custom Calendar Popup -->
+                  <div class="custom-calendar-popup" id="custom-calendar-popup"></div>
                 </div>
               </div>
             </div>
@@ -480,10 +471,51 @@ async function openModal() {
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden'; // Lock html too
 
-  // Set tour name
-  const tourNameEl = document.getElementById('booking-tour-name');
-  if (tourNameEl) {
-    tourNameEl.textContent = currentTour.name[currentLang];
+  // ==================== POPULATE HERO ====================
+  // Set hero background image
+  const heroImage = document.getElementById('booking-hero-image');
+  if (heroImage && currentTour.images && currentTour.images.length > 0) {
+    heroImage.style.backgroundImage = `url('${currentTour.images[0]}')`;
+  }
+  
+  // Set hero title
+  const heroTitle = document.getElementById('booking-hero-title');
+  if (heroTitle) {
+    heroTitle.textContent = currentTour.name[currentLang];
+  }
+  
+  // Set duration chip
+  const durationText = document.getElementById('booking-duration-text');
+  if (durationText && currentTour.duration) {
+    // Handle both string and object (bilingual) formats
+    if (typeof currentTour.duration === 'object') {
+      durationText.textContent = currentTour.duration[currentLang] || currentTour.duration.es || '';
+    } else {
+      durationText.textContent = currentTour.duration;
+    }
+  }
+  
+  // Set altitude chip
+  const altitudeText = document.getElementById('booking-altitude-text');
+  if (altitudeText && currentTour.altitude) {
+    // Handle both string and number formats
+    const alt = typeof currentTour.altitude === 'object' 
+      ? (currentTour.altitude[currentLang] || currentTour.altitude.es)
+      : currentTour.altitude;
+    altitudeText.textContent = `${alt} msnm`;
+  }
+  
+  // Set difficulty chip
+  const difficultyText = document.getElementById('booking-difficulty-text');
+  if (difficultyText && currentTour.difficulty) {
+    const difficultyLabels = {
+      'easy': { es: 'Fácil', en: 'Easy' },
+      'moderate': { es: 'Moderado', en: 'Moderate' },
+      'hard': { es: 'Difícil', en: 'Hard' },
+      'expert': { es: 'Experto', en: 'Expert' }
+    };
+    const diffKey = currentTour.difficulty.toLowerCase();
+    difficultyText.textContent = difficultyLabels[diffKey]?.[currentLang] || currentTour.difficulty;
   }
 
   // Render pricing tiers (doesn't need refresh)
@@ -616,13 +648,21 @@ function renderDateCards() {
 
     return `
       <div class="date-card" data-departure-id="${dep.departureId}">
-        <p class="date-card-day">${day}</p>
-        <p class="date-card-month">${month}</p>
-        <div class="date-card-slots ${isLow ? 'low' : ''}">
-          <span class="dot"></span>
-          <span>${available} ${spotsText}</span>
+        <div class="date-card-left">
+          <span class="date-card-weekday">${new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', { weekday: 'short' }).format(date)}</span>
+          <span class="date-card-day">${day}</span>
+          <span class="date-card-month">${month}</span>
         </div>
-        <p class="date-card-price">${price} ${t.currency}${t.perPerson}</p>
+        <div class="date-card-center">
+          <div class="date-card-slots ${isLow ? 'low' : ''}">
+            <span class="dot"></span>
+            <span>${available} ${spotsText}</span>
+          </div>
+          <p class="date-card-price">${price} ${t.currency}${t.perPerson}</p>
+        </div>
+        <div class="date-card-right">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
       </div>
     `;
   }).join('');
@@ -685,46 +725,175 @@ function handlePrivateDateSelect(e) {
 }
 
 // ==================== STEP NAVIGATION ====================
-function goToStep(stepNum) {
-  // Update step indicators
-  document.querySelectorAll('.booking-step-indicator').forEach(ind => {
-    const num = parseInt(ind.dataset.step);
-    if (num < stepNum) {
-      ind.classList.add('completed');
-      ind.classList.add('active');
-    } else if (num === stepNum) {
-      ind.classList.remove('completed');
-      ind.classList.add('active');
-    } else {
-      ind.classList.remove('completed');
-      ind.classList.remove('active');
-    }
-  });
-
-  // Show/hide steps
+// ==================== NAVIGATION ====================
+function goToStep(stepNumber) {
+  // Hide all steps
   document.querySelectorAll('.booking-step').forEach(step => {
     step.classList.remove('active');
   });
-  document.getElementById(`booking-step-${stepNum}`)?.classList.add('active');
 
-  // Update Progress Bar Width
+  // Show target step
+  const targetStep = document.getElementById(`booking-step-${stepNumber}`);
+  if (targetStep) targetStep.classList.add('active');
+
+  // Update progress bar width
   const progressFill = document.getElementById('booking-progress-fill');
   if (progressFill) {
-    // 3 steps total. 
-    // Step 1: 0%
-    // Step 2: 50%
-    // Step 3: 100%
-    const progressPercentage = (stepNum - 1) * 50; 
-    progressFill.style.width = `${progressPercentage}%`;
+    if (stepNumber === 1) progressFill.style.width = '33%';
+    if (stepNumber === 2) progressFill.style.width = '66%';
+    if (stepNumber === 3) progressFill.style.width = '100%';
   }
+}
 
-  // Hide success
-  document.getElementById('booking-success')?.classList.remove('active');
+// ==================== CUSTOM DATE PICKER LOGIC ====================
+let calendarCurrentDate = new Date();
 
-  // If going to step 2, update the date summary display
-  if (stepNum === 2) {
-    updateStep2DateDisplay();
+function initCustomDatePicker() {
+  const trigger = document.getElementById('custom-date-trigger');
+  const popup = document.getElementById('custom-calendar-popup');
+  const dateInput = document.getElementById('booking-private-date');
+  const dateText = document.getElementById('custom-date-text');
+
+  if (!trigger || !popup) return;
+
+  // Toggle calendar
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isActive = popup.classList.contains('active');
+    
+    // Close other popups if any
+    document.querySelectorAll('.custom-calendar-popup.active').forEach(p => p.classList.remove('active'));
+    
+    if (!isActive) {
+      popup.classList.add('active');
+      renderCalendar(calendarCurrentDate);
+    }
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!popup.contains(e.target) && !trigger.contains(e.target)) {
+      popup.classList.remove('active');
+    }
+  });
+
+  // Prevent closing when clicking inside popup
+  popup.addEventListener('click', (e) => e.stopPropagation());
+}
+
+function renderCalendar(date) {
+  const popup = document.getElementById('custom-calendar-popup');
+  if (!popup) return;
+  
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  
+  // Month names
+  const monthNames = {
+    es: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  };
+  
+  // Weekday initials
+  const weekDays = {
+    es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+    en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+  };
+
+  const currentMonthName = monthNames[currentLang][month];
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  
+  // Custom min date (tomorrow)
+  const minDate = new Date();
+  minDate.setDate(minDate.getDate() + 1);
+  minDate.setHours(0,0,0,0);
+  
+  let html = `
+    <div class="calendar-header">
+      <button class="calendar-month-btn" id="prev-month">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="calendar-current-month">${currentMonthName} ${year}</span>
+      <button class="calendar-month-btn" id="next-month">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+    <div class="calendar-grid">
+      ${weekDays[currentLang].map(d => `<div class="calendar-weekday">${d}</div>`).join('')}
+  `;
+  
+  // Empty slots
+  for (let i = 0; i < firstDay; i++) {
+    html += `<div></div>`;
   }
+  
+  // Days
+  for (let i = 1; i <= daysInMonth; i++) {
+    const d = new Date(year, month, i);
+    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+    
+    // Check constraints
+    const isPast = d < minDate;
+    const isSelected = document.getElementById('booking-private-date').value === dateString;
+    const isToday = d.getTime() === today.getTime();
+    
+    let classes = 'calendar-day';
+    if (isPast) classes += ' disabled';
+    if (isSelected) classes += ' selected';
+    if (isToday) classes += ' today';
+    
+    html += `<div class="${classes}" data-date="${dateString}">${i}</div>`;
+  }
+  
+  html += `</div>`;
+  popup.innerHTML = html;
+  
+  // Bind calendar events
+  document.getElementById('prev-month').addEventListener('click', () => {
+    calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() - 1);
+    renderCalendar(calendarCurrentDate);
+  });
+  
+  document.getElementById('next-month').addEventListener('click', () => {
+    calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() + 1);
+    renderCalendar(calendarCurrentDate);
+  });
+  
+  popup.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
+    day.addEventListener('click', (e) => {
+      const selectedDate = e.target.getAttribute('data-date');
+      selectCustomDate(selectedDate);
+    });
+  });
+}
+
+function selectCustomDate(dateString) {
+  const dateInput = document.getElementById('booking-private-date');
+  const dateText = document.getElementById('custom-date-text');
+  const popup = document.getElementById('custom-calendar-popup');
+  
+  if (!dateInput) return;
+
+  // Update native input
+  dateInput.value = dateString;
+  
+  // Manually trigger change event handler since programmatic change doesn't fire it
+  // and we also need to update global state and UI
+  // Reuse handlePrivateDateSelect logic or better yet, trigger the event
+  // BUT custom event dispatch might be tricky if reference is lost.
+  // Let's call the handler directly if exposed or just dispatch.
+  dateInput.dispatchEvent(new Event('change', { bubbles: true }));
+  
+  // Update text
+  const [y, m, d] = dateString.split('-');
+  dateText.textContent = `${d}/${m}/${y}`;
+  dateText.style.color = 'white';
+  
+  // Close popup
+  popup.classList.remove('active');
 }
 
 function updateStep2DateDisplay() {
