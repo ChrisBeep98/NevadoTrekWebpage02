@@ -57,7 +57,8 @@
 
 /* ===== MODAL CONTENT - REDESIGNED ===== */
 .booking-modal-content {
-  background: linear-gradient(145deg, #042e4d 0%, #021c2e 100%);
+  /* Solid Rich Navy - Based on user preference for the lighter part of the sample */
+  background: #052e4a;
   border-radius: 24px;
   width: 100%;
   max-width: 80vw; /* Reduced for 2-column Layout */
