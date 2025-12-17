@@ -778,6 +778,12 @@ function handlePrivateDateSelect(e) {
 // ==================== STEP NAVIGATION ====================
 // ==================== NAVIGATION ====================
 function goToStep(stepNumber) {
+  const modalContent = document.querySelector('.booking-modal-content');
+  const bodyLayout = document.querySelector('.booking-body-layout');
+  
+  // 1. Measure current height before changes
+  const oldHeight = modalContent ? modalContent.offsetHeight : 0;
+
   // Hide all steps
   document.querySelectorAll('.booking-step').forEach(step => {
     step.classList.remove('active');
@@ -795,6 +801,33 @@ function goToStep(stepNumber) {
     } else {
       modal.classList.remove('is-success');
     }
+  }
+
+  // 2. Measure new height after step change
+  if (modalContent) {
+    // Temporarily set height to auto to measure new content
+    const originalHeightStyle = modalContent.style.height;
+    modalContent.style.height = 'auto';
+    const newHeight = modalContent.offsetHeight;
+    
+    // 3. Apply animation
+    // Set back to old height first (no transition if we do it fast enough or disable it)
+    modalContent.style.transition = 'none';
+    modalContent.style.height = `${oldHeight}px`;
+    
+    // Force reflow
+    modalContent.offsetHeight;
+    
+    // Restore transition and set to new height
+    modalContent.style.transition = 'height 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    modalContent.style.height = `${newHeight}px`;
+    
+    // 4. Clean up: reset to auto after animation to keep it responsive
+    setTimeout(() => {
+      if (modalContent.style.height === `${newHeight}px`) {
+        modalContent.style.height = ''; // Back to CSS/auto
+      }
+    }, 600);
   }
 
   // Update progress bar width and checkpoints

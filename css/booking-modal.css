@@ -64,7 +64,6 @@
   max-width: 80vw; /* Reduced for 2-column Layout */
   max-height: 92vh;
   min-height: 76vh;
-  overflow: hidden;
   position: relative;
   box-shadow: 
     0 25px 80px rgba(0, 0, 0, 0.5),
@@ -72,6 +71,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Tablet & Mobile - Full width modal, no border-radius */
@@ -215,8 +215,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-y: auto; /* Fix: Allow scroll on mobile */
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden; /* Prevent scrollbar flash during transition */
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Base styles for panels (Mobile/Stacked) */
@@ -251,6 +251,7 @@
   .booking-panel-main {
     flex: 1;
     overflow-y: auto;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .booking-modal-main {
