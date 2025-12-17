@@ -1343,9 +1343,6 @@
   align-items: center;
 }
 
-.booking-success.active {
-  display: flex;
-}
 
 .booking-success-icon {
   width: 80px;

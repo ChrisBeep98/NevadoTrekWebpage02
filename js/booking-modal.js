@@ -394,8 +394,8 @@ function createModalHTML() {
                   </button>
                 </div>
 
-                <!-- Success State -->
-                <div class="booking-success" id="booking-success">
+                <!-- Step 4: Success State -->
+                <div class="booking-step booking-success" id="booking-step-4">
                   <div class="booking-success-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <polyline points="20 6 9 17 4 12"></polyline>
@@ -785,7 +785,7 @@ function goToStep(stepNumber) {
   // Success state layout toggle
   const modal = document.getElementById('booking-modal');
   if (modal) {
-    if (stepNumber === 3) {
+    if (stepNumber === 4) {
       modal.classList.add('is-success');
     } else {
       modal.classList.remove('is-success');
@@ -1248,12 +1248,8 @@ function showSuccess(bookingId) {
   const t = translations[currentLang];
   const pax = parseInt(document.getElementById('booking-pax').value);
   
-  // Hide all steps
-  document.querySelectorAll('.booking-step').forEach(s => s.classList.remove('active'));
-  
-  // Show success
-  const successEl = document.getElementById('booking-success');
-  successEl?.classList.add('active');
+  // Use standard navigation for success
+  goToStep(4);
   
   // Set booking ID
   document.getElementById('booking-ref-id').textContent = bookingId;
