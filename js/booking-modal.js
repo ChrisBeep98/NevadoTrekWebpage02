@@ -61,7 +61,11 @@ const translations = {
     groupSize: 'Tamaño del grupo después de tu reserva',
     publicDatesExplain: 'Únete a un grupo existente:',
     privateDateExplain: 'O solicita una fecha privada exclusiva para tu grupo:',
-    currency: 'COP'
+    currency: 'COP',
+    bookYourTour: 'RESERVA TU AVENTURA', /* Using "Aventura" sounds better/premium */
+    priceTablePax: 'Personas',
+    priceTablePrice: 'Precio',
+    priceTable4plus: '4 - 8',
   },
   en: {
     title: 'BOOK TOUR',
@@ -116,7 +120,11 @@ const translations = {
     groupSize: 'Group size after your booking',
     publicDatesExplain: 'Join an existing group:',
     privateDateExplain: 'Or request a private date exclusive for your group:',
-    currency: 'USD'
+    currency: 'USD',
+    bookYourTour: 'BOOK YOUR ADVENTURE',
+    priceTablePax: 'Guests',
+    priceTablePrice: 'Price',
+    priceTable4plus: '4 - 8',
   }
 };
 
@@ -156,6 +164,34 @@ export function initBookingModal(tour, departures) {
   });
 
 
+  // Initial render of pricing table
+  renderPricingTable();
+}
+
+function renderPricingTable() {
+  const tbody = document.getElementById('pricing-table-body');
+  if (!tbody || !currentTour) return;
+
+  const t = translations[currentLang];
+  const rows = [
+    { label: '1', pax: 1 },
+    { label: '2', pax: 2 },
+    { label: '3', pax: 3 },
+    { label: t.priceTable4plus, pax: 4 } // Assumes tier for 4 covers 4-8
+  ];
+
+  tbody.innerHTML = rows.map(r => {
+    const price = getFormattedPrice(currentTour.pricingTiers, r.pax);
+    // Remove "COP" / "USD" suffix for cleaner table look, or keep it? 
+    // User asked for "buen ux", keeping currency is clearer but removing it is cleaner if header says (COP).
+    // Use the full string from getFormattedPrice for clarity.
+    return `
+      <tr>
+        <td class="pax-col">${r.label}</td>
+        <td class="price-col">${price}</td>
+      </tr>
+    `;
+  }).join('');
 }
 
 // ==================== CREATE MODAL HTML ====================
@@ -181,20 +217,7 @@ function createModalHTML() {
           </div>
           <div class="booking-hero-overlay"></div>
           <div class="booking-hero-content">
-            <div class="booking-hero-chips">
-              <span class="booking-chip" id="booking-chip-duration">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <span id="booking-duration-text">2 días</span>
-              </span>
-              <span class="booking-chip" id="booking-chip-altitude">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>
-                <span id="booking-altitude-text">4,750 msnm</span>
-              </span>
-              <span class="booking-chip" id="booking-chip-difficulty">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-                <span id="booking-difficulty-text">Moderado</span>
-              </span>
-            </div>
+            <p class="booking-hero-subtitle" data-i18n="bookYourTour">${t.bookYourTour}</p>
             <h2 class="booking-hero-title" id="booking-hero-title">Nombre del Tour</h2>
           </div>
         </div>
@@ -220,6 +243,22 @@ function createModalHTML() {
 
             <!-- Step 1: Date Selection -->
             <div class="booking-step active" id="booking-step-1">
+              
+              <!-- Pricing Table (New) -->
+              <div class="pricing-table-container">
+                <table class="pricing-table">
+                  <thead>
+                    <tr>
+                      <th data-i18n="priceTablePax">${t.priceTablePax}</th>
+                      <th data-i18n="priceTablePrice">${t.priceTablePrice}</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pricing-table-body">
+                    <!-- Injected via renderPricingTable() -->
+                  </tbody>
+                </table>
+              </div>
+
               <p class="step-explanation" id="public-dates-explanation" data-i18n="publicDatesExplain">${t.publicDatesExplain}</p>
               
               <div id="date-cards-container" class="date-cards-container">
@@ -1352,6 +1391,9 @@ function updateModalLanguage() {
 
   // Re-render pricing tiers
   renderPricingTiers();
+
+  // Re-render simplified pricing table
+  renderPricingTable();
 
   // Re-render date cards with new language/currency
   renderDateCards();

@@ -1338,6 +1338,73 @@
   font-size: 0.85em;
 }
 
+/* ===== HERO SUBTITLE ===== */
+.booking-hero-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: Inter, sans-serif;
+  font-size: 0.85em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0 0 8px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== PRICING TABLE (STEP 1) ===== */
+.pricing-table-container {
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pricing-table th,
+.pricing-table td {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: Inter, sans-serif;
+  font-size: 0.9em;
+  color: white;
+}
+
+.pricing-table th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75em;
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pricing-table td.pax-col {
+  font-weight: 600;
+  color: var(--color--blue-dark, #8fbbd3);
+  width: 40%;
+}
+
+.pricing-table td.price-col {
+  text-align: right;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+}
+
+.pricing-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pricing-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
 /* ===== RESPONSIVE ===== */
 @media screen and (max-width: 768px) {
   .booking-modal {
