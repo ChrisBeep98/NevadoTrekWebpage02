@@ -60,8 +60,9 @@
   background: linear-gradient(145deg, #042e4d 0%, #021c2e 100%);
   border-radius: 24px;
   width: 100%;
-  max-width: 1200px; /* Reduced for 2-column Layout */
+  max-width: 80vw; /* Reduced for 2-column Layout */
   max-height: 92vh;
+  min-height: 80vh;
   overflow: hidden;
   position: relative;
   box-shadow: 
@@ -235,7 +236,7 @@
 @media screen and (min-width: 1025px) {
   .booking-body-layout {
     display: grid;
-    grid-template-columns: 420px 1fr; /* 2 Columns: Prices | Main Form */
+    grid-template-columns: 42% 1fr; /* 2 Columns: Prices | Main Form */
     overflow: visible; /* Changed from hidden to allow flyouts */
   }
 
