@@ -285,6 +285,11 @@
 }
 
 /* Sidebar hiding logic moved to media query block */
+@media screen and (min-width: 1025px) {
+  .booking-panel-left {
+    display: block !important;
+  }
+}
 
 .booking-panel-right {
   flex: 1;

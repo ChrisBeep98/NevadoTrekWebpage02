@@ -911,9 +911,11 @@ function goToStep(stepNumber) {
     // Collect elements from the active step (Dates, etc.)
     let stepContentItems = Array.from(targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon, .date-card, .no-dates-message'));
     
-    // Collect sidebar elements if we are on Step 1
+    // Collect sidebar elements (Always on Desktop, Step 1 only on Mobile)
     let sidebarItems = [];
-    if (stepNumber === 1) {
+    const isDesktop = window.innerWidth > 1024;
+    
+    if (stepNumber === 1 || isDesktop) {
       const sidebarNodes = document.querySelectorAll('.pricing-table-container, .pricing-tier, #pricing-table-body tr');
       if (sidebarNodes.length > 0) {
         sidebarItems = Array.from(sidebarNodes);
