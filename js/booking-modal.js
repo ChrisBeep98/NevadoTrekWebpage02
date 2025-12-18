@@ -908,11 +908,9 @@ function goToStep(stepNumber) {
     const headerItems = document.querySelectorAll('.booking-header-subtitle, .booking-header-title, .booking-steps');
     
     // Collect elements from the active step
-    let items = Array.from(targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon, .date-card, .no-dates-message'));
+    // Collect elements from the active step (Dates, etc.)
+    let stepContentItems = Array.from(targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon, .date-card, .no-dates-message'));
     
-    // Combine them (Header first, then Step content)
-    items = [...Array.from(headerItems), ...items];
-
     // Collect sidebar elements if we are on Step 1
     let sidebarItems = [];
     if (stepNumber === 1) {
@@ -923,7 +921,7 @@ function goToStep(stepNumber) {
     }
     
     // Combine them (Header -> Sidebar -> Step content)
-    items = [...Array.from(headerItems), ...sidebarItems, ...items];
+    let items = [...Array.from(headerItems), ...sidebarItems, ...stepContentItems];
 
     items.forEach((el, index) => {
       // Remove previous class if any to re-trigger
