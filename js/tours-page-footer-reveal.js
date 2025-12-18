@@ -54,7 +54,6 @@
     };
 
     // Initial update
-    // Small delay to ensure Webflow/CSS has rendered inside footer
     setTimeout(updateMargin, 100);
 
     // Update on resize
@@ -77,11 +76,8 @@
          const mainRect = mainContainer.getBoundingClientRect();
          const windowHeight = window.innerHeight;
          
-         // Calculate how much of the footer is visible
          const footerVisibleHeight = windowHeight - mainRect.bottom;
-         
-         // Start hiding when we reach the actual content end
-         const shouldHide = footerVisibleHeight > 50; // Smaller threshold for cleaner transition
+         const shouldHide = footerVisibleHeight > 50; 
          
          if (tocElement) {
            tocElement.style.opacity = shouldHide ? '0' : '1';
@@ -90,7 +86,6 @@
          }
 
          if (mobileCta) {
-           // On mobile we want to hide it completely as it overlaps with footer content
            mobileCta.style.opacity = shouldHide ? '0' : '1';
            mobileCta.style.pointerEvents = shouldHide ? 'none' : 'auto';
            mobileCta.style.transform = shouldHide ? 'translateY(100%)' : 'translateY(0)';
@@ -99,141 +94,71 @@
       });
     }
 
-
+    // Initialize Footer Content Animation
+    initFooterContentAnimation();
   }
 
-  // --- Animation Logic (Copied/Adapted from index-animations.js) ---
+  function initFooterContentAnimation() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-  function initFooterFinalTextReveal() {
-    const textEl = document.querySelector('.moving-gallery .last-heading');
-    if (!textEl) {
-      // Try finding it inside the footer placeholder just in case
-      const placeholder = document.getElementById('footer-placeholder');
-      const textElInPlaceholder = placeholder ? placeholder.querySelector('.last-heading') : null;
-      if (!textElInPlaceholder) return;
-      
-      // Use GSAP ScrollTrigger if available, else Fallback to IntersectionObserver
-      if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
-        runGsapReveal(textElInPlaceholder);
-      } else {
-        applyLetterReveal(textElInPlaceholder, 15, 150);
-      }
-      return;
-    }
+    const footer = document.getElementById('footer-placeholder');
+    if (!footer) return;
 
-    // Use GSAP ScrollTrigger if available
-    if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
-      runGsapReveal(textEl);
-    } else {
-      // Fallback to IntersectionObserver logic if GSAP missing
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              applyLetterReveal(textEl, 15, 150); 
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        {
-          rootMargin: '0px 0px -10% 0px',
-          threshold: 0.1,
-        }
-      );
-      observer.observe(textEl);
-    }
-  }
+    // Target elements to animate
+    const animElements = [
+      footer.querySelector('.footer_brand'),
+      footer.querySelector('.div-block-80 p'),
+      footer.querySelector('.footer_socials'),
+      ...Array.from(footer.querySelectorAll('.footer_links-wrap')),
+      ...Array.from(footer.querySelectorAll('.footer-bottom-content > *'))
+    ].filter(el => el !== null);
 
-  function runGsapReveal(element) {
-    if (!element) return;
-    
-    // Prepare split text manually (GSAP SplitText is premium, assume we don't have it)
-    const text = element.textContent;
-    element.innerHTML = '';
-    element.style.opacity = '1'; // Ensure container is visible
-
-    const allLetters = [];
-
-    const words = text.split(' ');
-    words.forEach((word, wordIndex) => {
-      const wordWrapper = document.createElement('span');
-      wordWrapper.style.whiteSpace = 'nowrap';
-      wordWrapper.style.display = 'inline-block';
-      
-      for (let i = 0; i < word.length; i++) {
-        const char = word[i];
-        const letterSpan = document.createElement('span');
-        letterSpan.textContent = char;
-        letterSpan.style.display = 'inline-block';
-        letterSpan.style.opacity = '0'; // Initial state
-        letterSpan.style.transform = 'translateY(20px) scale(0.98)';
-        letterSpan.style.filter = 'blur(8px)';
-        
-        allLetters.push(letterSpan);
-        wordWrapper.appendChild(letterSpan);
-      }
-      
-      element.appendChild(wordWrapper);
-      
-      if (wordIndex < words.length - 1) {
-        const space = document.createTextNode(' ');
-        element.appendChild(space);
-      }
+    // Initial state
+    gsap.set(animElements, { 
+      opacity: 0, 
+      y: 40,
+      scale: 0.98,
+      filter: 'blur(10px)'
     });
 
-    // Create GSAP ScrollTrigger
-    gsap.to(allLetters, {
-      scrollTrigger: {
-        trigger: element,
-        start: "top 90%", // Start when top of element hits 90% of viewport height
-        toggleActions: "play none none none"
+    // Create animation that triggers when footer starts becoming visible
+    // Since the content "rises" to reveal, we trigger when the main container's bottom 
+    // enters the viewport from below.
+    const mainContainer = document.getElementById('tours-page-container');
+
+    ScrollTrigger.create({
+      trigger: mainContainer,
+      start: "bottom 95%", // Start animation when the curtain is almost fully open
+      onEnter: () => {
+        gsap.to(animElements, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 1.2,
+          stagger: 0.1,
+          ease: "expo.out",
+          overwrite: true
+        });
       },
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      filter: 'blur(0px)',
-      duration: 1.2,
-      stagger: 0.02,
-      ease: "power3.out", // Smooth easing as requested
-      delay: 0.1
+      onLeaveBack: () => {
+        // Optional: Hide them again when scrolling up
+        gsap.to(animElements, {
+          opacity: 0,
+          y: 40,
+          scale: 0.98,
+          filter: 'blur(10px)',
+          duration: 0.8,
+          ease: "power2.in",
+          overwrite: true
+        });
+      }
     });
   }
 
-  function applyLetterReveal(element, staggerMs = 15, initialDelayMs = 0) {
-    if (!element) return;
-
-    const text = element.textContent;
-    element.innerHTML = ''; 
-    element.classList.add('animating');
-
-    const words = text.split(' ');
-    let letterIndex = 0;
-
-    words.forEach((word, wordIndex) => {
-      const wordWrapper = document.createElement('span');
-      wordWrapper.className = 'word-letter-wrapper';
-      wordWrapper.style.whiteSpace = 'nowrap';
-      wordWrapper.style.display = 'inline-block';
-      
-      for (let i = 0; i < word.length; i++) {
-        const char = word[i];
-        const letterSpan = document.createElement('span');
-        letterSpan.className = 'letter'; // Requires index-animations.css if falling back
-        letterSpan.textContent = char;
-        
-        const delay = initialDelayMs + letterIndex * staggerMs;
-        letterSpan.style.animationDelay = `${delay}ms`;
-        
-        wordWrapper.appendChild(letterSpan);
-        letterIndex++;
-      }
-      
-      element.appendChild(wordWrapper);
-      
-      if (wordIndex < words.length - 1) {
-        const space = document.createTextNode(' ');
-        element.appendChild(space);
-      }
-    });
+  // --- Animation Logic for specific text (Legacy support) ---
+  function initFooterFinalTextReveal() {
+    // Keep this for consistency if needed by other components, 
+    // but the main staggered logic above covers more ground.
   }
 })();
