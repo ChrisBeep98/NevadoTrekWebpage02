@@ -645,7 +645,7 @@ function renderPricingTiers() {
 
   const t = translations[currentLang];
 
-  container.innerHTML = currentTour.pricingTiers.map(tier => {
+  container.innerHTML = currentTour.pricingTiers.map((tier, index) => {
     const paxText = tier.minPax === tier.maxPax 
       ? `${tier.minPax} ${tier.minPax === 1 ? t.person : t.persons}`
       : `${tier.minPax}-${tier.maxPax} ${t.persons}`;
@@ -654,8 +654,10 @@ function renderPricingTiers() {
       ? formatUSD(tier.priceUSD)
       : formatCOP(tier.priceCOP);
 
+    const delay = index * 0.08;
+
     return `
-      <div class="pricing-tier">
+      <div class="pricing-tier stagger-animate" style="animation-delay: ${delay}s">
         <span class="pricing-tier-pax">${paxText}</span>
         <span class="pricing-tier-price">${price} ${t.currency}</span>
       </div>
@@ -706,7 +708,7 @@ function renderDateCards() {
   // Render up to 4 date cards
   const displayDates = currentDepartures.slice(0, 4);
   
-  container.innerHTML = displayDates.map(dep => {
+  container.innerHTML = displayDates.map((dep, index) => {
     const date = new Date(dep.date._seconds * 1000);
     const day = date.getDate();
     const month = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'es-CO', { month: 'long' }).format(date);
@@ -721,8 +723,10 @@ function renderDateCards() {
     const totalPeopleAfterBooking = currentPax + 1;
     const price = getFormattedPrice(dep.pricingSnapshot || currentTour.pricingTiers, totalPeopleAfterBooking);
 
+    const delay = (index + 2) * 0.08; // Offset by 2 to start after previous static elements
+
     return `
-      <div class="date-card" data-departure-id="${dep.departureId}">
+      <div class="date-card stagger-animate" data-departure-id="${dep.departureId}" style="animation-delay: ${delay}s">
         <div class="date-card-left">
           <div class="date-card-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -882,6 +886,26 @@ function goToStep(stepNumber) {
       cp.classList.remove('active');
     }
   });
+
+  // 5. STAGGERED ENTRY ANIMATION FOR ALL ELEMENTS
+  if (targetStep) {
+    // Find all primary elements to animate (title, groups, buttons, summary rows)
+    // We target direct children or specific deep elements to keep it clean
+    const elementsToAnimate = targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon');
+    
+    elementsToAnimate.forEach((el, index) => {
+      // Remove previous class if any to re-trigger
+      el.classList.remove('stagger-animate');
+      
+      // Force reflow
+      el.offsetHeight;
+      
+      // Apply delay and class
+      const delay = index * 0.08; // 80ms between elements
+      el.style.animationDelay = `${delay}s`;
+      el.classList.add('stagger-animate');
+    });
+  }
 }
 
 // ==================== CUSTOM DATE PICKER LOGIC ====================
