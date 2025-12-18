@@ -17,27 +17,27 @@ Documentación completa del modal de reservas implementado en la TourPage para g
 
 ```mermaid
 graph TB
-    subgraph Frontend
+    subgraph Frontend [Immersive Frontend]
         A[TourPage.html] --> B[tour-loader.js]
         B --> C[booking-modal.js]
         C --> D[booking-modal.css]
     end
     
+    subgraph Layout [2-Column Desktop Layout]
+        C --> L1[Sidebar: Pricing & Benefits]
+        C --> L2[Main Panel: Form Steps]
+    end
+    
     subgraph Modal Components
-        C --> E[Step 1: Date Selection]
-        C --> F[Step 2: Customer Form]
-        C --> G[Step 3: Summary]
-        C --> H[Success State]
+        L2 --> E[Step 1: Dates & Selection]
+        L2 --> F[Step 2: Customer Details]
+        L2 --> G[Step 3: Summary & Pay]
+        L2 --> H[Step 4: Success State]
     end
     
     subgraph Backend API
-        C --> I[POST /bookings/join]
-        C --> J[POST /bookings/private]
-    end
-    
-    subgraph Data Sources
-        B --> K[GET /tours]
-        B --> L[GET /departures]
+        C --> I[POST /bookings join/private]
+        C --> J[Navigator Clipboard API]
     end
 ```
 
@@ -104,42 +104,54 @@ flowchart TD
 
 ## Componentes del Sistema
 
-### 1. Modal Container
+### 1. Modal Container (Immersive UI)
 
 ```
 .booking-modal
-├── .booking-modal-overlay (fondo blur)
-├── .booking-modal-content (contenedor principal)
-│   ├── .booking-modal-close (botón X)
-│   ├── .booking-modal-header
-│   │   ├── .booking-modal-title (h1 styles)
-│   │   └── .booking-modal-tour-name
-│   └── .booking-modal-grid
-│       ├── .booking-modal-info (columna izquierda)
-│       └── .booking-modal-form (columna derecha)
+├── .booking-modal-overlay (glassmorphism/blur 8px)
+├── .booking-modal-content (solid Rich Navy #052e4a)
+│   ├── .booking-modal-header (compact redesigned)
+│   │   ├── .booking-modal-close (minimal X)
+│   │   ├── .booking-hero-subtitle ("RESERVA TU AVENTURA")
+│   │   ├── .booking-hero-title (tour name)
+│   │   └── .booking-hero-chips (Duration, Type, Level)
+│   └── .booking-body-layout (flex-row for desktop)
+│       ├── .booking-panel-info (sidebar left)
+│       └── .booking-panel-main (form steps right)
 ```
 
-### 2. Columna Izquierda (Info)
+### 2. Columna Izquierda (Sidebar Info)
 
-| Sección | Contenido |
-|---------|-----------|
-| **Pricing Tiers** | 4 niveles de precio por número de personas |
-| **Why Book Direct** | Beneficios de reservar directo |
-| **Important Notes** | Notas sobre confirmación y pago |
+| Sección | Contenido/Estilo |
+|---------|------------------|
+| **Immersive Sidebar** | Fondo oscuro sutil, separado de la zona de formulario |
+| **Pricing Table** | Tabla compacta con tiers de precio dinámicos |
+| **Value Props** | Beneficios clave de reservar directo con Nevado Trek |
+| **Sticky Summary** | Información persistente sobre el tour seleccionado |
 
-### 3. Columna Derecha (Form Steps)
+### 3. Columna Derecha (Main Flow)
+
+**Transiciones Fluidas**: El contenedor principal utiliza animaciones de `height` y `width` con curvas `cubic-bezier` para evitar saltos bruscos entre pasos.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Step1
-    Step1 --> Step2: Fecha seleccionada
-    Step2 --> Step1: Botón Volver
-    Step2 --> Step3: Validación OK
-    Step3 --> Step2: Botón Volver
-    Step3 --> Success: API OK
-    Step3 --> Error: API Error
-    Success --> [*]: Cerrar modal
+    [*] --> Step1: Compact Dates
+    Step1 --> Step2: Customer Details
+    Step2 --> Step3: Review & Pay
+    Step3 --> Step4: Success & Copy ID
+    Step4 --> [*]: Done
+    
+    note right of Step4
+      El modal se reduce a 80vw 
+      en éxito y oculta el progreso.
+    end
 ```
+
+### 4. Progress Stepper (Checkpoints)
+Ubicado en la parte superior, utiliza un indicador geométrico único:
+- **Checkpoints**: Triángulos con efecto de cristal (`clip-path`).
+- **Estados**: Glow activo, glass-effect inactivo.
+- **Barra**: Animación de progreso al 0%, 50%, 100%.
 
 ### 4. Date Cards (Tarjetas de Fecha)
 
@@ -166,6 +178,12 @@ Estados:
 ├── Number of guests
 ├── Price per person
 └── Total (highlighted in green)
+
+### 6. Success State (Step 4)
+Diseñada para un cierre de experiencia satisfactorio y útil:
+- **Redimensionamiento**: Se ajusta a `80vw` de ancho para un balance visual óptimo.
+- **Copy ID**: Botón dedicado para copiar el identificador de reserva al portapapeles con confirmación visual.
+- **Limpieza**: La barra de progreso se oculta automáticamente.
 ```
 
 ---
@@ -331,12 +349,21 @@ NevadoTrekWeb01/
 
 | Variable | Valor | Uso |
 |----------|-------|-----|
-| `--color--dark` | #042e4d | Fondo del modal |
+| `background` | #052e4a | **Rich Navy** (Sólido definitivo) |
 | `--color--light` | white | Texto principal |
 | `--color--blue-dark` | #8fbbd3 | Texto secundario, labels |
-| `#2563eb` | Blue | Botones CTA, selección |
-| `#10b981` | Green | Success, total, toast |
+| `--brand-blue`| #2563eb | Botones CTA, selección, acentos |
+| `--success` | #10b981 | Success, total, toast, booking ID |
 | `--pink` | #ed155c | Errores |
+
+### Animaciones e Interacción
+
+| Efecto | Especificación | Uso |
+|--------|----------------|-----|
+| **Easing** | `cubic-bezier(0.4, 0, 0.2, 1)` | Transiciones orgánicas |
+| **Duration** | 0.6s | Cambio de pasos (Height/Width) |
+| **Glassmorphism**| `backdrop-filter: blur(8px)` | Overlay, Checkpoints, Cards |
+| **Hover Scale** | `scale(1.02)` | Interactive elements |
 
 ### Tipografía
 
@@ -525,6 +552,14 @@ function getFormattedPrice(pricingTiers, currentPax = 1) {
 ---
 
 ## Changelog
+
+### v1.2.0 (2025-12-17) - Immersive UI Overhaul
+- 🎨 **Theme Harmonization**: Migración a fondo sólido "Rich Navy" (#052e4a) para un look premium.
+- 🎬 **Smooth Transitions**: Implementación de re-dimensionamiento fluido (Height/Width) entre pasos con easing personalizado.
+- 🏆 **Success Optimization**: Rediseño del paso 4 con copia de ID al portapapeles y layout balanceado (80vw).
+- 📐 **2-Column Layout**: Estructura de escritorio optimizada con sidebar persistente de precios y beneficios.
+- 🔺 **Triangle Stepper**: Nuevo indicador de progreso con checkpoints triangulares y efectos de brillo (glow).
+- 📱 **Mobile Refinement**: Ajustes de espaciado y márgenes para prevenir overflows y mejorar la legibilidad.
 
 ### v1.1.0 (2025-12-06)
 - ✅ Implementado cache bypass con `?t=Date.now()`
