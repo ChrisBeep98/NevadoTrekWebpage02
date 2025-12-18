@@ -271,6 +271,15 @@
   border-bottom: none;
 }
 
+/* On Mobile/Tablet: Hide sidebar in Steps 2, 3 and 4 to focus on form */
+@media screen and (max-width: 1024px) {
+  #booking-modal.is-step-2 .booking-panel-left,
+  #booking-modal.is-step-3 .booking-panel-left,
+  #booking-modal.is-step-4 .booking-panel-left {
+    display: none;
+  }
+}
+
 .booking-panel-right {
   flex: 1;
   display: flex;
@@ -919,7 +928,7 @@
   height: 20px;
 }
 
-/* CUSTOM CALENDAR POPUP (Mobile Only) */
+/* CUSTOM CALENDAR POPUP (Expanded on Mobile) */
 .custom-calendar-popup {
   position: absolute;
   top: 100%;
@@ -930,11 +939,11 @@
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  padding: 16px;
-  z-index: 999; /* Increased to ensure it's above everything */
+  padding: 20px;
+  z-index: 999;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   
-  /* Animation */
+  /* Animation/Transition */
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -945,6 +954,30 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+@media screen and (max-width: 1024px) {
+  .custom-date-trigger {
+    display: none; /* Hide trigger on mobile */
+  }
+
+  .custom-calendar-popup {
+    position: relative; /* Static positioning */
+    top: 0;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    background: rgba(255, 255, 255, 0.03); /* Lighter/Integrated feels */
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    padding: 16px 0;
+    margin-top: 10px;
+    backdrop-filter: none;
+  }
+  
+  .private-date-flow {
+    margin-top: 24px;
+  }
 }
 
 /* DESKTOP: Refined size and flyout position */
@@ -1006,34 +1039,58 @@
 }
 
 .calendar-day {
-  aspect-ratio: 1;
+  aspect-ratio: 1/1;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  font-family: Inter, sans-serif;
   font-size: 0.9em;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
-.calendar-day:hover:not(.disabled):not(.selected) {
+.calendar-day:hover:not(.disabled) {
   background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
 }
 
 .calendar-day.selected {
-  background: #2563eb;
+  background: #2563eb !important;
   color: white;
-  box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.calendar-day.today::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #2563eb;
+}
+
+.calendar-day.selected.today::after {
+  background: white;
 }
 
 .calendar-day.disabled {
-  color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.15);
   cursor: not-allowed;
 }
 
 .calendar-day.today {
-  border: 1px solid rgba(37, 99, 235, 0.5);
+  border: 1px solid rgba(16, 185, 129, 0.4); /* Subtly highlight today with green-ish border */
+}
+
+/* Touch feedback for mobile */
+.calendar-day:active:not(.disabled) {
+  background: rgba(37, 99, 235, 0.4);
+  transform: scale(0.92);
 }
 
 /* ===== SELECTED DATE SUMMARY (Left Column) ===== */

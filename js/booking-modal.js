@@ -822,9 +822,13 @@ function goToStep(stepNumber) {
   const targetStep = document.getElementById(`booking-step-${stepNumber}`);
   if (targetStep) targetStep.classList.add('active');
 
-  // Success state layout toggle
+  // Success & Step state layout toggle
   const modal = document.getElementById('booking-modal');
   if (modal) {
+    // Remove all step classes first
+    modal.classList.remove('is-step-1', 'is-step-2', 'is-step-3', 'is-step-4');
+    modal.classList.add(`is-step-${stepNumber}`);
+
     if (stepNumber === 4) {
       modal.classList.add('is-success');
     } else {
@@ -892,6 +896,8 @@ function initCustomDatePicker() {
 
   // Toggle calendar popup
   trigger.addEventListener('click', (e) => {
+    if (window.innerWidth <= 1024) return; // Ignore trigger click on mobile (already expanded)
+    
     e.stopPropagation();
     const isActive = popup.classList.contains('active');
     
@@ -906,8 +912,15 @@ function initCustomDatePicker() {
     }
   });
 
+  // Auto-render for mobile (Desktop starts hidden)
+  if (window.innerWidth <= 1024) {
+    popup.classList.add('active');
+    renderCalendar(calendarCurrentDate);
+  }
+
   // Global close on outside click
   document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 1024) return; // Keep mobile visible
     if (popup && !popup.contains(e.target) && !trigger.contains(e.target)) {
       popup.classList.remove('active');
     }
@@ -1027,8 +1040,8 @@ function selectCustomDate(dateString) {
     dateText.style.color = 'white';
   }
   
-  // Close popup
-  if (popup) {
+  // Close popup (Desktop Only)
+  if (popup && window.innerWidth > 1024) {
     popup.classList.remove('active');
   }
 
