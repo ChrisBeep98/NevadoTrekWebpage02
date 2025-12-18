@@ -128,7 +128,6 @@
 }
 
 .booking-panel-info, .booking-panel-left {
-  background: rgba(0, 0, 0, 0.15);
   padding: 32px;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -288,7 +287,6 @@
 
   .booking-panel-left {
     border-right: none;
-    background: rgba(0, 0, 0, 0.15); /* Restore sidebar feel */
     padding: 32px;
     overflow-y: auto;
   }
