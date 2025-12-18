@@ -182,13 +182,11 @@ function renderPricingTable() {
     { label: t.priceTable4plus, pax: 4 } // Assumes tier for 4 covers 4-8
   ];
 
-  tbody.innerHTML = rows.map(r => {
+  tbody.innerHTML = rows.map((r, index) => {
     const price = getFormattedPrice(currentTour.pricingTiers, r.pax);
-    // Remove "COP" / "USD" suffix for cleaner table look, or keep it? 
-    // User asked for "buen ux", keeping currency is clearer but removing it is cleaner if header says (COP).
-    // Use the full string from getFormattedPrice for clarity.
+    const delay = index * 0.08;
     return `
-      <tr>
+      <tr class="stagger-animate" style="animation-delay: ${delay}s">
         <td class="pax-col">${r.label}</td>
         <td class="price-col">${price}</td>
       </tr>
@@ -889,11 +887,18 @@ function goToStep(stepNumber) {
 
   // 5. STAGGERED ENTRY ANIMATION FOR ALL ELEMENTS
   if (targetStep) {
-    // Find all primary elements to animate (title, groups, buttons, summary rows)
-    // We target direct children or specific deep elements to keep it clean
-    const elementsToAnimate = targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon');
+    // Collect elements from the active step
+    let items = Array.from(targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon'));
     
-    elementsToAnimate.forEach((el, index) => {
+    // Also include sidebar elements if we are on Step 1 (Desktop sidebar is shared)
+    if (stepNumber === 1) {
+      const sidebarItems = document.querySelectorAll('.pricing-table-container, .pricing-tier, #pricing-table-body tr');
+      if (sidebarItems.length > 0) {
+        items = [...Array.from(sidebarItems), ...items];
+      }
+    }
+
+    items.forEach((el, index) => {
       // Remove previous class if any to re-trigger
       el.classList.remove('stagger-animate');
       
@@ -901,7 +906,7 @@ function goToStep(stepNumber) {
       el.offsetHeight;
       
       // Apply delay and class
-      const delay = index * 0.08; // 80ms between elements
+      const delay = index * 0.06; // Slightly faster for global (60ms)
       el.style.animationDelay = `${delay}s`;
       el.classList.add('stagger-animate');
     });
