@@ -823,8 +823,14 @@ function goToStep(stepNumber) {
     el.style.animationDelay = '';
   });
 
-  // 1. Measure current height before changes
-  const oldHeight = modalContent ? modalContent.offsetHeight : 0;
+  // 1. Measure current height before changes (Desktop only)
+  const isMobile = window.innerWidth <= 1024;
+  const oldHeight = (modalContent && !isMobile) ? modalContent.offsetHeight : 0;
+
+  // 1.5 SCROLL TO TOP (Crucial for Mobile UX)
+  if (modalContent) {
+    modalContent.scrollTop = 0;
+  }
 
   // Hide all steps
   document.querySelectorAll('.booking-step').forEach(step => {
@@ -849,8 +855,8 @@ function goToStep(stepNumber) {
     }
   }
 
-  // 2. Measure new height after step change
-  if (modalContent) {
+  // 2. Measure new height after step change (Desktop only)
+  if (modalContent && !isMobile) {
     // Temporarily set height to auto to measure new content
     const originalHeightStyle = modalContent.style.height;
     modalContent.style.height = 'auto';
@@ -907,13 +913,17 @@ function goToStep(stepNumber) {
     // Combine them (Header first, then Step content)
     items = [...Array.from(headerItems), ...items];
 
-    // Also include sidebar elements if we are on Step 1 (Desktop sidebar is shared)
+    // Collect sidebar elements if we are on Step 1
+    let sidebarItems = [];
     if (stepNumber === 1) {
-      const sidebarItems = document.querySelectorAll('.pricing-table-container, .pricing-tier, #pricing-table-body tr');
-      if (sidebarItems.length > 0) {
-        items = [...items, ...Array.from(sidebarItems)];
+      const sidebarNodes = document.querySelectorAll('.pricing-table-container, .pricing-tier, #pricing-table-body tr');
+      if (sidebarNodes.length > 0) {
+        sidebarItems = Array.from(sidebarNodes);
       }
     }
+    
+    // Combine them (Header -> Sidebar -> Step content)
+    items = [...Array.from(headerItems), ...sidebarItems, ...items];
 
     items.forEach((el, index) => {
       // Remove previous class if any to re-trigger
