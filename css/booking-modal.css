@@ -71,7 +71,17 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Success State Specific Constraints */
+.is-success .booking-modal-content {
+  min-height: 60vh !important;
+}
+
+/* Success State Specific Constraints */
+.is-success .booking-modal-content {
+  min-height: 60vh; /* Allow it to be shorter */
 }
 
 /* Tablet & Mobile - Full width modal, no border-radius */
@@ -476,6 +486,11 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   /* Removed overflow hidden to allow dots to be slightly larger if needed */
+}
+
+/* Hide progress bar in success state */
+.is-success .booking-steps {
+  display: none;
 }
 
 /* Progress Fill */
@@ -1412,21 +1427,89 @@
   line-height: 1.6;
 }
 
-.booking-success .booking-id {
-  color: var(--color--blue-dark, #8fbbd3);
+/* Copy ID Wrapper & Button */
+.booking-id-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 32px;
+  min-width: 200px;
+}
+
+.booking-id {
+  color: #10b981;
   font-family: 'SF Mono', monospace;
   font-size: 1.1em;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 12px 24px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.copy-id-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  display: inline-block;
-  margin-bottom: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: white;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.copy-id-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.copy-id-btn:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.copy-id-btn.copied {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+@media screen and (min-width: 1024px) {
+  .is-success .booking-modal-content {
+    min-width: 80vw;
+  }
+}
+
+.booking-success {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px; /* Reduced gap */
+  padding: 20px 0;
+}
+
+.booking-success-icon {
+  margin-bottom: 8px; /* Reduced margin */
+}
+
+.booking-success h3 {
+  margin-bottom: 4px; /* Reduced margin */
+}
+
+.booking-success p {
+  margin-bottom: 16px; /* Reduced margin */
 }
 
 .booking-success-actions {
   display: flex;
   gap: 16px;
+  margin-top: 12px;
 }
 
 /* Success Booking Summary */
@@ -1434,10 +1517,10 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 20px 24px;
-  margin: 24px 0;
+  padding: 16px 20px; /* Slimmer padding */
+  margin: 12px 0; /* Slimmer margin */
   width: 100%;
-  max-width: 350px;
+  max-width: 420px; /* Wider summary */
 }
 
 .success-summary-row {

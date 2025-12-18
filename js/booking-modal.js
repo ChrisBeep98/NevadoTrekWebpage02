@@ -426,7 +426,15 @@ function createModalHTML() {
                   </div>
                   
                   <p><span data-i18n="bookingId">${t.bookingId}</span>:</p>
-                  <span class="booking-id" id="booking-ref-id"></span>
+                  <div class="booking-id-wrapper">
+                    <span class="booking-id" id="booking-ref-id"></span>
+                    <button class="copy-id-btn" id="copy-id-btn" title="Copiar ID">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
                   <div class="booking-success-actions">
                     <button class="booking-btn" id="close-modal-btn" type="button">
                       <span data-i18n="closeModal">${t.closeModal}</span>
@@ -502,6 +510,27 @@ function bindEvents() {
 
   // Pax change - update summary
   document.getElementById('booking-pax')?.addEventListener('change', updateSummaryIfVisible);
+
+  // Copy ID to clipboard
+  const copyBtn = document.getElementById('copy-id-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const idText = document.getElementById('booking-ref-id').innerText;
+      navigator.clipboard.writeText(idText).then(() => {
+        const originalHTML = copyBtn.innerHTML;
+        copyBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = originalHTML;
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+  }
 }
 
 // ==================== MODAL CONTROLS ====================
