@@ -1101,11 +1101,31 @@
   }
 }
 
-/* GLOBAL STAGGERED ENTRY ANIMATION */
-.stagger-animate {
+/* INITIAL STATE FOR STAGGERED ELEMENTS (Prevents flicker) */
+.booking-header-subtitle,
+.booking-header-title,
+.booking-steps,
+.pricing-table-container,
+.pricing-tier,
+#pricing-table-body tr,
+.booking-step h3,
+.booking-step .form-group,
+.booking-step .form-row,
+.booking-step .private-date-flow,
+.booking-step .booking-btn-group,
+.booking-step .booking-summary,
+.booking-step .success-booking-summary,
+.booking-step .step-explanation,
+.booking-step .booking-success-icon,
+.booking-step .date-card,
+.booking-step .no-dates-message {
   opacity: 0;
   transform: translateY(12px);
   will-change: transform, opacity;
+}
+
+/* GLOBAL STAGGERED ENTRY ANIMATION */
+.stagger-animate {
   animation: globalItemIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
@@ -1931,7 +1951,10 @@
     padding: 0;
     align-items: flex-end;
   }
-
+    .booking-modal-form {
+    padding: 0;
+    padding-top: 0px;
+  }
 
   
   .date-cards-container {
@@ -2006,6 +2029,8 @@
   
   .booking-modal-form {
     padding: 24px 16px !important; /* Restored 16px margins */
+    padding-top: 0 !important;
+    margin-top: 0 !important;
     width: 100%;
     box-sizing: border-box;
   }

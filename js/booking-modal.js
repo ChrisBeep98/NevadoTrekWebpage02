@@ -184,9 +184,8 @@ function renderPricingTable() {
 
   tbody.innerHTML = rows.map((r, index) => {
     const price = getFormattedPrice(currentTour.pricingTiers, r.pax);
-    const delay = index * 0.08;
     return `
-      <tr class="stagger-animate" style="animation-delay: ${delay}s">
+      <tr>
         <td class="pax-col">${r.label}</td>
         <td class="price-col">${price}</td>
       </tr>
@@ -630,7 +629,17 @@ function closeModal() {
   const modal = document.getElementById('booking-modal');
   const overlay = document.getElementById('booking-modal-overlay');
   
-  if (modal) modal.classList.remove('active');
+  if (modal) {
+    modal.classList.remove('active');
+    
+    // Deep cleanup of animation states for next opening
+    const animatedElements = modal.querySelectorAll('.stagger-animate');
+    animatedElements.forEach(el => {
+      el.classList.remove('stagger-animate');
+      el.style.animationDelay = '';
+    });
+  }
+  
   if (overlay) overlay.classList.remove('active');
   document.body.style.overflow = '';
   document.documentElement.style.overflow = '';
@@ -652,10 +661,8 @@ function renderPricingTiers() {
       ? formatUSD(tier.priceUSD)
       : formatCOP(tier.priceCOP);
 
-    const delay = index * 0.08;
-
     return `
-      <div class="pricing-tier stagger-animate" style="animation-delay: ${delay}s">
+      <div class="pricing-tier">
         <span class="pricing-tier-pax">${paxText}</span>
         <span class="pricing-tier-price">${price} ${t.currency}</span>
       </div>
@@ -721,10 +728,8 @@ function renderDateCards() {
     const totalPeopleAfterBooking = currentPax + 1;
     const price = getFormattedPrice(dep.pricingSnapshot || currentTour.pricingTiers, totalPeopleAfterBooking);
 
-    const delay = (index + 2) * 0.08; // Offset by 2 to start after previous static elements
-
     return `
-      <div class="date-card stagger-animate" data-departure-id="${dep.departureId}" style="animation-delay: ${delay}s">
+      <div class="date-card" data-departure-id="${dep.departureId}">
         <div class="date-card-left">
           <div class="date-card-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -812,6 +817,12 @@ function goToStep(stepNumber) {
   const modalContent = document.querySelector('.booking-modal-content');
   const bodyLayout = document.querySelector('.booking-body-layout');
   
+  // 0. RESET ALL ANIMATION STATES (Crucial for reopening modal)
+  document.querySelectorAll('.stagger-animate').forEach(el => {
+    el.classList.remove('stagger-animate');
+    el.style.animationDelay = '';
+  });
+
   // 1. Measure current height before changes
   const oldHeight = modalContent ? modalContent.offsetHeight : 0;
 
@@ -891,7 +902,7 @@ function goToStep(stepNumber) {
     const headerItems = document.querySelectorAll('.booking-header-subtitle, .booking-header-title, .booking-steps');
     
     // Collect elements from the active step
-    let items = Array.from(targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon'));
+    let items = Array.from(targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon, .date-card, .no-dates-message'));
     
     // Combine them (Header first, then Step content)
     items = [...Array.from(headerItems), ...items];
