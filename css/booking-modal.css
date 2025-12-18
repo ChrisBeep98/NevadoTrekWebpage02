@@ -957,6 +957,10 @@
 }
 
 @media screen and (max-width: 1024px) {
+  .custom-date-trigger {
+    display: none !important; /* Force hide the redundant selector on mobile */
+  }
+
   .custom-calendar-popup {
     position: relative; 
     top: 0;
@@ -966,7 +970,7 @@
     background: transparent;
     border: none;
     box-shadow: none;
-    padding: 10px 0; /* Tighter padding without header */
+    padding: 10px 0;
     margin-top: 5px;
     backdrop-filter: none;
   }
