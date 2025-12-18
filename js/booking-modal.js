@@ -887,14 +887,20 @@ function goToStep(stepNumber) {
 
   // 5. STAGGERED ENTRY ANIMATION FOR ALL ELEMENTS
   if (targetStep) {
+    // Collect global header/progress elements
+    const headerItems = document.querySelectorAll('.booking-header-subtitle, .booking-header-title, .booking-steps');
+    
     // Collect elements from the active step
     let items = Array.from(targetStep.querySelectorAll('h3, .form-group, .form-row, .private-date-flow, .booking-btn-group, .booking-summary, .success-booking-summary, .step-explanation, .booking-success-icon'));
     
+    // Combine them (Header first, then Step content)
+    items = [...Array.from(headerItems), ...items];
+
     // Also include sidebar elements if we are on Step 1 (Desktop sidebar is shared)
     if (stepNumber === 1) {
       const sidebarItems = document.querySelectorAll('.pricing-table-container, .pricing-tier, #pricing-table-body tr');
       if (sidebarItems.length > 0) {
-        items = [...Array.from(sidebarItems), ...items];
+        items = [...items, ...Array.from(sidebarItems)];
       }
     }
 
@@ -906,7 +912,7 @@ function goToStep(stepNumber) {
       el.offsetHeight;
       
       // Apply delay and class
-      const delay = index * 0.06; // Slightly faster for global (60ms)
+      const delay = index * 0.05; // Slightly faster for global sequence (50ms)
       el.style.animationDelay = `${delay}s`;
       el.classList.add('stagger-animate');
     });

@@ -622,14 +622,14 @@
 .date-card {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
-  padding: 18px 20px;
+  padding: 14px 16px; /* Reduced for mobile */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   background: rgba(255, 255, 255, 0.04);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px; /* Reduced gap */
   width: 100%;
 }
 
@@ -662,9 +662,11 @@
 /* Date Card Layout - Left side (date info) */
 .date-card-left {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  flex-direction: column; /* Vertical stack for better mobile fit */
+  align-items: center;
+  gap: 2px;
   flex-shrink: 0;
+  min-width: 60px; /* Consistent width for the date column */
 }
 
 .date-card-icon {
@@ -686,6 +688,20 @@
     gap: 2px;
   }
 
+  .date-card-weekday {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: lowercase;
+  }
+
+  .date-card-day {
+    font-size: 1.5em;
+  }
+
+  .date-card-month {
+    font-size: 0.9em;
+  }
+
   .date-card-icon {
     display: flex;
     align-items: center;
@@ -697,17 +713,17 @@
 
 
 .date-card-weekday {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
   font-family: Inter, sans-serif;
-  font-size: 0.8em;
+  font-size: 0.75em; /* Smaller on mobile */
   font-weight: 500;
-  text-transform: capitalize;
+  text-transform: lowercase;
 }
 
 .date-card-day {
   color: white;
   font-family: Inter, sans-serif;
-  font-size: 1.5em;
+  font-size: 1.4em; /* Slightly adjusted */
   font-weight: 700;
   line-height: 1;
 }
@@ -715,7 +731,7 @@
 .date-card-month {
   color: var(--color--blue-dark, #8fbbd3);
   font-family: Inter, sans-serif;
-  font-size: 0.9em;
+  font-size: 0.8em; /* Smaller on mobile */
   text-transform: capitalize;
 }
 
@@ -725,7 +741,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 4px;
+  gap: 2px;
+  overflow: hidden; /* Safety for long text */
 }
 
 @media screen and (min-width: 1025px) {
@@ -733,6 +750,13 @@
     align-items: flex-start;
     margin-top: 16px;
     width: 100%;
+    gap: 4px;
+    overflow: visible;
+  }
+
+  .date-card-price {
+    font-size: 0.85em;
+    white-space: normal;
   }
 }
 
@@ -767,16 +791,23 @@
 .date-card-price {
   color: rgba(255, 255, 255, 0.7);
   font-family: Inter, sans-serif;
-  font-size: 0.85em;
+  font-size: 0.8em; /* Slightly smaller for mobile */
   font-weight: 500;
   margin: 0;
+  white-space: nowrap; /* Prevent "USD/person" wrapping */
 }
 
-/* Date Card Layout - Right (select arrow) */
 .date-card-right {
   flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.25);
   transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+}
+
+.date-card-right svg {
+  width: 16px; /* Smaller icon on mobile */
+  height: 16px;
 }
 
 .date-card:hover .date-card-right {
