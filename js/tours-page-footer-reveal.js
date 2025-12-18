@@ -68,28 +68,33 @@
       ro.observe(footerPlaceholder);
     }
     
-    // TOC Hiding Logic (Prevent overlap)
+    // TOC & Mobile CTA Hiding Logic (Prevent overlap)
     const tocElement = document.querySelector('.index') || document.querySelector('.div-block-142');
+    const mobileCta = document.querySelector('.mobile-fixed-cta-container');
     
-    if (tocElement) {
+    if (tocElement || mobileCta) {
       window.addEventListener('scroll', () => {
          const mainRect = mainContainer.getBoundingClientRect();
-         const footerHeight = footerPlaceholder.offsetHeight;
          const windowHeight = window.innerHeight;
          
          // Calculate how much of the footer is visible
-         // When mainRect.bottom <= windowHeight, footer starts showing
          const footerVisibleHeight = windowHeight - mainRect.bottom;
          
-         if (footerVisibleHeight > 500) {
-            // Footer is revealing, fade out TOC
-            tocElement.style.opacity = '0';
-            tocElement.style.pointerEvents = 'none';
-            tocElement.style.transition = 'opacity 0.3s ease';
-         } else {
-            // Footer hidden, show TOC
-            tocElement.style.opacity = '1';
-            tocElement.style.pointerEvents = 'auto';
+         // Start hiding when we reach the actual content end
+         const shouldHide = footerVisibleHeight > 50; // Smaller threshold for cleaner transition
+         
+         if (tocElement) {
+           tocElement.style.opacity = shouldHide ? '0' : '1';
+           tocElement.style.pointerEvents = shouldHide ? 'none' : 'auto';
+           tocElement.style.transition = 'opacity 0.3s ease';
+         }
+
+         if (mobileCta) {
+           // On mobile we want to hide it completely as it overlaps with footer content
+           mobileCta.style.opacity = shouldHide ? '0' : '1';
+           mobileCta.style.pointerEvents = shouldHide ? 'none' : 'auto';
+           mobileCta.style.transform = shouldHide ? 'translateY(100%)' : 'translateY(0)';
+           mobileCta.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
          }
       });
     }
