@@ -934,6 +934,7 @@ function renderCalendar(date) {
   const year = date.getFullYear();
   const month = date.getMonth();
   const t = translations[currentLang];
+  const isMobile = window.innerWidth <= 1024;
   
   // Month names
   const monthNames = {
@@ -943,8 +944,8 @@ function renderCalendar(date) {
   
   // Weekday initials
   const weekDays = {
-    es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-    en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+    es: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    en: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
   };
 
   const currentMonthName = monthNames[currentLang][month];
@@ -958,14 +959,16 @@ function renderCalendar(date) {
   minDate.setDate(minDate.getDate() + 1);
   minDate.setHours(0,0,0,0);
   
+  const selectedDateValue = document.getElementById('booking-private-date').value;
+
   let html = `
     <div class="calendar-header">
       <button class="calendar-month-btn prev-month-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="calendar-current-month">${currentMonthName} ${year}</span>
       <button class="calendar-month-btn next-month-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
     </div>
     <div class="calendar-grid">
@@ -984,7 +987,7 @@ function renderCalendar(date) {
     
     // Check constraints
     const isPast = d < minDate;
-    const isSelected = document.getElementById('booking-private-date').value === dateString;
+    const isSelected = selectedDateValue === dateString;
     const isToday = d.getTime() === today.getTime();
     
     let classes = 'calendar-day';
@@ -992,7 +995,11 @@ function renderCalendar(date) {
     if (isSelected) classes += ' selected';
     if (isToday) classes += ' today';
     
-    html += `<div class="${classes}" data-date="${dateString}">${i}</div>`;
+    // Add staggered animation delay
+    const delay = (i % 7) * 0.03 + Math.floor(i / 7) * 0.05;
+    const style = isMobile ? `style="animation-delay: ${delay}s"` : '';
+    
+    html += `<div class="${classes}" data-date="${dateString}" ${style}>${i}</div>`;
   }
   
   html += `</div>`;
