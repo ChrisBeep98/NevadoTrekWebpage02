@@ -1324,9 +1324,10 @@
 .summary-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 16px;
 }
 
 /* Fix double separator: Remove border from 2nd to last element (the one before Total) */
@@ -1360,6 +1361,9 @@
   color: rgba(255, 255, 255, 0.7);
   font-family: Inter, sans-serif;
   font-size: 0.95em;
+  flex-shrink: 0;
+  max-width: 40%;
+  text-align: left;
 }
 
 .summary-value {
@@ -1368,6 +1372,7 @@
   font-size: 1em;
   font-weight: 500;
   text-align: right;
+  flex: 1;
 }
 
 .summary-row.total .summary-label,
@@ -1652,9 +1657,10 @@
 .success-summary-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
+  align-items: flex-start; /* Better for multi-line values */
+  padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 16px;
 }
 
 .success-summary-row:last-child {
@@ -1662,14 +1668,18 @@
 }
 
 .success-summary-row.total {
-  padding-top: 12px;
+  padding-top: 16px;
   margin-top: 4px;
+  align-items: center;
 }
 
 .success-summary-label {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   font-family: Inter, sans-serif;
-  font-size: 0.9em;
+  font-size: 0.85em;
+  flex-shrink: 0;
+  max-width: 40%;
+  text-align: left;
 }
 
 .success-summary-value {
@@ -1677,6 +1687,8 @@
   font-family: Inter, sans-serif;
   font-size: 0.95em;
   font-weight: 500;
+  text-align: right;
+  flex: 1;
 }
 
 .success-summary-row.total .success-summary-value {
