@@ -58,37 +58,36 @@ html, body {
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
-  gap: 3rem; /* Still gap for mobile wrapping */
-  align-items: flex-end; 
-  justify-content: space-between; /* Push groups apart */
+  justify-content: center; /* CENTER the single row of filters */
+  width: 100%;
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.filter-label {
-  font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--font-grey-100, #687075); /* Softer label */
-  margin: 0 0 4px 4px;
-}
+/* Removed .filter-group and .filter-label styles as they are no longer used */
 
 /* Premium Filter Chips */
 .difficulty-filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap !important; /* Force no wrap */
   gap: 0.75rem;
+  justify-content: center; /* Center by default */
+  align-items: center;
+  overflow-x: auto; /* Enable horizontal scroll */
+  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  padding-bottom: 8px; /* Space for scrollbar if visible */
+  width: 100%;
+  
+  /* Hide scrollbar for cleaner UI but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.difficulty-filters::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .filter-chip {
   padding: 10px 24px;
-  border: 1px solid transparent; /* Remove visible border */
+  border: 1px solid #e6e6e6; /* Subtle border added */
   border-radius: 50px;
   background: #f5f7f9; /* Light grey bg */
   color: var(--color--dark, #042e4d);
@@ -115,35 +114,50 @@ html, body {
   transform: translateY(0);
 }
 
-/* Premium Duration Dropdown */
+/* Premium Duration Dropdown - Styled as Chip */
+/* Premium Duration Dropdown - Styled as Chip */
 .duration-filter {
-  padding: 10px 20px;
-  border: 1px solid #e6e6e6;
-  border-radius: 12px; /* Softer corners */
-  background: #ffffff;
+  /* Exact match with .filter-chip for height/font */
+  height: auto; 
+  padding: 10px 36px 10px 40px; /* Right for arrow, Left for Clock */
+  border: 1px solid #e6e6e6; /* Subtle border added */
+  border-radius: 50px; /* Pill shape */
+  background-color: #f5f7f9; /* Match chip bg */
   color: var(--color--dark, #042e4d);
   font-family: Inter, sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  min-width: 180px;
-  transition: all 0.3s ease;
-  appearance: none; /* Remove default arrow */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23042e4d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
+  width: auto;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  appearance: none; 
+  
+  /* Icons: Clock (Left) + Arrow (Right) */
+  background-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23042e4d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23042e4d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  
+  background-repeat: no-repeat, no-repeat;
+  background-position: left 16px center, right 16px center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .duration-filter:hover {
-  border-color: #b0c4de;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  background-color: #ffffff;
+  color: #2563eb; /* Match chip hover text color */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Match chip hover shadow */
+  transform: translateY(-2px); /* Match chip hover lift */
+  
+  /* Update BOTH icons to Blue on hover */
+  background-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 
 .duration-filter:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background-color: #ffffff; /* Use background-color to preserve images */
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 /* === TOURS GRID SECTION === */
@@ -643,6 +657,12 @@ html, body {
 
   .filters-container {
     gap: 1.5rem;
+  }
+
+  /* Force start alignment on mobile to allow scrolling from the beginning */
+  .difficulty-filters {
+    justify-content: flex-start;
+    padding-left: 4px; /* Tiny buffer */
   }
 
 
