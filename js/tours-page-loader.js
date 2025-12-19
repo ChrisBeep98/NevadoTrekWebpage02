@@ -424,9 +424,22 @@ function applyFilters() {
 
   // Filter by difficulty
   if (currentFilters.difficulty !== 'all') {
-    filteredTours = filteredTours.filter(tour => 
-      tour.difficulty === currentFilters.difficulty
-    );
+    // Map chip values to possible API values (reverse mapping)
+    const chipToApiMapping = {
+      'easy': ['easy'],
+      'moderate': ['moderate', 'medium'],
+      'moderate-difficult': ['moderate-difficult', 'medium-hard'],
+      'difficult': ['difficult', 'hard']
+    };
+    
+    const selectedChipValue = currentFilters.difficulty.toLowerCase();
+    const validApiValues = chipToApiMapping[selectedChipValue] || [selectedChipValue];
+    
+    filteredTours = filteredTours.filter(tour => {
+      if (!tour.difficulty) return false;
+      const tourDifficulty = tour.difficulty.toLowerCase();
+      return validApiValues.includes(tourDifficulty);
+    });
   }
 
   // Filter by duration
