@@ -410,9 +410,17 @@
         <div class="filters-container">
           <!-- Unified Filters Row -->
           <div class="difficulty-filters">
-            <!-- Duración Dropdown Integrated as Chip (FIRST item) -->
+            <!-- Clear Filters Button (Icon Only) -->
+            <button class="clear-filters-btn" id="clear-filters-btn" aria-label="Limpiar filtros">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+
+            <!-- Duración Dropdown Integrated as Chip -->
             <select class="duration-filter" id="duration-filter">
-              <option value="all" data-i18n-key="filter.duration_default">Duración</option> 
+              <!-- Removed redundant "Duración" option -->
               <option value="all" data-i18n-key="filter.all_female">Todas</option>
               <option value="1" data-i18n-key="filter.days1">1 día</option>
               <option value="2-3" data-i18n-key="filter.days23">2-3 días</option>

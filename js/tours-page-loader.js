@@ -268,6 +268,32 @@ function initFilters() {
   if (durationFilter) {
     durationFilter.addEventListener('change', (e) => {
       currentFilters.duration = e.target.value;
+    });
+  }
+
+  // Clear Filters Button
+  const clearBtn = document.getElementById('clear-filters-btn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      // 1. Reset State
+      currentFilters.difficulty = 'all';
+      currentFilters.duration = 'all';
+
+      // 2. Reset Chips UI
+      document.querySelectorAll('.filter-chip').forEach(c => {
+        c.classList.remove('active');
+        if (c.dataset.difficulty === 'all') {
+          c.classList.add('active');
+        }
+      });
+
+      // 3. Reset Dropdown UI
+      const dFilter = document.getElementById('duration-filter');
+      if (dFilter) {
+        dFilter.value = 'all';
+      }
+
+      // 4. Apply
       applyFilters();
     });
   }

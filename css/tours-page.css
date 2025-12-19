@@ -160,6 +160,36 @@ html, body {
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
+/* Clear Filters Button */
+.clear-filters-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px; /* Fixed square size for circle */
+  height: 42px;
+  padding: 0;
+  border-radius: 50%; /* Perfect circle */
+  background: #f5f7f9;
+  border: 1px solid #e6e6e6;
+  color: #042e4d;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  flex-shrink: 0;
+}
+
+.clear-filters-btn:hover {
+  background: #ffffff;
+  color: #d93644; /* Red for delete action */
+  box-shadow: 0 4px 12px rgba(217, 54, 68, 0.2);
+  transform: translateY(-2px);
+  border-color: #ffdce0;
+}
+
+.clear-filters-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 /* === TOURS GRID SECTION === */
 .tours-grid-section {
   padding: 3em 5em 5em 5em; /* Desktop margins: 5em */
