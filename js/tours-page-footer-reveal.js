@@ -104,49 +104,111 @@
     const footer = document.getElementById('footer-placeholder');
     if (!footer) return;
 
-    // Define hierarchies based on new Antigravity structure
-    const topRowItems = footer.querySelectorAll('.footer_top-row > *');
     const giantText = footer.querySelector('.footer_giant-text');
-    const bottomRowItems = footer.querySelectorAll('.footer_bottom-row > *');
+    if (!giantText) return;
 
-    // Initial state
-    gsap.set([topRowItems, giantText, bottomRowItems], { 
-      opacity: 0, 
-      y: 50,
-      scale: 0.98,
-      filter: 'blur(10px)'
-    });
+    // 1. Split text into spans for clean character control (Silence splitting)
+    if (!giantText.querySelector('.parallax-char')) {
+      const text = giantText.textContent.trim();
+      giantText.innerHTML = text.split('').map(char => 
+        `<span class="parallax-char">${char === ' ' ? '&nbsp;' : char}</span>`
+      ).join('');
+    }
+
+    const topRowItems = footer.querySelectorAll('.footer_top-row > *');
+    const bottomRowItems = footer.querySelectorAll('.footer_bottom-row > *');
+    const allChars = giantText.querySelectorAll('.parallax-char');
 
     const mainContainer = document.getElementById('tours-page-container') || document.body;
 
+    // 2. Initial state - Using yPercent for displacement to avoid conflict with parallax pixels
+    gsap.set([topRowItems, bottomRowItems], { yPercent: 40 });
+    gsap.set(allChars, { yPercent: 50, opacity: 0 });
+
+    // 3. MINIMALIST REVEAL: Smooth Slide & Fade
     ScrollTrigger.create({
       trigger: mainContainer,
-      start: "bottom 95%", 
+      start: "bottom 98%",
+      once: true,
       onEnter: () => {
-        const tl = gsap.timeline({
-          defaults: {
-            duration: 1.2,
-            ease: "power4.out",
-            overwrite: true
-          }
-        });
-
-        tl.to(topRowItems, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.1 }, 0)
-          .to(giantText, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }, 0.2)
-          .to(bottomRowItems, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.1 }, 0.4);
-      },
-      onLeaveBack: () => {
-        gsap.to([topRowItems, giantText, bottomRowItems], {
-          opacity: 0,
-          y: 50,
-          scale: 0.98,
-          filter: 'blur(10px)',
-          duration: 0.8,
-          ease: "power2.inOut",
-          overwrite: true
+        // Reveal rows (using yPercent)
+        gsap.to(topRowItems, { opacity: 1, yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out" });
+        gsap.to(bottomRowItems, { opacity: 1, yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out", delay: 0.4 });
+        
+        // Character Reveal (using yPercent)
+        gsap.set(giantText, { opacity: 1 });
+        gsap.to(allChars, { 
+          opacity: 1, 
+          yPercent: 0, 
+          duration: 1.2, 
+          stagger: 0.02,
+          ease: "expo.out"
         });
       }
     });
+
+    // 4. MINIMALIST ASCENT: Selective Parallax for "REK"
+    if (allChars.length >= 3) {
+      const isMobile = window.innerWidth < 768;
+      const multiplier = isMobile ? 0.35 : 1; // Subtle multiplier
+
+      const charsArray = Array.from(allChars);
+      const charR = charsArray[charsArray.length - 3];
+      const charE = charsArray[charsArray.length - 2];
+      const charK = charsArray[charsArray.length - 1];
+      const otherChars = charsArray.slice(0, -3);
+
+      // Parallax strictly uses pixels (y) to avoid conflict with reveal yPercent
+      gsap.to(otherChars, {
+        y: -25 * multiplier,
+        force3D: true,
+        ease: "none",
+        scrollTrigger: {
+          trigger: mainContainer,
+          start: "bottom bottom",
+          end: "bottom top", 
+          scrub: 1.2
+        }
+      });
+
+      // 'E' goes highest
+      gsap.to(charE, {
+        y: -80 * multiplier,
+        force3D: true,
+        ease: "none",
+        scrollTrigger: {
+          trigger: mainContainer,
+          start: "bottom bottom",
+          end: "bottom top", 
+          scrub: 1.2
+        }
+      });
+
+      // 'R' and 'K' go to the same height
+      gsap.to([charR, charK], {
+        y: -40 * multiplier,
+        force3D: true,
+        ease: "none",
+        scrollTrigger: {
+          trigger: mainContainer,
+          start: "bottom bottom",
+          end: "bottom top", 
+          scrub: 1.3
+        }
+      });
+
+      gsap.to(charK, {
+        y: -40 * multiplier,
+        force3D: true,
+        ease: "none",
+        scrollTrigger: {
+          trigger: mainContainer,
+          start: "bottom bottom",
+          end: "bottom top", 
+          scrub: isMobile ? 1.4 : 1.7
+        }
+      });
+    }
   }
 
   // --- Animation Logic for specific text (Legacy support) ---
