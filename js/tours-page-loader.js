@@ -375,13 +375,20 @@ function initFilterAnimations() {
   gsap.killTweensOf('.filter-chip');
   gsap.killTweensOf('.filter-label');
   gsap.killTweensOf('.duration-filter');
+  gsap.killTweensOf('.clear-filters-btn');
 
   const tl = gsap.timeline({ delay: 0.2 });
 
-  // Animate labels
-  tl.fromTo('.filter-label', 
-    { y: 10, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }
+  // Animate Clear Button & Duration Filter (First items)
+  tl.fromTo(['.clear-filters-btn', '.duration-filter'],
+    { y: 15, opacity: 0 },
+    { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.5, 
+      stagger: 0.1, 
+      ease: 'back.out(1.2)' 
+    }
   );
 
   // Animate Visible Chips
@@ -403,12 +410,7 @@ function initFilterAnimations() {
     );
   }
 
-  // Animate Duration Dropdown
-  tl.fromTo('.duration-filter',
-    { y: 15, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
-    "-=0.4"
-  );
+  // Animate Duration Dropdown - REMOVED (Merged above)
 }
 
 /**
