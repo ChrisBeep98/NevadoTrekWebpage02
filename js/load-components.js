@@ -37,6 +37,11 @@ async function loadComponent(elementId, componentPath) {
     });
     window.dispatchEvent(event);
 
+    // Trigger i18n for the newly loaded content
+    if (window.NT_I18N && window.NT_I18N.apply) {
+        window.NT_I18N.apply();
+    }
+
   } catch (error) {
     console.error("Error loading component:", error);
   }

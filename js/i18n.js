@@ -6,6 +6,7 @@ window.NT_I18N=(function(){
       "section.experiences":"( Experiencias )","section.upcoming":"( Próximas Salidas)",
       "section.services":"( Servicios )","section.comments":"( Comentarios )",
       "section.faq":"( Preguntas Frecuentes )","footer.madeby":"Hecho por Christian Sandoval","footer.copy":"© 2025 Nevado Trek",
+      "footer.explore":"Explorar","footer.social":"Social","footer.instagram":"Instagram","footer.facebook":"Facebook","footer.email":"Email",
       "btn.viewTours":"Ver Tours","btn.viewOnGoogle":"Ver en Google","cta.contactus":"Contáctanos",
       "misc.rnt":"RNT: 05645453",
       "intro.t1":"como el Sentido de la Vida, Viajar","intro.t2":"Conócete a ti mismo a través del viaje",
@@ -57,6 +58,7 @@ window.NT_I18N=(function(){
       "section.experiences":"( Experiences )","section.upcoming":"( Upcoming Departures )",
       "section.services":"( Services )","section.comments":"( Comments )",
       "section.faq":"( Frequently Asked Questions )","footer.madeby":"Made by Christian Sandoval","footer.copy":"© 2025 Nevado Trek",
+      "footer.explore":"Explore","footer.social":"Social","footer.instagram":"Instagram","footer.facebook":"Facebook","footer.email":"Email",
       "btn.viewTours":"View Tours","btn.viewOnGoogle":"View on Google","cta.contactus":"Contact us",
       "misc.rnt":"RNT: 05645453",
       "intro.t1":"as the Meaning of Life, Travel","intro.t2":"Know yourself through travel",
@@ -103,5 +105,40 @@ window.NT_I18N=(function(){
       "page.tours.subtitle": "Discover unforgettable adventures in the Colombian Andes"
     }
   };
-  return {dict:dict};
+  function apply(lang) {
+    const l = lang || localStorage.getItem('lang') || 'es';
+    const d = dict[l] || dict['es'];
+
+    // 1. Static translations (data-i18n-key)
+    document.querySelectorAll('[data-i18n-key]').forEach(el => {
+      const key = el.getAttribute('data-i18n-key');
+      if (d[key]) {
+        // Special handling for services.lead (preserve word spans if needed)
+        // Note: For now, we do standard textContent. Specific page logic can override.
+        el.textContent = d[key];
+      }
+    });
+
+    // 2. Dynamic translations (data-i18n-es/en)
+    document.querySelectorAll('.dynamic-i18n').forEach(el => {
+      const text = el.getAttribute('data-i18n-' + l);
+      if (text) el.textContent = text;
+    });
+
+    // 3. Units conversion (MSNM/MASL, Días/Days)
+    document.querySelectorAll('p.body-small, .chip-tour-info-wrapper p').forEach(p => {
+      const v = p.textContent;
+      if (!v) return;
+      if (l === "en") {
+        p.textContent = v.replace(/MSNM/g, "MASL").replace(/Día(s)?/gi, "Day$1");
+      } else {
+        p.textContent = v.replace(/MASL/g, "MSNM").replace(/Day(s)?/gi, "Día$1");
+      }
+    });
+  }
+
+  return {
+    dict: dict,
+    apply: apply
+  };
 })();
