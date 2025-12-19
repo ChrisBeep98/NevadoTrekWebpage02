@@ -104,58 +104,42 @@
     const footer = document.getElementById('footer-placeholder');
     if (!footer) return;
 
-    // Define hierarchies for more controlled entry
-    const brand = footer.querySelector('.footer_brand');
-    const mainContent = [
-      footer.querySelector('.div-block-80 p'),
-      footer.querySelector('.footer_socials')
-    ].filter(el => el !== null);
-    const links = Array.from(footer.querySelectorAll('.footer_links-wrap'));
-    const bottomBar = Array.from(footer.querySelectorAll('.footer-bottom-content > *'));
+    // Define hierarchies based on new Antigravity structure
+    const topRowItems = footer.querySelectorAll('.footer_top-row > *');
+    const giantText = footer.querySelector('.footer_giant-text');
+    const bottomRowItems = footer.querySelectorAll('.footer_bottom-row > *');
 
-    // Combined list in order of appearance
-    const groups = [
-      { elements: brand, delay: 0 },
-      { elements: mainContent, delay: 0.2 },
-      { elements: links, delay: 0.4 },
-      { elements: bottomBar, delay: 0.6 }
-    ];
-
-    // Initial state for all
-    groups.forEach(group => {
-      gsap.set(group.elements, { 
-        opacity: 0, 
-        y: 30,
-        scale: 0.99,
-        filter: 'blur(10px)'
-      });
+    // Initial state
+    gsap.set([topRowItems, giantText, bottomRowItems], { 
+      opacity: 0, 
+      y: 50,
+      scale: 0.98,
+      filter: 'blur(10px)'
     });
 
-    const mainContainer = document.getElementById('tours-page-container');
+    const mainContainer = document.getElementById('tours-page-container') || document.body;
 
     ScrollTrigger.create({
       trigger: mainContainer,
-      start: "bottom 98%", 
+      start: "bottom 95%", 
       onEnter: () => {
-        // Timeline for more control over the "Speed" and "Latency"
         const tl = gsap.timeline({
           defaults: {
-            duration: 1.0, // Reduced from 1.4 for better response
-            ease: "power3.out",
+            duration: 1.2,
+            ease: "power4.out",
             overwrite: true
           }
         });
 
-        tl.to(brand, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }, 0)
-          .to(mainContent, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.1 }, 0.1) // Reduced stagger and delay
-          .to(links, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.08 }, 0.2)
-          .to(bottomBar, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.05 }, 0.3);
+        tl.to(topRowItems, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.1 }, 0)
+          .to(giantText, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }, 0.2)
+          .to(bottomRowItems, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.1 }, 0.4);
       },
       onLeaveBack: () => {
-        gsap.to([brand, ...mainContent, ...links, ...bottomBar], {
+        gsap.to([topRowItems, giantText, bottomRowItems], {
           opacity: 0,
-          y: 30,
-          scale: 0.99,
+          y: 50,
+          scale: 0.98,
           filter: 'blur(10px)',
           duration: 0.8,
           ease: "power2.inOut",
