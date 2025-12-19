@@ -1,17 +1,31 @@
 /* Antigravity Footer Redesign - REFINED (Dark Mode) */
 
-.antigravity-footer {
+#footer-placeholder {
+  min-height: 94vh !important;
+  min-height: 94svh !important;
+}
+
+.antigravity-footer.is--footer {
   background-color: #001e30 !important; /* Brand Dark Navy */
   color: #ffffff !important;
-  padding: 80px 0 40px 0 !important;
+  padding: 60px 0 !important;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow: hidden;
+  height: 94vh !important; 
+  height: 94svh !important; 
+  min-height: 94vh !important;
+  min-height: 94svh !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .footer_wrap {
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  justify-content: space-between;
+  height: 100%;
+  gap: 40px;
 }
 
 /* TOP ROW */
@@ -46,15 +60,34 @@
   font-size: 16px;
   color: #ffffff !important;
   text-decoration: none !important;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   font-weight: 500;
-  opacity: 0.7;
+  opacity: 0.6;
+  position: relative;
+  display: inline-block;
+  padding: 4px 0;
+  width: fit-content; /* Matches text width precisely */
+}
+
+.footer_link-premium::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #3b82f6;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .footer_link-premium:hover {
   opacity: 1;
   transform: translateX(4px);
-  color: #3b82f6 !important; /* Lighter blue for hover on dark */
+  color: #3b82f6 !important;
+}
+
+.footer_link-premium:hover::after {
+  width: 100%;
 }
 
 .footer_brand-col {
@@ -84,7 +117,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -96,7 +129,7 @@
   letter-spacing: -0.05em;
   white-space: nowrap;
   color: #ffffff;
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
   background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
   -webkit-background-clip: text;
@@ -158,6 +191,11 @@
     align-items: flex-start;
   }
   .footer_giant-text {
-    font-size: 12vw;
+    font-size: 15vw;
+  }
+  .antigravity-footer {
+    height: auto;
+    min-height: 94svh;
+    padding: 60px 0 !important;
   }
 }

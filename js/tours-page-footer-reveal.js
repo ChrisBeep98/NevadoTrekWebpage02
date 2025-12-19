@@ -40,10 +40,10 @@
     footerPlaceholder.style.position = 'fixed';
     footerPlaceholder.style.bottom = '0';
     footerPlaceholder.style.width = '100%';
-    footerPlaceholder.style.zIndex = '-1'; // Behind main content
+    footerPlaceholder.style.zIndex = '0'; // Behind main content but positive
     
     mainContainer.style.position = 'relative';
-    mainContainer.style.zIndex = '10';
+    mainContainer.style.zIndex = '1';
     mainContainer.style.backgroundColor = '#fff'; // Ensure opaque
     mainContainer.style.width = '100%';
 
