@@ -268,6 +268,7 @@ function initFilters() {
   if (durationFilter) {
     durationFilter.addEventListener('change', (e) => {
       currentFilters.duration = e.target.value;
+      applyFilters(); // This was missing!
     });
   }
 
