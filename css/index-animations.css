@@ -169,16 +169,21 @@ padding-right: 0 !important;
   mix-blend-mode: difference;
 }
 
-/* Icono del botón CTA siempre visible */
+/* Icono del botón CTA hereda color del texto/borde */
 .navbar-fixed .header-contact-btn svg {
-  fill: white !important;
+  fill: currentColor !important;
   mix-blend-mode: normal !important;
+  transition: fill 0.3s ease;
 }
 
-/* Cuando es PILL: icono azul marca */
+.navbar-fixed .header-contact-btn:hover svg {
+  fill: #ffffff !important;
+}
+
+/* Cuando es PILL: icono hereda del padre (ya configurado en azul marca) */
 #navbar-exclusion.scrolled .header-contact-btn svg,
 #navbar-exclusion.navbar-fixed.scrolled .header-contact-btn svg {
-  fill: #1e79bb !important;
+  fill: currentColor !important;
 }
 
 /* ===== BRAND / LOGO ===== */

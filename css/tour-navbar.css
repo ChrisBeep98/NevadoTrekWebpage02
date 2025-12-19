@@ -92,15 +92,21 @@ html {
 }
 
 /* Icono del botón CTA oscuro */
+/* Icono del botón CTA oscuro usa currentColor */
 .navbar-fixed .header-contact-btn svg {
-  fill: #042e4d !important;
+  fill: currentColor !important;
   mix-blend-mode: normal !important;
+  transition: fill 0.3s ease;
 }
 
-/* Cuando es PILL: icono azul marca */
+.navbar-fixed .header-contact-btn:hover svg {
+  fill: #ffffff !important;
+}
+
+/* Cuando es PILL: icono usa currentColor (hereda del padre) */
 #navbar-exclusion.scrolled .header-contact-btn svg,
 #navbar-exclusion.navbar-fixed.scrolled .header-contact-btn svg {
-  fill: #0070e0 !important;
+  fill: currentColor !important;
 }
 
 /* ===== BRAND / LOGO ===== */
