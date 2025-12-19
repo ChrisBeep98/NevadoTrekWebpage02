@@ -76,6 +76,7 @@ html {
   /* Transparent at top */
   background: transparent;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: visible !important;
 }
 
 .navbar-container {
@@ -87,6 +88,7 @@ html {
   padding: 0 !important;
   padding-top: 0px;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: visible !important; /* Permitir escalado de contenidos */
 }
 
 /* ===== FLOATING PILL SCROLLED STATE (positioning handled by inline styles) ===== */
@@ -173,10 +175,10 @@ padding-right: 0 !important;
   mix-blend-mode: normal !important;
 }
 
-/* Cuando es PILL: icono oscuro */
+/* Cuando es PILL: icono azul marca */
 #navbar-exclusion.scrolled .header-contact-btn svg,
 #navbar-exclusion.navbar-fixed.scrolled .header-contact-btn svg {
-  fill: #042e4d !important;
+  fill: #1e79bb !important;
 }
 
 /* ===== BRAND / LOGO ===== */
@@ -279,7 +281,7 @@ padding-right: 0 !important;
 /* Cuando es PILL (scrolled): barrita AZUL */
 #navbar-exclusion.scrolled .nav-link-exclusion::after,
 #navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion::after {
-  background: #2563eb !important; /* Azul cuando es pill */
+  background: #0070e0 !important; /* Azul claro marca cuando es pill */
   mix-blend-mode: normal !important;
 }
 
@@ -289,23 +291,24 @@ padding-right: 0 !important;
   color: #042e4d !important; /* Texto oscuro */
 }
 
-/* Cuando es PILL (scrolled): botón CTA con borde oscuro */
+/* Cuando es PILL (scrolled): botón CTA con borde azul marca */
 #navbar-exclusion.scrolled .header-contact-btn,
 #navbar-exclusion.navbar-fixed.scrolled .header-contact-btn {
-  color: #042e4d !important;
-  border-color: #042e4d !important;
+  color: #0070e0 !important;
+  border-color: #0070e0 !important;
   mix-blend-mode: normal !important;
 }
 
-/* Cuando es PILL (scrolled): hover del botón CTA AZUL */
+/* Cuando es PILL (scrolled): hover del botón CTA AZUL MARCA */
 #navbar-exclusion.scrolled .header-contact-btn:hover,
 #navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
+  background: #0070e0 !important;
+  border-color: #0070e0 !important;
   color: #ffffff !important;
+  transform: scale(1.05) !important;
 }
 
-#navbar-exclusion.scrolled .header-contact-btn:hover span,
+.scrolled .header-contact-btn:hover span,
 #navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover span {
   color: #ffffff !important;
 }
@@ -322,6 +325,7 @@ padding-right: 0 !important;
   gap: 16px;
   flex: 1; /* Equal width as navbar-brand to center the links */
   justify-content: flex-end; /* Align content to the right */
+  overflow: visible !important; /* Permitir que el botón escale sin clipear */
 }
 
 /* Language Switch - Custom Dropdown con Banderas */
@@ -415,10 +419,10 @@ padding-right: 0 !important;
 
 /* Hover: fondo azul con texto blanco */
 .header-contact-btn:hover {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
+  background: #0070e0 !important;
+  border-color: #0070e0 !important;
   color: #ffffff !important;
-  transform: scale(1.02);
+  transform: scale(1.05) !important;
 }
 
 .header-contact-btn:hover svg {
