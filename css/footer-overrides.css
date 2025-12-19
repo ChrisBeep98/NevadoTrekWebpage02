@@ -37,9 +37,9 @@
   padding-bottom: 60px; /* Space to top separator */
 }
 
-/* Hide children for JS reveal */
+/* Show children (animation disabled for now) */
 .footer_top-row > * {
-  opacity: 0;
+  opacity: 1;
 }
 
 .footer_links-col {
@@ -137,7 +137,7 @@
   text-align: left;
   text-transform: uppercase;
   display: block;
-  opacity: 0; /* Hidden until JS reveal */
+  opacity: 1; /* Made visible (animation disabled for now) */
 }
 
 /* Character styling for reveal and parallax */
@@ -161,9 +161,9 @@
   padding: 60px 0 20px 0; /* Space from bottom separator */
 }
 
-/* Hide children for JS reveal */
+/* Show children (animation disabled for now) */
 .footer_bottom-row > * {
-  opacity: 0;
+  opacity: 1;
 }
 
 .footer_legal {
