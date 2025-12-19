@@ -104,52 +104,61 @@
     const footer = document.getElementById('footer-placeholder');
     if (!footer) return;
 
-    // Target elements to animate
-    const animElements = [
-      footer.querySelector('.footer_brand'),
+    // Define hierarchies for more controlled entry
+    const brand = footer.querySelector('.footer_brand');
+    const mainContent = [
       footer.querySelector('.div-block-80 p'),
-      footer.querySelector('.footer_socials'),
-      ...Array.from(footer.querySelectorAll('.footer_links-wrap')),
-      ...Array.from(footer.querySelectorAll('.footer-bottom-content > *'))
+      footer.querySelector('.footer_socials')
     ].filter(el => el !== null);
+    const links = Array.from(footer.querySelectorAll('.footer_links-wrap'));
+    const bottomBar = Array.from(footer.querySelectorAll('.footer-bottom-content > *'));
 
-    // Initial state
-    gsap.set(animElements, { 
-      opacity: 0, 
-      y: 40,
-      scale: 0.98,
-      filter: 'blur(10px)'
+    // Combined list in order of appearance
+    const groups = [
+      { elements: brand, delay: 0 },
+      { elements: mainContent, delay: 0.2 },
+      { elements: links, delay: 0.4 },
+      { elements: bottomBar, delay: 0.6 }
+    ];
+
+    // Initial state for all
+    groups.forEach(group => {
+      gsap.set(group.elements, { 
+        opacity: 0, 
+        y: 30,
+        scale: 0.99,
+        filter: 'blur(10px)'
+      });
     });
 
-    // Create animation that triggers when footer starts becoming visible
-    // Since the content "rises" to reveal, we trigger when the main container's bottom 
-    // enters the viewport from below.
     const mainContainer = document.getElementById('tours-page-container');
 
     ScrollTrigger.create({
       trigger: mainContainer,
-      start: "bottom 95%", // Start animation when the curtain is almost fully open
+      start: "bottom 98%", 
       onEnter: () => {
-        gsap.to(animElements, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          filter: 'blur(0px)',
-          duration: 1.2,
-          stagger: 0.1,
-          ease: "expo.out",
-          overwrite: true
+        // Timeline for more control over the "Speed" and "Latency"
+        const tl = gsap.timeline({
+          defaults: {
+            duration: 1.0, // Reduced from 1.4 for better response
+            ease: "power3.out",
+            overwrite: true
+          }
         });
+
+        tl.to(brand, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }, 0)
+          .to(mainContent, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.1 }, 0.1) // Reduced stagger and delay
+          .to(links, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.08 }, 0.2)
+          .to(bottomBar, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', stagger: 0.05 }, 0.3);
       },
       onLeaveBack: () => {
-        // Optional: Hide them again when scrolling up
-        gsap.to(animElements, {
+        gsap.to([brand, ...mainContent, ...links, ...bottomBar], {
           opacity: 0,
-          y: 40,
-          scale: 0.98,
+          y: 30,
+          scale: 0.99,
           filter: 'blur(10px)',
           duration: 0.8,
-          ease: "power2.in",
+          ease: "power2.inOut",
           overwrite: true
         });
       }
