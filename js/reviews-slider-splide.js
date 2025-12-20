@@ -25,11 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
       gap: "20px",
       arrows: false,
       pagination: false,
-      clones: 10,        // Extra clones to prevent boundary gaps
+      clones: 20,        // Extra clones to prevent boundary gaps
       autoScroll: {
         // Positive speed moves towards end (downward in ttb)
         // Negative speed moves towards start (upward in ttb)
-        speed: isReversed ? 0.1 : -0.1, 
+        speed: isReversed ? 0.01 : -0.01, 
         pauseOnHover: true,
         pauseOnFocus: true,
       },
@@ -55,8 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
         autoScroll.play();
         console.log(`Slider ${index + 1} resumed on leave`);
       });
+      
+      console.log(`Reviews slider ${index + 1} mounted. Reversed: ${isReversed}, Actual Speed: ${autoScroll.options.speed}`);
+    } else {
+      console.warn(`AutoScroll component NOT FOUND for slider ${index + 1}`);
     }
-
-    console.log(`Reviews slider ${index + 1} mounted. Reversed: ${isReversed}, Target Speed: ${isReversed ? 0.1 : -0.1}`);
   });
 });
