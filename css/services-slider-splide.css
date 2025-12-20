@@ -101,32 +101,37 @@
 .services-nav-wrapper {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-left: 12px;
+    gap: 12px;
+    margin-left: 0; /* Reset margin since button is gone */
 }
 
 .services-splide-arrow {
-    width: 32px;
-    height: 32px;
+    width: 44px; /* Increased from 32px */
+    height: 44px; /* Increased from 32px */
     border: 1px solid #cde0eb4d;
     border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.05);
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.2s;
     color: var(--color--blue-dark);
     padding: 0;
+    /* Disable reveal animations */
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
 }
 
 .services-splide-arrow:hover {
     background-color: #8fbbd34f;
+    transform: scale(1.05);
 }
 
 .services-splide-arrow svg {
-    width: 16px;
-    height: 16px;
+    width: 24px; /* Increased from 16px */
+    height: 24px; /* Increased from 16px */
 }
 
 /* Ensure the header wrap for services can accommodate arrows */
