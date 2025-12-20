@@ -84,29 +84,31 @@
    * Batch animate partnership logos and cards for better performance
    */
   function initAboutLogosAnimations(hasGSAP) {
-    const items = document.querySelectorAll('.about-card, .section-is--about .logo-container, .div-block-111 .logo-container');
+    const section = document.getElementById('about-logos');
+    if (!section || !hasGSAP) return;
+
+    const items = section.querySelectorAll('.about-card, .logo-container');
     if (items.length === 0) return;
 
-    if (hasGSAP) {
-      gsap.to(items, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '#about', // Trigger when section hits viewport
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        }
-      });
-    } else {
-      // Fallback
-      items.forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
-    }
+    // We use .from to animate FROM an invisible state TO the natural CSS state
+    gsap.from(items, {
+      opacity: 0,
+      scale: 0.7,
+      y: 20,
+      duration: 0.8,
+      stagger: {
+        amount: 0.4, // Total time spread between all items
+        from: "start"
+      },
+      ease: 'back.out(1.7)',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 88%', // Starts a bit earlier for smoother feel
+        toggleActions: 'play none none reverse',
+        // Invalidate on refresh to handle responsive resizing
+        invalidateOnRefresh: true 
+      }
+    });
   }
 
   /**

@@ -19,6 +19,8 @@ Este documento detalla todas las animaciones implementadas actualmente en el pro
 | **Curtain Reveal** | Efecto "Telón": máscara sube mientras la imagen tiene parallax inverso. | **Scroll (Scrub)** | GSAP Timeline (Parallax complejo) | `tour-animations.js` (`initCurtainReveals`) |
 | **Medium Parallax** | Imagen baja (-250px) mientras texto sube (+350px) al cruzar. | **Scroll (Scrub)** | GSAP `fromTo` (y axis) | `tour-animations.js` (`initMediumParallax`) |
 | **Standard Scroll Reveal** | Elementos simples (`.tour-subtitle`, chips) aparecen suavemente. | **Scroll (Observer)** | IntersectionObserver + CSS `.reveal` | `tour-animations.js` (`initScrollReveal`) |
+| **Tour Cards Batch** | Cards de tours aparecen en bloque con cascada suave. | **Scroll (Trigger)** | GSAP `stagger: 0.1` | `index-animations.js` |
+| **About Growth Reveal** | Logos y tarjetas de partners crecen desde el centro. | **Scroll (Trigger)** | GSAP `scale: 0.7 -> 1` + `back.out` | `index-animations.js` |
 | **Feature List Stagger** | Lista de items (iconos) aparecen en cascada (staggered). | **Scroll (Trigger)** | GSAP `stagger: 0.2` | `tour-animations.js` (`initFeatureListReveal`) |
 | **FAQ Stagger** | Items de acordeón aparecen en cascada. | **Scroll (Trigger)** | GSAP `stagger: 0.25` | `tour-animations.js` (`initFAQReveal`) |
 

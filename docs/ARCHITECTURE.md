@@ -98,9 +98,22 @@ sequenceDiagram
     I18nScript->>DOM: Update Text Content
 ```
 
-## 6. Future Component System (Planned)
-As outlined in `method.md`, the project aims to move towards a component-based architecture for shared elements.
+## 7. Performance & GPU Optimization Strategy
 
-*   **Components**: Header, Footer, Tour Card.
-*   **Loader**: `js/components.js` (to be implemented).
-*   **Goal**: Reduce code duplication across `index.html` and `Sections/*.html`.
+To maintain a premium feel with high-resolution assets, the project implements several advanced optimization techniques:
+
+### 7.1 Component Lazy Loading
+*   **IntersectionObserver**: Heavy components like Splide sliders (Services, Reviews) are initialized only when they are near the viewport.
+*   **Auto-Pause**: Sliders automatically pause their animation loops when out of view to save CPU/GPU cycles.
+
+### 7.2 GPU Rendering Optimization
+*   **Layer Separation**: Expensive CSS effects (box-shadow, gradients) are moved to dedicated overlay layers instead of being applied directly to moving image tags.
+*   **Will-Change**: Strategic use of `will-change: transform, opacity` to hint the browser's compositor for upcoming animations.
+*   **Scrub Optimization**: Expensive properties like `filter: blur()` and `clip-path` are removed from scrubbed (scroll-linked) animations to prevent frequent repaints.
+
+### 7.3 Asset Loading Strategy
+*   **Fetch Priority**: The LCP hero image uses `fetchpriority="high"` for instant initial rendering.
+*   **Native Lazy Loading**: All non-critical images use `loading="lazy"` and `decoding="async"`.
+*   **Correct Sizing**: `srcset` and `sizes` attributes are tuned to prevent the browser from downloading/upscaling oversized images for small containers.
+
+## 8. Future Component System (Planned)

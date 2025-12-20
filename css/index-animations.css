@@ -354,13 +354,13 @@ padding-right: 0 !important;
 }
 
 /* ===== ABOUT SECTION & LOGOS OPTIMIZATION ===== */
-.logo-container.tripadvisor,
-.logo-container.turism {
-  opacity: 0;
-  transform: translateY(20px);
+.about-card,
+.logo-container {
   will-change: transform, opacity;
-  /* Optimization: Isolate paint and layout for these specific containers */
+  /* Optimization: Isolate paint and layout */
   contain: paint layout;
+  /* CRITICAL: Prevent CSS transitions from fighting GSAP */
+  transition: none !important;
 }
 
 .logo-container img {
