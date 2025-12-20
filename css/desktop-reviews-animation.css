@@ -1,119 +1,92 @@
 /**
- * Desktop Reviews GPU Optimization - FIXED VERSION
+ * Desktop Reviews - ROBUST VERSION (Attempt 2)
  * 
- * Optimizes GPU rendering WITHOUT blocking Splide animations.
- * Key: Use GPU hints but DON'T override transform with !important
+ * Focus: Rendering stability over aggressive speed optimizations.
+ * Removes all 'contain', 'will-change', and 'backface-visibility' 
+ * hints that can cause elements to "vanish" during transforms.
  */
 
-/* ===== GPU ACCELERATION (Without blocking animations) ===== */
+/* ===== STABLE CONTAINERS ===== */
 
-/* Enable GPU compositing on containers */
 .tinyflow-slider {
-  /* Create stacking context for GPU */
-  transform: translateZ(0);
-  will-change: transform;
+  /* Simple stacking context */
+  position: relative;
+  z-index: 1;
 }
 
 .tinyflow-slider .splide__track {
-  /* Force GPU layer without blocking Splide transforms */
-  will-change: transform;
-  backface-visibility: hidden;
-  /* ENSURE SHADOWS ARE NOT CLIPPED */
+  /* CLEAN SLATE: No backface-visibility or will-change */
   overflow: visible !important;
-  padding: 40px 0 !important;
-  margin: -40px 0 !important;
+  
+  /* Increased padding for transform safety (Attempt 3) */
+  padding: 80px 0 !important;
+  margin: -80px 0 !important;
 }
 
 .tinyflow-slider .splide__list {
-  /* Critical: will-change hints GPU but doesn't block animation */
-  will-change: transform;
-  backface-visibility: hidden;
-  
-  /* Smooth easing - let Splide control the transform */
-  transition-timing-function: linear;
-  
-  /* GPU optimization without blocking movement */
-  transform-style: preserve-3d;
-  
-  /* ENSURE SHADOWS ARE NOT CLIPPED */
+  /* Let browser manage rendering naturally */
   overflow: visible !important;
+  transition-timing-function: linear;
 }
 
-/* ===== RENDERING OPTIMIZATIONS ===== */
-
-/* Contain layout shifts */
 .tinyflow-slider .splide__slide {
-  contain: layout style paint;
-}
-
-/* Optimize cards */
-.tinyflow-slider .card {
-  contain: layout style;
-  /* Prevent subpixel rendering issues */
-  transform: translateZ(0);
-}
-
-/* ===== IMAGE OPTIMIZATION ===== */
-
-.tinyflow-slider img {
-  /* Better rendering during transforms */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
-
-/* ===== PERFORMANCE BOOST ===== */
-
-/* Force hardware acceleration on the entire component */
-.section-project {
-  /* Isolate stacking context */
-  isolation: isolate;
-  background-color: #e9efff; /* Matches hardcoded value in main CSS */
-  
-  /* Force visibility on desktop to bypass stuck Webflow animations */
+  /* Ensure no clipping boundaries */
+  overflow: visible !important;
   display: flex !important;
+  justify-content: center;
 }
 
-/* ===== CARD DESIGN REFINEMENTS ===== */
+/* ===== ROBUST CARD DESIGN ===== */
 
 .tinyflow-slider .card {
-  contain: layout style;
-  /* Prevent subpixel rendering issues */
-  transform: translateZ(0);
+  /* FIXED STACKING CONTEXT - Crucial to fix disappearance */
+  position: relative !important;
+  z-index: 5;
+  backface-visibility: hidden; /* Added for rendering stability */
+  -webkit-backface-visibility: hidden;
   
   /* Fixed height for visual consistency */
   height: 280px; 
   min-height: 280px;
   max-height: 280px;
+  width: 100%;
   
   display: flex !important;
   flex-direction: column;
   justify-content: flex-start;
   
-  /* NEUTRALIZING ORIGINAL MASSIVE SHADOW (10.8rem -> 15px) */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+  /* Clean visibility */
+  opacity: 1 !important;
+  visibility: visible !important;
   
-  /* Use existing design tokens where possible */
+  /* Visuals */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
   background-color: rgba(255, 255, 255, 0.75) !important;
   border-radius: 12px !important;
   border: 1px solid rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   
-  /* ULTRA-SLOW PREMIUM TRANSITION as requested */
+  /* Smooth transitions */
   transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), 
               box-shadow 0.8s cubic-bezier(0.19, 1, 0.22, 1),
               background-color 0.8s ease !important;
 }
 
 .tinyflow-slider .card:hover {
-  transform: translateY(-8px) scale(1.01) translateZ(0);
-  /* Refined, contained hover shadow */
+  /* Bring to front explicitly */
+  z-index: 100 !important;
+  
+  /* Smooth scale/move */
+  transform: translateY(-8px) scale(1.01);
+  
+  /* Hover visuals */
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
   background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
+/* Force standard properties for compatibility */
 .tinyflow-slider .card-text {
-  /* Line clamping for "incomplete" look fix */
   display: -webkit-box !important;
   display: box !important;
   -webkit-line-clamp: 4;
@@ -125,7 +98,6 @@
   
   margin-top: 10px;
   line-height: 1.5 !important;
-  /* Use existing color if variable not found, otherwise fallback */
   color: #333 !important; 
 }
 
@@ -142,46 +114,18 @@
 }
 
 .project-sliders-wrapper {
-  /* Create GPU layer for sliders wrapper */
-  transform: translateZ(0);
-  will-change: transform;
-  
-  /* Increased height as requested (+60px) */
   height: 680px;
   max-height: 680px;
-  overflow: hidden;
+  overflow: hidden; /* Clips the columns within the section */
+  position: relative;
+  z-index: 1;
+  
+  /* Buffer for hover transforms at edges */
+  padding: 40px 0;
 }
 
-/* ===== ACCESSIBILITY ===== */
-
-/* Respect user motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .tinyflow-slider .splide__list {
-    animation: none;
-    transition: none;
-  }
+.section-project {
+  isolation: isolate;
+  background-color: #e9efff;
+  display: flex !important;
 }
-
-/* ===== BROWSER COMPATIBILITY ===== */
-
-/* Safari optimization */
-@supports (-webkit-overflow-scrolling: touch) {
-  .tinyflow-slider .splide__list {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-}
-
-/* ===== KEY CHANGE FROM PREVIOUS VERSION ===== */
-/*
- * BEFORE (BROKEN - blocked animations):
- * transform: translateZ(0) !important;  ❌ Prevented Splide from animating
- * 
- * NOW (WORKS - allows animations):
- * will-change: transform;  ✅ Hints GPU without blocking
- * No !important on transform  ✅ Splide can animate freely
- * 
- * Result: GPU-optimized AND animated!
- */

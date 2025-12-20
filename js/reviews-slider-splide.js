@@ -21,20 +21,22 @@ document.addEventListener("DOMContentLoaded", function () {
       direction: 'ttb', // Top to bottom
       height: '680px',  // Increased as requested (+60px)
       autoHeight: false, 
-      perPage: 2,       // Show 2 cards at a time vertically
+      fixedHeight: '280px', // MATCHES CSS for stable calculations
       gap: "20px",
       arrows: false,
       pagination: false,
+      clones: 10,        // Extra clones to prevent boundary gaps
       autoScroll: {
         // Positive speed moves towards end (downward in ttb)
         // Negative speed moves towards start (upward in ttb)
-        speed: isReversed ? 0.3 : -0.3, 
-        pauseOnHover: false,
-        pauseOnFocus: false,
+        speed: isReversed ? 0.1 : -0.1, 
+        pauseOnHover: true,
+        pauseOnFocus: true,
       },
       breakpoints: {
         1200: {
-          height: '600px', // Responsive height adjustment
+          height: '600px', 
+          fixedHeight: '240px', // Adjusted for smaller screens
         },
       },
     });
@@ -42,6 +44,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // mount with AutoScroll extension if available
     splide.mount(window.splide && window.splide.Extensions ? window.splide.Extensions : {});
     
-    console.log(`Reviews slider ${index + 1} mounted. isReversed: ${isReversed}, Speed: ${isReversed ? 0.3 : -0.3}`);
+    // Explicitly handle pause on hover if the extension setting is failing
+    const autoScroll = splide.Components.AutoScroll;
+    if (autoScroll) {
+      slider.addEventListener('mouseenter', () => {
+        autoScroll.pause();
+        console.log(`Slider ${index + 1} paused on hover`);
+      });
+      slider.addEventListener('mouseleave', () => {
+        autoScroll.play();
+        console.log(`Slider ${index + 1} resumed on leave`);
+      });
+    }
+
+    console.log(`Reviews slider ${index + 1} mounted. Reversed: ${isReversed}, Target Speed: ${isReversed ? 0.1 : -0.1}`);
   });
 });
