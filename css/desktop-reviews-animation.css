@@ -61,6 +61,65 @@
 .section-project {
   /* Isolate stacking context */
   isolation: isolate;
+  background-color: #e9efff; /* Matches hardcoded value in main CSS */
+}
+
+/* ===== CARD DESIGN REFINEMENTS ===== */
+
+.tinyflow-slider .card {
+  contain: layout style;
+  /* Prevent subpixel rendering issues */
+  transform: translateZ(0);
+  
+  /* Fixed height for visual consistency */
+  height: 280px; 
+  min-height: 280px;
+  max-height: 280px;
+  
+  display: flex !important;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  
+  /* Use existing design tokens where possible */
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tinyflow-slider .card:hover {
+  transform: translateY(-5px) translateZ(0);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.tinyflow-slider .card-text {
+  /* Line clamping for "incomplete" look fix */
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  margin-top: 10px;
+  line-height: 1.5 !important;
+  /* Use existing color if variable not found, otherwise fallback */
+  color: #333 !important; 
+}
+
+.tinyflow-slider .card-header {
+  margin-bottom: 5px;
+  flex-shrink: 0;
+}
+
+.tinyflow-slider .card-divider {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin: 10px 0;
+  flex-shrink: 0;
 }
 
 .project-sliders-wrapper {

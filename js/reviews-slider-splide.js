@@ -18,24 +18,23 @@ document.addEventListener("DOMContentLoaded", function () {
       type: "loop",
       drag: "free",
       focus: "center",
-      perPage: 3,
-      gap: "2rem",
+      direction: 'ttb', // Top to bottom
+      height: '620px',  // Matches .project-sliders-wrapper max-height
+      autoHeight: false, 
+      perPage: 2,       // Show 2 cards at a time vertically
+      gap: "20px",
       arrows: false,
       pagination: false,
-      direction: 'ltr', // Standard ltr, we handle reverse via AutoScroll or JS
       autoScroll: {
-        speed: isReversed ? -0.8 : 0.8,
-        pauseOnHover: true,
+        // Positive speed moves towards end (upward movement)
+        // Negative speed moves towards start (downward movement)
+        speed: isReversed ? -0.8 : 0.8, 
+        pauseOnHover: false,
         pauseOnFocus: false,
       },
       breakpoints: {
         1200: {
-          perPage: 2,
-        },
-        991: {
-          // This section is hidden on mobile anyway via CSS,
-          // but we keep config clean
-          perPage: 1,
+          height: '500px',
         },
       },
     });
