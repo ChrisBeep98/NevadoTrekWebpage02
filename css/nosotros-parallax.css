@@ -1,0 +1,123 @@
+/**
+ * Nosotros Section - GPU Optimization Styles
+ * 
+ * Optimizes rendering for GSAP parallax animations
+ * and disables conflicting Webflow animations.
+ */
+
+/* ===== GPU ACCELERATION ===== */
+
+/* Force GPU layers on section */
+.section-6 {
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+/* Optimize parallax containers */
+.section-6 .parallax-img-wrapper {
+  overflow: hidden;
+  will-change: transform;
+  /* Prevent layout shifts */
+  contain: layout style;
+}
+
+/* Optimize parallax images */
+.section-6 .parallax-img-inner {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Prevent image quality degradation */
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Video background optimization */
+.section-6 .parallax-img-wrapper.story {
+  will-change: transform;
+}
+
+.section-6 .parallax-img-wrapper.story video,
+.section-6 .parallax-img-wrapper.story .parallax-img-inner {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* ===== DISABLE WEBFLOW ANIMATIONS ===== */
+
+/* Reset Webflow's data-w-id animations for parallax images */
+.section-6 [data-w-id="995f5cc9-50a9-711c-5e98-45b6fda15fd5"],
+.section-6 [data-w-id="e163351e-2f43-b6c2-87cb-714d6d88a95f"],
+.section-6 [data-w-id="74971b74-7650-0608-641c-63f78503fe47"] {
+  /* Override Webflow inline transforms */
+  opacity: 1 !important;
+  /* Don't reset transform - GSAP will handle it */
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* Optimize text paragraphs to prevent reflow */
+.section-6 .body-large {
+  contain: layout style;
+}
+
+/* Container optimization */
+.section-6 .div-block-101 {
+  /* Isolate from other sections */
+  isolation: isolate;
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .section-6 .parallax-img-inner {
+    /* Disable parallax for users who prefer reduced motion */
+    transform: none !important;
+    will-change: auto;
+  }
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+
+/* Tablet: reduce parallax intensity */
+@media screen and (max-width: 991px) {
+  /* Parallax values are adjusted via JS if needed */
+  /* This is just for additional optimization */
+  .section-6 .parallax-img-wrapper.small-size {
+    /* Less aggressive containment on smaller screens */
+    contain: layout;
+  }
+}
+
+/* Mobile: minimal parallax */
+@media screen and (max-width: 767px) {
+  .section-6 .parallax-img-inner {
+    /* Very subtle parallax on mobile */
+    will-change: auto;
+  }
+}
+
+/* ===== DEBUG MODE (Comment out in production) ===== */
+
+/* Uncomment to visualize parallax boundaries
+.parallax-img-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: red;
+  z-index: 9999;
+}
+
+.parallax-img-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: blue;
+  z-index: 9999;
+}
+*/
