@@ -89,7 +89,26 @@
       console.log(`  ✅ Parallax applied to image ${index + 1}/${parallaxImages.length}`);
     });
 
-    console.log('✅ Nosotros parallax initialized successfully!');
+    // 3. Last Home Image Parallax (Full-width image before footer)
+    const lastHomeWrapper = document.querySelector('.parallax-img-wrapper.last-home');
+    if (lastHomeWrapper) {
+      const lastHomeImg = lastHomeWrapper.querySelector('.parallax-img-inner');
+      if (lastHomeImg) {
+        gsap.to(lastHomeImg, {
+          yPercent: 12, // Subtly lower parallax factor for full-width impact
+          ease: 'none',
+          scrollTrigger: {
+            trigger: lastHomeWrapper,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1
+          }
+        });
+        console.log('  ✅ Last home image parallax applied');
+      }
+    }
+
+    console.log('✅ Nosotros & Last Home parallax initialized successfully!');
   }
 
   // Cleanup on page unload

@@ -31,12 +31,14 @@
 }
 
 /* Video background optimization */
-.section-6 .parallax-img-wrapper.story {
+.section-6 .parallax-img-wrapper.story,
+.parallax-img-wrapper.last-home {
   will-change: transform;
 }
 
 .section-6 .parallax-img-wrapper.story video,
-.section-6 .parallax-img-wrapper.story .parallax-img-inner {
+.section-6 .parallax-img-wrapper.story .parallax-img-inner,
+.parallax-img-wrapper.last-home .parallax-img-inner {
   will-change: transform;
   transform: translateZ(0);
 }
@@ -46,7 +48,8 @@
 /* Reset Webflow's data-w-id animations for parallax images */
 .section-6 [data-w-id="995f5cc9-50a9-711c-5e98-45b6fda15fd5"],
 .section-6 [data-w-id="e163351e-2f43-b6c2-87cb-714d6d88a95f"],
-.section-6 [data-w-id="74971b74-7650-0608-641c-63f78503fe47"] {
+.section-6 [data-w-id="74971b74-7650-0608-641c-63f78503fe47"],
+.parallax-img-wrapper.last-home {
   /* Override Webflow inline transforms */
   opacity: 1 !important;
   /* Don't reset transform - GSAP will handle it */
