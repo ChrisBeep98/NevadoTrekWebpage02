@@ -38,9 +38,42 @@
       // 3. Services CTA & Arrow Optimization (New)
       initServiceAnimations(hasGSAP);
 
-      // 4. Navbar Logic
+      // 4. Tour Cards Optimization (New)
+      initTourCardsAnimations(hasGSAP);
+
+      // 5. Navbar Logic
       initFloatingNavbar();
     }, 100);
+  }
+
+  /**
+   * TOUR CARDS ANIMATION
+   * Animates upcoming tour cards smoothly using GSAP
+   */
+  function initTourCardsAnimations(hasGSAP) {
+    const cards = document.querySelectorAll('.home-tour-card, .home-card-tour-2');
+    if (cards.length === 0) return;
+
+    if (hasGSAP) {
+      gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1, // Premium delay between cards
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.tours-2', // Trigger when section is in view
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+    } else {
+      // Fallback
+      cards.forEach(card => {
+        card.style.opacity = '1';
+        card.style.transform = 'none';
+      });
+    }
   }
 
   /**

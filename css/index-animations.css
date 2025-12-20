@@ -322,6 +322,21 @@ padding-right: 0 !important;
   fill: #ffffff !important;
 }
 
+/* ===== TOUR CARDS ANIMATION OPTIMIZATION ===== */
+.home-tour-card,
+.home-card-tour-2 {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+}
+
+/* Ensure images inside cards don't cause layout shifts */
+.main-tour-img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background-color: #f0f0f0; /* Placeholder color */
+}
+
 /* ===== SERVICES ANIMATION OPTIMIZATION ===== */
 /* Initial state for GSAP animation */
 .service-animate-item {
