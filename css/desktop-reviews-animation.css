@@ -145,6 +145,11 @@
   /* Create GPU layer for sliders wrapper */
   transform: translateZ(0);
   will-change: transform;
+  
+  /* Increased height as requested (+60px) */
+  height: 680px;
+  max-height: 680px;
+  overflow: hidden;
 }
 
 /* ===== ACCESSIBILITY ===== */

@@ -19,22 +19,22 @@ document.addEventListener("DOMContentLoaded", function () {
       drag: "free",
       focus: "center",
       direction: 'ttb', // Top to bottom
-      height: '620px',  // Matches .project-sliders-wrapper max-height
+      height: '680px',  // Increased as requested (+60px)
       autoHeight: false, 
       perPage: 2,       // Show 2 cards at a time vertically
       gap: "20px",
       arrows: false,
       pagination: false,
       autoScroll: {
-        // Positive speed moves towards end (upward movement)
-        // Negative speed moves towards start (downward movement)
+        // Positive speed moves towards end (downward in ttb)
+        // Negative speed moves towards start (upward in ttb)
         speed: isReversed ? 0.3 : -0.3, 
         pauseOnHover: false,
         pauseOnFocus: false,
       },
       breakpoints: {
         1200: {
-          height: '500px',
+          height: '600px', // Responsive height adjustment
         },
       },
     });
@@ -42,6 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // mount with AutoScroll extension if available
     splide.mount(window.splide && window.splide.Extensions ? window.splide.Extensions : {});
     
-    console.log(`Reviews slider ${index + 1} mounted (Reversed: ${isReversed})`);
+    console.log(`Reviews slider ${index + 1} mounted. isReversed: ${isReversed}, Speed: ${isReversed ? 0.3 : -0.3}`);
   });
 });
