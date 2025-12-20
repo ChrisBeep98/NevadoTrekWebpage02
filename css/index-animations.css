@@ -337,6 +337,39 @@ padding-right: 0 !important;
   background-color: #f0f0f0; /* Placeholder color */
 }
 
+/* ===== MOVING GALLERY & FINAL SECTION OPTIMIZATION ===== */
+.moving-gallery {
+  isolation: isolate;
+  will-change: transform;
+}
+
+.moving-gallery-image {
+  will-change: transform;
+  transform: translateZ(0); /* Force 3D layer */
+}
+
+.div-block-106 {
+  contain: layout style;
+  will-change: opacity;
+}
+
+/* ===== ABOUT SECTION & LOGOS OPTIMIZATION ===== */
+.logo-container.tripadvisor,
+.logo-container.turism {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: transform, opacity;
+  /* Optimization: Isolate paint and layout for these specific containers */
+  contain: paint layout;
+}
+
+.logo-container img {
+  /* Prevent browser from trying to upscale/rescale excessively */
+  image-rendering: -webkit-optimize-contrast;
+  max-width: 100%;
+  height: auto;
+}
+
 /* ===== SERVICES ANIMATION OPTIMIZATION ===== */
 /* Initial state for GSAP animation */
 .service-animate-item {

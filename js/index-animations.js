@@ -41,9 +41,72 @@
       // 4. Tour Cards Optimization (New)
       initTourCardsAnimations(hasGSAP);
 
-      // 5. Navbar Logic
+      // 5. About Section & Logos Optimization (New)
+      initAboutLogosAnimations(hasGSAP);
+
+      // 6. Moving Gallery Optimization (New)
+      initMovingGalleryAnimations(hasGSAP);
+
+      // 7. Navbar Logic
       initFloatingNavbar();
     }, 100);
+  }
+
+  /**
+   * MOVING GALLERY ANIMATION
+   * Smootly reveals the final gallery grid
+   */
+  function initMovingGalleryAnimations(hasGSAP) {
+    const images = document.querySelectorAll('.moving-gallery-image');
+    if (images.length === 0) return;
+
+    if (hasGSAP) {
+      gsap.fromTo(images, 
+        { opacity: 0, scale: 0.95 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.moving-gallery',
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+    }
+  }
+
+  /**
+   * ABOUT SECTION LOGOS & CARDS
+   * Batch animate partnership logos and cards for better performance
+   */
+  function initAboutLogosAnimations(hasGSAP) {
+    const items = document.querySelectorAll('.about-card, .section-is--about .logo-container, .div-block-111 .logo-container');
+    if (items.length === 0) return;
+
+    if (hasGSAP) {
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '#about', // Trigger when section hits viewport
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+    } else {
+      // Fallback
+      items.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
   }
 
   /**
