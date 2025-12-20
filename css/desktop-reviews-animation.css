@@ -1,0 +1,102 @@
+/**
+ * Desktop Reviews GPU Optimization - FIXED VERSION
+ * 
+ * Optimizes GPU rendering WITHOUT blocking Splide animations.
+ * Key: Use GPU hints but DON'T override transform with !important
+ */
+
+/* ===== GPU ACCELERATION (Without blocking animations) ===== */
+
+/* Enable GPU compositing on containers */
+.tinyflow-slider {
+  /* Create stacking context for GPU */
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.tinyflow-slider .splide__track {
+  /* Force GPU layer without blocking Splide transforms */
+  will-change: transform;
+  backface-visibility: hidden;
+  /* DO NOT use transform: !important here - it blocks Splide! */
+}
+
+.tinyflow-slider .splide__list {
+  /* Critical: will-change hints GPU but doesn't block animation */
+  will-change: transform;
+  backface-visibility: hidden;
+  
+  /* Smooth easing - let Splide control the transform */
+  transition-timing-function: linear;
+  
+  /* GPU optimization without blocking movement */
+  transform-style: preserve-3d;
+}
+
+/* ===== RENDERING OPTIMIZATIONS ===== */
+
+/* Contain layout shifts */
+.tinyflow-slider .splide__slide {
+  contain: layout style paint;
+}
+
+/* Optimize cards */
+.tinyflow-slider .card {
+  contain: layout style;
+  /* Prevent subpixel rendering issues */
+  transform: translateZ(0);
+}
+
+/* ===== IMAGE OPTIMIZATION ===== */
+
+.tinyflow-slider img {
+  /* Better rendering during transforms */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* ===== PERFORMANCE BOOST ===== */
+
+/* Force hardware acceleration on the entire component */
+.section-project {
+  /* Isolate stacking context */
+  isolation: isolate;
+}
+
+.project-sliders-wrapper {
+  /* Create GPU layer for sliders wrapper */
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .tinyflow-slider .splide__list {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ===== BROWSER COMPATIBILITY ===== */
+
+/* Safari optimization */
+@supports (-webkit-overflow-scrolling: touch) {
+  .tinyflow-slider .splide__list {
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* ===== KEY CHANGE FROM PREVIOUS VERSION ===== */
+/*
+ * BEFORE (BROKEN - blocked animations):
+ * transform: translateZ(0) !important;  ❌ Prevented Splide from animating
+ * 
+ * NOW (WORKS - allows animations):
+ * will-change: transform;  ✅ Hints GPU without blocking
+ * No !important on transform  ✅ Splide can animate freely
+ * 
+ * Result: GPU-optimized AND animated!
+ */
