@@ -60,7 +60,7 @@ function initOptimizedCarousels() {
         // Since we tripled the content, the track is very wide.
         // -10% or -20% gives a nice parallax feel without ending the text.
         
-        const moveAmount = direction * 30; // Move 30% of width (left or right)
+        const moveAmount = direction * 20; // Reduced from 30 to 20 for better paint performance
 
         gsap.to(track, {
             xPercent: moveAmount,
