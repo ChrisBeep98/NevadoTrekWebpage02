@@ -47,6 +47,8 @@
     <link href="css/index-animations.css" rel="stylesheet" type="text/css" />
     <link href="css/index-mobile-menu.css" rel="stylesheet" type="text/css" />
     <link href="css/optimized-carousel.css" rel="stylesheet" type="text/css" />
+    <!-- Footer Overrides for TourPage consistency -->
+    <link href="css/footer-overrides.css" rel="stylesheet" type="text/css" />
     <!-- Desktop Reviews GPU Optimization (CSS-only, non-destructive) -->
     <link href="css/desktop-reviews-animation.css" rel="stylesheet" type="text/css" />
     <!-- Nosotros Parallax GPU-Optimized (GSAP) -->
@@ -219,7 +221,7 @@
 
   <body class="body">
     <!-- MAIN CONTENT WRAPPER (for curtain reveal effect) -->
-    <div id="main-content-wrapper">
+    <div id="main-content-wrapper" style="background-color: #ffffff; position: relative; z-index: 10;">
     <!-- ===== NAVBAR FIXED CON EFECTO EXCLUSIÓN ===== -->
     <nav id="navbar-exclusion" class="navbar-fixed" role="banner">
       <div class="navbar-container">
@@ -4519,8 +4521,14 @@
       </section>
     </div>
     
-    <!-- Footer Reveal Script (still needed for spacer/scroll behavior) -->
-    <script src="js/index-footer-reveal.js"></script>
+    <!-- Footer Reveal Script -->
+    <script src="js/tours-page-footer-reveal.js"></script>
+    <script>
+      // Initialize the reveal effect
+      if (typeof initFooterReveal === 'function') {
+        initFooterReveal();
+      }
+    </script>
   </body>
 </html>
 
