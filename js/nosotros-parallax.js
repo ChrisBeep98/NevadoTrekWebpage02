@@ -34,8 +34,6 @@
   }
 
   function initNosotrosParallax() {
-    console.log('🎬 Initializing Nosotros parallax with GSAP...');
-
     const section = document.querySelector('.section-6');
     if (!section) {
       console.warn('⚠️ Section .section-6 not found');
@@ -58,7 +56,6 @@
             // markers: true // Debug: descomentar para ver triggers
           }
         });
-        console.log('  ✅ Video background parallax applied');
       }
     }
 
@@ -85,8 +82,6 @@
           // markers: true     // Debug
         }
       });
-
-      console.log(`  ✅ Parallax applied to image ${index + 1}/${parallaxImages.length}`);
     });
 
     // 3. Last Home Image Parallax (Full-width image before footer)
@@ -104,11 +99,8 @@
             scrub: 1
           }
         });
-        console.log('  ✅ Last home image parallax applied');
       }
     }
-
-    console.log('✅ Nosotros & Last Home parallax initialized successfully!');
   }
 
   // Cleanup on page unload

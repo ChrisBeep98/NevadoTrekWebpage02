@@ -63,7 +63,5 @@
       });
       ro.observe(footerPlaceholder);
     }
-    
-    console.log('Footer curtain reveal initialized');
   }
 })();

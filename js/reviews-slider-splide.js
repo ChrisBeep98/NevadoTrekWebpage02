@@ -25,10 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
       gap: "20px",
       arrows: false,
       pagination: false,
-      clones: 20,        // Extra clones to prevent boundary gaps
+      clones: 3,        // REDUCED from 20 to 3. Huge performance gain.
       autoScroll: {
-        // Positive speed moves towards end (downward in ttb)
-        // Negative speed moves towards start (upward in ttb)
         speed: isReversed ? 0.01 : -0.01, 
         pauseOnHover: true,
         pauseOnFocus: true,
@@ -36,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
       breakpoints: {
         1200: {
           height: '600px', 
-          fixedHeight: '240px', // Adjusted for smaller screens
+          fixedHeight: '240px', 
         },
       },
     });
@@ -44,19 +42,36 @@ document.addEventListener("DOMContentLoaded", function () {
     // mount with AutoScroll extension if available
     splide.mount(window.splide && window.splide.Extensions ? window.splide.Extensions : {});
     
-    // Explicitly handle pause on hover if the extension setting is failing
+    // Optimization: Pause slider when not in view
     const autoScroll = splide.Components.AutoScroll;
     if (autoScroll) {
+      // Setup hardware acceleration on the list
+      const list = slider.querySelector('.splide__list');
+      if (list) list.style.willChange = 'transform';
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            autoScroll.play();
+          } else {
+            autoScroll.pause();
+          }
+        });
+      }, { threshold: 0.1 });
+
+      observer.observe(slider);
+
       slider.addEventListener('mouseenter', () => {
         autoScroll.pause();
-        console.log(`Slider ${index + 1} paused on hover`);
       });
       slider.addEventListener('mouseleave', () => {
+        if (splide.root.classList.contains('is-in-view')) { // Custom check if needed
+             autoScroll.play();
+        }
+        // Fallback simple
         autoScroll.play();
-        console.log(`Slider ${index + 1} resumed on leave`);
       });
       
-      console.log(`Reviews slider ${index + 1} mounted. Reversed: ${isReversed}, Actual Speed: ${autoScroll.options.speed}`);
     } else {
       console.warn(`AutoScroll component NOT FOUND for slider ${index + 1}`);
     }

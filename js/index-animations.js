@@ -118,35 +118,35 @@
   /**
    * 2. OPTIMIZED TEXT REVEAL (GSAP)
    * Animates the entire text block at once instead of hundreds of spans
-   * Effect: Fade In + Slight Slide Up + Blur removal
+   * Effect: Fade In + Slight Slide Up
    */
   function initOptimizedTextReveal(selector, hasGSAP) {
     const element = document.querySelector(selector);
     if (!element) return;
 
-    // Ensure initial state (handled by CSS usually, but enforce here)
+    // Ensure initial state
     if (hasGSAP) {
-      // Animate with fromTo + Scrub + ClipPath
-      // ClipPath creates a "reveal" effect like a curtain rising
+      // Use will-change to hint the browser for optimization
+      element.style.willChange = 'transform, opacity';
+
       gsap.fromTo(element, 
         { 
           opacity: 0, 
-          y: 50, // Increased movement for dramatic scrub effect
-          filter: 'blur(10px)',
-          clipPath: 'inset(0% 0% 100% 0%)' // Fully masked from bottom
+          y: 30, // Reduced from 50 for a smoother feel
         },
         {
           opacity: 1,
           y: 0,
-          filter: 'blur(0px)',
-          clipPath: 'inset(0% 0% 0% 0%)', // Fully visible
-          ease: 'none', // Scrub needs linear ease for direct control
-          delay: 0.1, // 100ms delay restored
+          ease: 'power1.out', // Slightly smoother than 'none' even with scrub
           scrollTrigger: {
             trigger: element,
-            start: 'top 95%', // Starts when entering viewport
-            end: 'top 50%', // Finishes exactly at middle of viewport
-            scrub: 0.5,
+            start: 'top 92%', // Slightly later start
+            end: 'top 60%', // Finishes earlier
+            scrub: 1, // Increased scrub for more fluidity
+            onLeave: () => {
+              // Cleanup will-change to free up memory once animation is done
+              element.style.willChange = 'auto';
+            }
           }
         }
       );

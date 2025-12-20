@@ -62,14 +62,21 @@ function initOptimizedCarousels() {
         
         const moveAmount = direction * 20; // Reduced from 30 to 20 for better paint performance
 
+        // Optimization: Prepare GPU
+        track.style.willChange = 'transform';
+
         gsap.to(track, {
             xPercent: moveAmount,
             ease: "none",
             scrollTrigger: {
-                trigger: loop, // Trigger when the carousel itself is in view (or main section)
-                start: "top bottom", // Start when top of loop hits bottom of viewport
-                end: "bottom top", // End when bottom of loop hits top of viewport
-                scrub: 1 // Smooth scrubbing as requested (0.3 - 1 is standard "slowness")
+                trigger: loop, 
+                start: "top bottom", 
+                end: "bottom top", 
+                scrub: 1,
+                onToggle: self => {
+                    // Only enable will-change while the element is active in viewport
+                    track.style.willChange = self.isActive ? 'transform' : 'auto';
+                }
             }
         });
     });

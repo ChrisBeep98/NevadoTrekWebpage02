@@ -55,6 +55,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // This ensures .dynamic-i18n elements show correct language
   setTimeout(() => {
     applyLanguageToDynamicElements(currentLang);
+    
+    // Refresh ScrollTrigger after dynamic content is injected and translated
+    // This ensures all scroll-based triggers are calculated based on the final layout
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.refresh();
+    }
   }, 100);
 });
 
@@ -72,6 +78,8 @@ function updateCard(wrapper, tour, allDepartures, lang = 'es') {
   if (mainImg && tour.images && tour.images.length > 0) {
     mainImg.src = tour.images[0];
     mainImg.srcset = `${tour.images[0]} 500w, ${tour.images[0]} 800w`;
+    mainImg.loading = 'lazy';
+    mainImg.setAttribute('decoding', 'async');
   }
 
   // 3. Title
@@ -132,8 +140,12 @@ function updateCard(wrapper, tour, allDepartures, lang = 'es') {
     if (sideImg && tour.images && tour.images.length > 1) {
       sideImg.src = tour.images[1];
       sideImg.srcset = '';
+      sideImg.loading = 'lazy';
+      sideImg.setAttribute('decoding', 'async');
     } else if (sideImg) {
        sideImg.src = tour.images[0];
+       sideImg.loading = 'lazy';
+       sideImg.setAttribute('decoding', 'async');
     }
 
     // Side Text
