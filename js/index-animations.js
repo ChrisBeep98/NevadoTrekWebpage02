@@ -32,10 +32,13 @@
       // 2. Body Text Reveals (Optimized Block Animation)
       initOptimizedTextReveal('[data-i18n-key="experiences.lead"]', hasGSAP);
       initOptimizedTextReveal('[data-i18n-key="services.lead"]', hasGSAP);
-      initOptimizedTextReveal('[data-i18n-key="services.lead.bottom"]', hasGSAP);
+      // initOptimizedTextReveal('[data-i18n-key="services.lead.bottom"]', hasGSAP); // Disabled to prevent conflict
       initOptimizedTextReveal('.moving-gallery .last-heading', hasGSAP);
 
-      // 3. Navbar Logic
+      // 3. Services CTA & Arrow Optimization (New)
+      initServiceAnimations(hasGSAP);
+
+      // 4. Navbar Logic
       initFloatingNavbar();
     }, 100);
   }
@@ -168,5 +171,41 @@
       document.body.style.animationPlayState = 'running';
     }
   });
+
+  /**
+   * 3. OPTIMIZED SERVICES REVEAL (GSAP)
+   * Replaces heavy Webflow interactions for CTA button + Arrows
+   */
+  function initServiceAnimations(hasGSAP) {
+    const items = document.querySelectorAll('.service-animate-item');
+    if (items.length === 0) return;
+
+    if (hasGSAP) {
+      gsap.fromTo(items, 
+        { 
+          opacity: 0, 
+          y: 20 
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: items[0], 
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+    } else {
+      // Fallback
+      items.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    }
+  }
 
 })();

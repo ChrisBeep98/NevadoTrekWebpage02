@@ -14,7 +14,6 @@ function initOptimizedCarousels() {
     const hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
 
     if (!hasGSAP || !hasScrollTrigger) {
-        console.warn("GSAP or ScrollTrigger not found. Carousel animation skipped.");
         return;
     }
 

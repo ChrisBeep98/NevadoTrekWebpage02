@@ -9,7 +9,6 @@
 /* Hide text elements initially to prevent flash before animation */
 [data-i18n-key="experiences.lead"],
 [data-i18n-key="services.lead"],
-[data-i18n-key="services.lead.bottom"],
 .moving-gallery .last-heading {
   opacity: 0; 
   /* Prevent word breaking at line ends */
@@ -321,6 +320,14 @@ padding-right: 0 !important;
 #navbar-exclusion.scrolled .header-contact-btn:hover svg,
 #navbar-exclusion.navbar-fixed.scrolled .header-contact-btn:hover svg {
   fill: #ffffff !important;
+}
+
+/* ===== SERVICES ANIMATION OPTIMIZATION ===== */
+/* Initial state for GSAP animation */
+.service-animate-item {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
 }
 
 /* ===== NAVBAR ACTIONS ===== */
