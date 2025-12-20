@@ -1,23 +1,28 @@
 /* Antigravity Footer Redesign - REFINED (Dark Mode) */
 
 #footer-placeholder {
-  min-height: 94vh !important;
-  min-height: 94svh !important;
+  min-height: 400px; /* Placeholder minimum height before load */
+  background-color: #001e30;
+  transition: opacity 0.6s ease-in-out;
+  opacity: 0;
+}
+
+#footer-placeholder.is-loaded {
+  opacity: 1;
 }
 
 .antigravity-footer.is--footer {
   background-color: #001e30 !important; /* Brand Dark Navy */
   color: #ffffff !important;
-  padding: 60px 0 !important;
+  padding: 80px 0 !important;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow: hidden;
-  height: 94vh !important; 
-  height: 94svh !important; 
-  min-height: 94vh !important;
-  min-height: 94svh !important;
+  min-height: 80vh !important; 
+  min-height: 80svh !important; 
   display: flex !important;
   flex-direction: column;
   justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer_wrap {
