@@ -18,7 +18,10 @@
   /* Force GPU layer without blocking Splide transforms */
   will-change: transform;
   backface-visibility: hidden;
-  /* DO NOT use transform: !important here - it blocks Splide! */
+  /* ENSURE SHADOWS ARE NOT CLIPPED */
+  overflow: visible !important;
+  padding: 40px 0 !important;
+  margin: -40px 0 !important;
 }
 
 .tinyflow-slider .splide__list {
@@ -31,6 +34,9 @@
   
   /* GPU optimization without blocking movement */
   transform-style: preserve-3d;
+  
+  /* ENSURE SHADOWS ARE NOT CLIPPED */
+  overflow: visible !important;
 }
 
 /* ===== RENDERING OPTIMIZATIONS ===== */
@@ -62,6 +68,9 @@
   /* Isolate stacking context */
   isolation: isolate;
   background-color: #e9efff; /* Matches hardcoded value in main CSS */
+  
+  /* Force visibility on desktop to bypass stuck Webflow animations */
+  display: flex !important;
 }
 
 /* ===== CARD DESIGN REFINEMENTS ===== */
@@ -79,28 +88,38 @@
   display: flex !important;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: hidden;
+  
+  /* NEUTRALIZING ORIGINAL MASSIVE SHADOW (10.8rem -> 15px) */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
   
   /* Use existing design tokens where possible */
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  border-radius: 8px !important;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* ULTRA-SLOW PREMIUM TRANSITION as requested */
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), 
+              box-shadow 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+              background-color 0.8s ease !important;
 }
 
 .tinyflow-slider .card:hover {
-  transform: translateY(-5px) translateZ(0);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-8px) scale(1.01) translateZ(0);
+  /* Refined, contained hover shadow */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .tinyflow-slider .card-text {
   /* Line clamping for "incomplete" look fix */
   display: -webkit-box !important;
+  display: box !important;
   -webkit-line-clamp: 4;
+  line-clamp: 4;
   -webkit-box-orient: vertical;
+  box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   
@@ -144,7 +163,9 @@
 @supports (-webkit-overflow-scrolling: touch) {
   .tinyflow-slider .splide__list {
     -webkit-transform: translateZ(0);
+    transform: translateZ(0);
     -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 }
 

@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
       autoScroll: {
         // Positive speed moves towards end (upward movement)
         // Negative speed moves towards start (downward movement)
-        speed: isReversed ? -0.8 : 0.8, 
+        speed: isReversed ? 0.3 : -0.3, 
         pauseOnHover: false,
         pauseOnFocus: false,
       },
