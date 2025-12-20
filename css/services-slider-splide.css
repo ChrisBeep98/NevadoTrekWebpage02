@@ -1,0 +1,166 @@
+/* Splide Services Slider Parity CSS (Attempt 3 - Screenshot Parity) */
+
+.section-5 {
+    overflow: visible !important;
+}
+
+.services-splide {
+    /* BREAKOUT: Offset the entire slider to align with Webflow's breakout */
+    margin-left: calc(var(--base--section-padding) - 40px) !important;
+    width: auto !important;
+    visibility: visible !important;
+    position: relative;
+    overflow: visible !important;
+}
+
+.services-splide .splide__track {
+    overflow: visible !important;
+}
+
+.services-splide .splide__list {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+}
+
+.services-splide .splide__slide {
+    flex-shrink: 0 !important;
+    width: 92svw !important; /* Force width even if JS is late */
+    margin: 0 !important;
+    position: relative;
+    list-style: none !important;
+}
+
+/* Inner Card - Matches Screenshot precisely */
+.services-splide .div-block-97 {
+    border-radius: 4px;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100% !important; /* Card fills the slide width (92svw) */
+    height: 74vh !important;
+    padding-top: 32px;
+    padding-left: 72px;
+    padding-right: 16px;
+    display: flex !important;
+    position: relative;
+    left: 0 !important; 
+    box-sizing: border-box;
+}
+
+/* Image background layer */
+.services-splide .div-block-103 {
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.services-splide .image-10 {
+    object-fit: cover;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+}
+
+.services-splide .inner-shadow-filter {
+    backdrop-filter: drop-shadow(0 20px 20px #000000b3);
+    -webkit-backdrop-filter: drop-shadow(0 20px 20px #000000b3);
+}
+
+/* Navigation Arrows (Positioned next to "Ver Tours") */
+.services-nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+}
+
+.services-splide-arrow {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #cde0eb4d;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: var(--color--blue-dark);
+    padding: 0;
+}
+
+.services-splide-arrow:hover {
+    background-color: #8fbbd34f;
+}
+
+.services-splide-arrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Ensure the header wrap for services can accommodate arrows */
+.heading_wrap-2.services .div-block-98 {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Responsive Overrides */
+@media screen and (max-width: 991px) {
+    .services-splide {
+        margin-left: var(--mobile-margin) !important;
+    }
+    .services-splide .div-block-97 {
+        height: 80vh !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .services-splide .div-block-97 {
+        min-height: 570px !important;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        padding-left: 41px;
+        box-shadow: 0 2px 9px 2px #0003;
+    }
+    .services-nav-wrapper {
+        display: none; /* Often arrows are replaced by drag on mobile */
+    }
+}
+
+/* Fix for reviews section disappearing on desktop */
+@media screen and (min-width: 992px) {
+    .section-project {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .section-project [style*="opacity: 0"],
+    .section-project [style*="opacity: 0.0"],
+    .section-project .comment-txt,
+    .section-project .split-lines_large,
+    .section-project .button-6 {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+
+    .mobile-comments {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .section-project {
+        display: none !important;
+    }
+    .mobile-comments {
+        display: block !important;
+    }
+}

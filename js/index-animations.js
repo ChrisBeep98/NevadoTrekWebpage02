@@ -37,9 +37,6 @@
 
       // 3. Navbar Logic
       initFloatingNavbar();
-      
-      // 4. Services Slider Custom Touch Threshold
-      initServicesSliderThreshold();
     }, 100);
   }
 
@@ -80,85 +77,6 @@
     updateNavbar();
   }
 
-  /**
-   * 4. SERVICES SLIDER CUSTOM TOUCH THRESHOLD
-   * Intercepts Webflow slider touch events and only allows swipes
-   * that meet a minimum horizontal distance threshold.
-   * Prevents accidental horizontal swipes during vertical scrolling.
-   */
-  function initServicesSliderThreshold() {
-    const slider = document.querySelector('.slider-2.w-slider');
-    if (!slider) return;
-
-    const SWIPE_THRESHOLD = 50;  // Minimum horizontal distance (px) to trigger swipe
-    const DIRECTION_RATIO = 1.5; // Horizontal must be 1.5x vertical to count as intentional
-    
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let isSwiping = false;
-    let swipeDirection = null; // 'horizontal', 'vertical', or null
-
-    // Capture touch start
-    slider.addEventListener('touchstart', function(e) {
-      if (e.touches.length === 1) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        isSwiping = true;
-        swipeDirection = null;
-      }
-    }, { passive: true });
-
-    // Monitor touch movement to determine direction
-    slider.addEventListener('touchmove', function(e) {
-      if (!isSwiping || e.touches.length !== 1) return;
-      
-      const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
-      const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-      
-      // Only determine direction once we have enough movement
-      if (swipeDirection === null && (deltaX > 10 || deltaY > 10)) {
-        if (deltaX > deltaY * DIRECTION_RATIO && deltaX >= SWIPE_THRESHOLD) {
-          // Intentional horizontal swipe - allow it
-          swipeDirection = 'horizontal';
-        } else if (deltaY > deltaX) {
-          // More vertical than horizontal - block the slider, allow page scroll
-          swipeDirection = 'vertical';
-        }
-      }
-      
-      // If moving mostly vertically, prevent Webflow's slider from hijacking
-      if (swipeDirection === 'vertical') {
-        // Don't prevent default - let the page scroll
-        return;
-      }
-      
-      // If not enough horizontal movement yet, block the slider
-      if (deltaX < SWIPE_THRESHOLD && swipeDirection !== 'horizontal') {
-        e.stopPropagation();
-      }
-    }, { passive: true });
-
-    // Clean up on touch end
-    slider.addEventListener('touchend', function() {
-      isSwiping = false;
-      swipeDirection = null;
-    }, { passive: true });
-
-    // Also handle the Webflow slider arrows - make them visible
-    const leftArrow = slider.querySelector('.left-arrow');
-    const rightArrow = slider.querySelector('.right-arrow');
-    
-    if (leftArrow) {
-      const arrowInner = leftArrow.querySelector('.div-block-96');
-      if (arrowInner) arrowInner.style.opacity = '1';
-    }
-    if (rightArrow) {
-      const arrowInner = rightArrow.querySelector('.div-block-96');
-      if (arrowInner) arrowInner.style.opacity = '1';
-    }
-
-    console.log('Services slider touch threshold initialized');
-  }
 
   /**
    * 1. Hero Title: "Un Paraíso En Salento"
