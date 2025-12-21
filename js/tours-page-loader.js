@@ -216,7 +216,6 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
           <div class="div-block-24">
             <div class="div-block-57">
               <h1
-                style="opacity: 0"
                 class="h-5 medium italic tour-name-heading dynamic-i18n"
                 data-i18n-es="${tour.name.es}"
                 data-i18n-en="${tour.name.en}"
@@ -232,7 +231,6 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
               </h1>
             </div>
             <p
-              style="opacity: 0"
               class="body-medium f-grey italic descriptin-responsiveness dynamic-i18n"
               data-i18n-es="${tour.shortDescription.es}"
               data-i18n-en="${tour.shortDescription.en}"
@@ -501,28 +499,25 @@ function applyLanguageToDynamicElements(lang) {
  * Initialize GSAP animations matching index.html
  */
 function initAnimations() {
-  // Fallback: Ensure EVERYTHING is visible if GSAP/ScrollTrigger fails or doesn't trigger
-  setTimeout(() => {
+  // Fallback: Absolute guarantee of visibility
+  const forceVisibility = () => {
     document.querySelectorAll('.home-tour-card, .tour-name-heading, .price-h, .body-medium').forEach(el => {
-      const style = window.getComputedStyle(el);
-      if (style.opacity === '0' || style.visibility === 'hidden') {
-        el.style.opacity = '1';
-        el.style.visibility = 'visible';
-        el.style.transform = 'none';
-      }
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+      el.style.transform = 'none';
     });
-  }, 2000);
+  };
 
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    document.querySelectorAll('.home-tour-card').forEach(el => el.style.opacity = '1');
+    forceVisibility();
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // 1. CLEANUP: Kill specific triggers to avoid memory leaks
+  // 1. CLEANUP: Kill all existing tour triggers to avoid conflicts
   ScrollTrigger.getAll().forEach(t => {
-    if (t.vars.id && t.vars.id.includes('tour-card-')) {
+    if (t.vars.id && t.vars.id.includes('tour-card')) {
       t.kill();
     }
   });
@@ -530,18 +525,41 @@ function initAnimations() {
   const tourCards = document.querySelectorAll('.home-tour-card');
   if (tourCards.length === 0) return;
 
+  // 2. INITIAL STATE: Set cards to a ready-to-animate state
+  // We use opacity 0 here, but only if we are SURE we will animate them
+  gsap.set(tourCards, { 
+    opacity: 0, 
+    y: 30,
+    visibility: 'visible' 
+  });
+
+  // 3. BATCH ANIMATION: Clean, staggered entrance
+  ScrollTrigger.batch(tourCards, {
+    onEnter: batch => {
+      gsap.to(batch, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.15,
+        ease: 'expo.out',
+        overwrite: true,
+        onComplete: () => {
+          // Clear transform only, keep opacity 1
+          batch.forEach(card => gsap.set(card, { clearProps: 'transform' }));
+        }
+      });
+    },
+    start: 'top 95%',
+    once: true 
+  });
+
+  // 4. PARALLAX: Subtle image movement on scroll
   tourCards.forEach((card, index) => {
     const img = card.querySelector('.main-tour-img');
-    const title = card.querySelector('.tour-name-heading');
-    const price = card.querySelector('.price-h');
-    const description = card.querySelector('.body-medium');
-    const chips = card.querySelectorAll('.chip-tour-info-wrapper, .pink-chip, .div-block-56');
-
-    // 2. PARALLAX TRIGGER (High performance scrub)
     if (img) {
       img.style.willChange = 'transform';
       gsap.to(img, {
-        y: 30,
+        y: 20,
         ease: 'none',
         scrollTrigger: {
           trigger: card,
@@ -553,57 +571,12 @@ function initAnimations() {
         }
       });
     }
-
-    // 3. ENTRANCE TIMELINE (Refined for maximum reliability)
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 95%',
-        toggleActions: 'play none none none',
-        id: `tour-card-entrance-${index}`
-      }
-    });
-
-    // Force visibility and removal of any hidden states
-    gsap.set(card, { opacity: 1, visibility: 'visible' });
-
-    // Animate only position to avoid "invisible elements" bug
-    tl.from(card, {
-      y: 30,
-      duration: 0.8,
-      ease: 'power3.out',
-      clearProps: 'all'
-    });
-
-    // Staggered children reveal - Only movement
-    const children = [];
-    if (title) children.push(title);
-    if (price) children.push(price);
-    if (description) children.push(description);
-    
-    if (children.length > 0) {
-      tl.from(children, {
-        y: 15,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power2.out',
-        clearProps: 'all'
-      }, "-=0.5");
-    }
-
-    if (chips.length > 0) {
-      tl.from(chips, {
-        y: 10,
-        duration: 0.5,
-        stagger: 0.05,
-        ease: 'back.out(1.4)',
-        clearProps: 'all'
-      }, "-=0.4");
-    }
   });
 
-  // Re-calculate all trigger positions
-  ScrollTrigger.refresh();
+  // 5. REFRESH: Recalculate after all elements are positioned
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 300);
 }
 
 /**
