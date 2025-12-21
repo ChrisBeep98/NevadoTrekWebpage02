@@ -149,50 +149,58 @@ function renderTours() {
  * Initialize animations for the tour card texts
  */
 function initTourAnimations() {
-  const cardContents = document.querySelectorAll('.nt-card-content');
-  if (cardContents.length === 0) return;
+  const cards = document.querySelectorAll('.nt-tour-card');
+  if (cards.length === 0) return;
 
-  // Clear existing triggers to avoid accumulation on re-renders
+  // Clear existing triggers
   ScrollTrigger.getAll().forEach(st => {
-    if (st.vars.trigger && (st.vars.trigger instanceof HTMLElement) && st.vars.trigger.classList.contains('nt-card-content')) {
+    if (st.vars.trigger && (st.vars.trigger instanceof HTMLElement) && 
+       (st.vars.trigger.classList.contains('nt-card-content') || 
+        st.vars.trigger.classList.contains('nt-tour-card') || 
+        st.vars.trigger.classList.contains('nt-card-badges'))) {
       st.kill();
     }
   });
 
-  cardContents.forEach((content) => {
-    const title = content.querySelector('.nt-card-title');
-    const price = content.querySelector('.nt-card-price');
-    const desc = content.querySelector('.nt-card-description');
-    
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: content,
-        start: 'top 92%',
-        toggleActions: 'play none none reverse'
-      }
-    });
+  cards.forEach((card) => {
+    // 1. Text Animation (Trigger on Card Top)
+    const texts = card.querySelectorAll('.nt-card-title, .nt-card-price, .nt-card-description');
+    if (texts.length > 0) {
+      gsap.from(texts, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%', // Animate text when card top enters
+          toggleActions: 'play none none reverse'
+        },
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+        clearProps: 'all'
+      });
+    }
 
-    // Title entrance
-    tl.from(title, {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power2.out'
-    })
-    // Price entrance (slight delay)
-    .from(price, {
-      y: 20,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power2.out'
-    }, '-=0.6') // Overlap for smoothness
-    // Description entrance (more noticeable delay)
-    .from(desc, {
-      y: 30,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power2.out'
-    }, '-=0.5');
+    // 2. Badges Animation (Trigger on Badges Position)
+    // This ensures they only animate when the chips THEMSELVES are in the viewport
+    const badgesContainer = card.querySelector('.nt-card-badges');
+    const badges = card.querySelectorAll('.nt-badge');
+    
+    if (badgesContainer && badges.length > 0) {
+      gsap.from(badges, {
+        scrollTrigger: {
+          trigger: badgesContainer, // Trigger specifically on the chips container
+          start: 'top 95%', // Wait until chips are almost fully within viewport
+          toggleActions: 'play none none reverse'
+        },
+        y: 15,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.08,
+        ease: 'back.out(1.5)', // Subtle bounce
+        clearProps: 'all'
+      });
+    }
   });
 }
 

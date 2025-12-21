@@ -261,6 +261,7 @@
   color: white;
   line-height: 1;
   white-space: nowrap;
+  will-change: transform, opacity; /* Hint for browser optimization */
 }
 
 .nt-badge svg {
