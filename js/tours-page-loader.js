@@ -208,6 +208,7 @@ function createTourCardHTML(tour, departures, lang = 'es', index = 0) {
           <img
             src="${mainImage}"
             loading="lazy"
+            decoding="async"
             alt="${tour.name.es}"
             class="image-8 main-tour-img"
           />
@@ -553,7 +554,9 @@ function initAnimations() {
     once: true 
   });
 
-  // 4. PARALLAX: Subtle image movement on scroll
+  // 4. PARALLAX: Removed for performance (lag reduction)
+  // The subtle parallax on 8+ cards causes significant scroll lag on some devices.
+  /*
   tourCards.forEach((card, index) => {
     const img = card.querySelector('.main-tour-img');
     if (img) {
@@ -572,6 +575,7 @@ function initAnimations() {
       });
     }
   });
+  */
 
   // 5. REFRESH: Recalculate after all elements are positioned
   setTimeout(() => {

@@ -48,8 +48,13 @@
     mainContainer.style.width = '100%';
 
     // Function to update margin based on footer height
+    let lastFooterHeight = 0;
     const updateMargin = () => {
       const footerHeight = footerPlaceholder.offsetHeight;
+      // Debounce small changes (< 2px) to prevent layout thrashing
+      if (Math.abs(footerHeight - lastFooterHeight) < 2) return;
+      
+      lastFooterHeight = footerHeight;
       if (footerHeight > 0) {
         mainContainer.style.marginBottom = footerHeight + 'px';
         // Force refresh to ensure GSAP knows about the new page height
@@ -62,27 +67,36 @@
     // Initial update with a bit more buffer for content rendering
     setTimeout(updateMargin, 200);
 
-    // Update on resize
-    window.addEventListener('resize', updateMargin);
+    // Update on resize (Throttled)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateMargin, 150);
+    });
     
-    // Use ResizeObserver for more robust height tracking
+    // Use ResizeObserver for more robust height tracking (Debounced)
     if (typeof ResizeObserver !== 'undefined') {
+      let roTimeout;
       const ro = new ResizeObserver(entries => {
-        updateMargin();
+        clearTimeout(roTimeout);
+        roTimeout = setTimeout(updateMargin, 150);
       });
       ro.observe(footerPlaceholder);
     }
     
-    // TOC & Mobile CTA Hiding Logic (Prevent overlap)
+    // TOC & Mobile CTA Hiding Logic (Prevent overlap) - OPTIMIZED
     const tocElement = document.querySelector('.index') || document.querySelector('.div-block-142');
     const mobileCta = document.querySelector('.mobile-fixed-cta-container');
     
     if (tocElement || mobileCta) {
-      window.addEventListener('scroll', () => {
+      let ticking = false;
+
+      const onScroll = () => {
          const mainRect = mainContainer.getBoundingClientRect();
          const windowHeight = window.innerHeight;
          
          const footerVisibleHeight = windowHeight - mainRect.bottom;
+         // Hide if more than 50px of footer is visible
          const shouldHide = footerVisibleHeight > 50; 
          
          if (tocElement) {
@@ -97,7 +111,16 @@
            mobileCta.style.transform = shouldHide ? 'translateY(100%)' : 'translateY(0)';
            mobileCta.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
          }
-      });
+         
+         ticking = false;
+      };
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(onScroll);
+          ticking = true;
+        }
+      }, { passive: true });
     }
 
     // Initialize Footer Content Animation
@@ -113,7 +136,7 @@
     const giantText = footer.querySelector('.footer_giant-text');
     if (!giantText) return;
 
-    // 1. Split text into spans for clean character control (Silence splitting)
+    // 1. Split text into spans (Required for CSS gradient styling .parallax-char)
     if (!giantText.querySelector('.parallax-char')) {
       const text = giantText.textContent.trim();
       giantText.innerHTML = text.split('').map(char => 
@@ -123,98 +146,44 @@
 
     const topRowItems = footer.querySelectorAll('.footer_top-row > *');
     const bottomRowItems = footer.querySelectorAll('.footer_bottom-row > *');
+    
+    // Ensure children are visible so we can animate the parent
+    // (Previously we hid them, causing the invisible footer issue)
     const allChars = giantText.querySelectorAll('.parallax-char');
+    gsap.set(allChars, { opacity: 1, yPercent: 0, transform: 'none' });
 
     const mainContainer = document.getElementById('tours-page-container') || document.body;
 
-    // 2. Initial state - Using yPercent for displacement to avoid conflict with parallax pixels
-    gsap.set([topRowItems, bottomRowItems], { yPercent: 40 });
-    gsap.set(allChars, { yPercent: 50, opacity: 0 });
+    // 2. Initial state - Fade everything out slightly
+    gsap.set([topRowItems, bottomRowItems], { opacity: 0, y: 30 });
+    gsap.set(giantText, { opacity: 0, scale: 0.98 });
 
-    // 3. MINIMALIST REVEAL: Smooth Slide & Fade
+    // 3. MINIMALIST REVEAL: Single Trigger
     ScrollTrigger.create({
       trigger: mainContainer,
-      start: "bottom 98%",
+      start: "bottom 95%", 
       once: true,
       onEnter: () => {
-        // Reveal rows (using yPercent)
-        gsap.to(topRowItems, { opacity: 1, yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out" });
-        gsap.to(bottomRowItems, { opacity: 1, yPercent: 0, duration: 1, stagger: 0.1, ease: "power2.out", delay: 0.4 });
+        // Reveal rows
+        gsap.to([topRowItems, bottomRowItems], { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.8, 
+            stagger: 0.1, 
+            ease: "power2.out",
+            overwrite: true
+        });
         
-        // Character Reveal (using yPercent)
-        gsap.set(giantText, { opacity: 1 });
-        gsap.to(allChars, { 
+        // Reveal Giant Text
+        gsap.to(giantText, { 
           opacity: 1, 
-          yPercent: 0, 
-          duration: 1.2, 
-          stagger: 0.02,
-          ease: "expo.out"
+          scale: 1,
+          duration: 1, 
+          ease: "power2.out",
+          overwrite: true
         });
       }
     });
-
-    // 4. MINIMALIST ASCENT: Selective Parallax for "REK"
-    if (allChars.length >= 3) {
-      const isMobile = window.innerWidth < 768;
-      const multiplier = isMobile ? 0.35 : 1; // Subtle multiplier
-
-      const charsArray = Array.from(allChars);
-      const charR = charsArray[charsArray.length - 3];
-      const charE = charsArray[charsArray.length - 2];
-      const charK = charsArray[charsArray.length - 1];
-      const otherChars = charsArray.slice(0, -3);
-
-      // Parallax strictly uses pixels (y) to avoid conflict with reveal yPercent
-      gsap.to(otherChars, {
-        y: -25 * multiplier,
-        force3D: true,
-        ease: "none",
-        scrollTrigger: {
-          trigger: mainContainer,
-          start: "bottom bottom",
-          end: "bottom top", 
-          scrub: 1.2
-        }
-      });
-
-      // 'E' goes highest
-      gsap.to(charE, {
-        y: -80 * multiplier,
-        force3D: true,
-        ease: "none",
-        scrollTrigger: {
-          trigger: mainContainer,
-          start: "bottom bottom",
-          end: "bottom top", 
-          scrub: 1.2
-        }
-      });
-
-      // 'R' and 'K' go to the same height
-      gsap.to([charR, charK], {
-        y: -40 * multiplier,
-        force3D: true,
-        ease: "none",
-        scrollTrigger: {
-          trigger: mainContainer,
-          start: "bottom bottom",
-          end: "bottom top", 
-          scrub: 1.3
-        }
-      });
-
-      gsap.to(charK, {
-        y: -40 * multiplier,
-        force3D: true,
-        ease: "none",
-        scrollTrigger: {
-          trigger: mainContainer,
-          start: "bottom bottom",
-          end: "bottom top", 
-          scrub: isMobile ? 1.4 : 1.7
-        }
-      });
-    }
   }
 
   // --- Animation Logic for specific text (Legacy support) ---
