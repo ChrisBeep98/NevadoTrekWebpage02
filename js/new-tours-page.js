@@ -252,6 +252,11 @@ function setupLanguageSwitcher() {
       
       // Re-render tours with new language
       renderTours();
+      
+      // Update static elements via global i18n
+      if (window.NT_I18N && window.NT_I18N.apply) {
+        window.NT_I18N.apply(lang);
+      }
     });
   });
 
@@ -261,6 +266,11 @@ function setupLanguageSwitcher() {
   if (savedLang === 'en') {
     currentLangSpan.textContent = 'EN';
     currentFlagImg.src = 'https://flagcdn.com/w20/us.png';
+  }
+  
+  // Initial translation for static elements (footer, filters, etc.)
+  if (window.NT_I18N && window.NT_I18N.apply) {
+    window.NT_I18N.apply(savedLang);
   }
 }
 
