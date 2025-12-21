@@ -316,6 +316,7 @@
   margin: 0;
   flex: 1;
   font-style: italic;
+  will-change: transform, opacity;
 }
 
 .nt-card-price {
@@ -324,6 +325,7 @@
   font-weight: 700;
   color: var(--color-primary);
   white-space: nowrap;
+  will-change: transform, opacity;
 }
 
 .nt-card-description {
@@ -335,6 +337,7 @@
   flex-grow: 1;
   font-style: italic;
   text-align: right;
+  will-change: transform, opacity;
 }
 
 .nt-card-footer {

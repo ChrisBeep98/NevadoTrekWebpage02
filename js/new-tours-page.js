@@ -125,6 +125,60 @@ function renderTours() {
   }
   
   grid.innerHTML = filteredTours.map(tour => createTourCard(tour)).join('');
+
+  // Initialize animations for the text inside newly rendered cards
+  initTourAnimations();
+}
+
+/**
+ * Initialize animations for the tour card texts
+ */
+function initTourAnimations() {
+  const cardContents = document.querySelectorAll('.nt-card-content');
+  if (cardContents.length === 0) return;
+
+  // Clear existing triggers to avoid accumulation on re-renders
+  ScrollTrigger.getAll().forEach(st => {
+    if (st.vars.trigger && (st.vars.trigger instanceof HTMLElement) && st.vars.trigger.classList.contains('nt-card-content')) {
+      st.kill();
+    }
+  });
+
+  cardContents.forEach((content) => {
+    const title = content.querySelector('.nt-card-title');
+    const price = content.querySelector('.nt-card-price');
+    const desc = content.querySelector('.nt-card-description');
+    
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: content,
+        start: 'top 92%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // Title entrance
+    tl.from(title, {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.out'
+    })
+    // Price entrance (slight delay)
+    .from(price, {
+      y: 20,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power2.out'
+    }, '-=0.6') // Overlap for smoothness
+    // Description entrance (more noticeable delay)
+    .from(desc, {
+      y: 30,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power2.out'
+    }, '-=0.5');
+  });
 }
 
 /**
