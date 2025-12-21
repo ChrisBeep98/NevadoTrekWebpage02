@@ -128,6 +128,9 @@ function renderTours() {
 
   // Initialize animations for the text inside newly rendered cards
   initTourAnimations();
+  
+  // Refresh ScrollTrigger to ensure footer triggers are correct after height change
+  ScrollTrigger.refresh();
 }
 
 /**
@@ -191,29 +194,31 @@ function createTourCard(tour) {
   return `
     <article class="nt-tour-card">
       <a href="${tour.link}" style="text-decoration: none; color: inherit; display: contents;">
-        <div class="nt-card-image-wrapper">
-          <img 
-            src="${tour.image}" 
-            alt="${tour.title}"
-            class="nt-card-image"
-            loading="lazy"
-          />
-          
-          <!-- Badge en esquina inferior izquierda -->
-          <div class="nt-card-badges">
-            <span class="nt-badge nt-badge--difficulty">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+        <div class="nt-card-image-shadow-box">
+          <div class="nt-card-image-wrapper">
+            <img 
+              src="${tour.image}" 
+              alt="${tour.title}"
+              class="nt-card-image"
+              loading="lazy"
+            />
+            
+            <!-- Badge en esquina inferior izquierda -->
+            <div class="nt-card-badges">
+              <span class="nt-badge nt-badge--difficulty">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                </svg>
+                ${difficultyLabel}
+              </span>
+            </div>
+            
+            <!-- Flecha en esquina superior derecha -->
+            <div class="nt-card-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M17 7H7M17 7V17"/>
               </svg>
-              ${difficultyLabel}
-            </span>
-          </div>
-          
-          <!-- Flecha en esquina superior derecha -->
-          <div class="nt-card-arrow">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7M17 7H7M17 7V17"/>
-            </svg>
+            </div>
           </div>
         </div>
         
