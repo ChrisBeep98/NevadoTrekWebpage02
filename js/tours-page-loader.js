@@ -600,15 +600,6 @@ function initAnimations() {
         clearProps: 'all'
       }, "-=0.4");
     }
-      tl.from(chips, {
-        opacity: 0,
-        y: 10,
-        duration: 0.5,
-        stagger: 0.05,
-        ease: 'back.out(1.4)',
-        clearProps: 'all'
-      }, "-=0.4");
-    }
   });
 
   // Re-calculate all trigger positions
