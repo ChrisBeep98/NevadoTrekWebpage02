@@ -309,7 +309,10 @@ function setupMobileMenu() {
   });
 }
 
-// Initialize Footer Animations
+/**
+ * Initialize Footer Animations
+ * Unified staggered entrance for all footer elements
+ */
 function initFooterAnimations() {
   gsap.registerPlugin(ScrollTrigger);
 
@@ -319,41 +322,37 @@ function initFooterAnimations() {
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: footer,
-      start: 'top 85%', // Start when top of footer hits 85% of viewport height
+      start: 'top 85%',
       toggleActions: 'play none none reverse'
-    },
-    delay: 0.2 // 200ms delay before starting
+    }
   });
 
-  // 1. Reveal Top Row Elements (Staggered: Logo -> Tagline -> Nav Cols)
-  tl.from('.nt-footer-logo-main, .nt-footer-tagline, .nt-footer-nav-col', {
-    y: 50, // More pronounced Y movement
-    opacity: 0,
-    duration: 1.0, 
-    stagger: 0.15,
-    ease: 'power3.out'
-  })
-
-  // 1.5 Reveal Separators (Expand from Center)
-  .to('.nt-footer-separator', {
-    scaleX: 1,
+  // 1. Reveal Separators & Top Row (Logo, Tagline, Nav)
+  tl.from('.nt-footer-separator', {
+    scaleX: 0,
     duration: 1.2,
     ease: 'expo.out'
-  }, '-=0.5') 
-  
-  // 2. Reveal Giant Text (Scale + Opacity)
-  .from('.nt-text-big', {
-    scale: 1.1,
-    opacity: 0,
-    y: 20,
-    duration: 1.2, // Slower (was 1)
-    stagger: 0.1,
-    ease: 'expo.out'
-  }, '-=0.8') 
-
-  // 3. Reveal Bottom Row (Fade In + Slide Up)
-  .from('.nt-footer-bottom', {
+  })
+  .from('.nt-footer-logo-main, .nt-footer-tagline, .nt-footer-nav-col', {
     y: 50,
+    opacity: 0,
+    duration: 1.0,
+    stagger: 0.1,
+    ease: 'power3.out'
+  }, '-=0.8')
+  
+  // 2. Reveal Giant Text
+  .from('.nt-text-big', {
+    y: 50,
+    opacity: 0,
+    scale: 1.05,
+    duration: 1.2,
+    ease: 'expo.out'
+  }, '-=0.6')
+
+  // 3. Reveal Bottom Row
+  .from('.nt-footer-bottom', {
+    y: 30,
     opacity: 0,
     duration: 0.8,
     ease: 'power2.out'
@@ -362,11 +361,11 @@ function initFooterAnimations() {
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-  setupNavbar(); // Changed from initNavbarBehavior() to setupNavbar()
-  renderTours(); // Removed TOURS_DATA argument as per function signature
+  setupNavbar();
+  renderTours();
   setupFilters();
-  setupLanguageSwitcher(); // Added back missing initialization
-  setupMobileMenu(); // Added back missing initialization
+  setupLanguageSwitcher();
+  setupMobileMenu();
   initFooterAnimations();
 });
 
