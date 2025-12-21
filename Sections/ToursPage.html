@@ -17,8 +17,12 @@
       rel="stylesheet"
       type="text/css"
     />
-    <!-- Tours Page Styles -->
-    <link href="../css/tours-page.css" rel="stylesheet" type="text/css" />
+    <!-- OPTIMIZED Tours Page Styles -->
+    <link
+      href="../css/tours-page-optimized.css"
+      rel="stylesheet"
+      type="text/css"
+    />
     <!-- Shared Navbar Styles from Index -->
     <link href="../css/index-animations.css" rel="stylesheet" type="text/css" />
     <!-- Footer Overrides & Hover Effects -->
@@ -37,12 +41,24 @@
 
       /* ANIMATION KEYFRAMES */
       @keyframes slideDownHeaderDesktop {
-        0% { transform: translate(-50%, -100%); opacity: 0; }
-        100% { transform: translate(-50%, 0); opacity: 1; }
+        0% {
+          transform: translate(-50%, -100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translate(-50%, 0);
+          opacity: 1;
+        }
       }
       @keyframes slideDownHeaderMobile {
-        0% { transform: translateY(-100%); opacity: 0; }
-        100% { transform: translateY(0); opacity: 1; }
+        0% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
       }
 
       /* FORCE navbar to be fixed */
@@ -62,9 +78,10 @@
         align-items: center;
         height: 88px;
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        
+
         /* PREMIUM ENTRANCE ANIMATION */
-        animation: slideDownHeaderDesktop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s backwards;
+        animation: slideDownHeaderDesktop 1.2s cubic-bezier(0.16, 1, 0.3, 1)
+          0.8s backwards;
       }
 
       /* Scrolled state - pill */
@@ -152,9 +169,10 @@
           right: 16px !important;
           transform: none; /* Removed !important */
           width: calc(100% - 32px) !important;
-          
+
           /* MOBILE ANIMATION */
-          animation: slideDownHeaderMobile 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s backwards;
+          animation: slideDownHeaderMobile 1.2s cubic-bezier(0.16, 1, 0.3, 1)
+            0.8s backwards;
         }
 
         #navbar-exclusion.navbar-fixed.scrolled {
@@ -206,14 +224,14 @@
         color: #042e4d !important;
         border-color: #042e4d !important;
       }
-      
+
       .mobile-menu-overlay .header-contact-btn:hover {
         background: #2563eb !important;
         border-color: #2563eb !important;
         color: #ffffff !important;
         transform: scale(1.05);
       }
-      
+
       .mobile-menu-overlay .header-contact-btn:hover svg {
         fill: #ffffff !important;
       }
@@ -392,7 +410,16 @@
     </nav>
 
     <!-- MAIN CONTENT -->
-    <main id="tours-page-container" style="position: relative; z-index: 10; background-color: #ffffff; margin-bottom: 0px; width: 100%;">
+    <main
+      id="tours-page-container"
+      style="
+        position: relative;
+        z-index: 10;
+        background-color: #ffffff;
+        margin-bottom: 0px;
+        width: 100%;
+      "
+    >
       <!-- HEADER SECTION -->
       <section class="tours-page-header">
         <div class="header-content">
@@ -411,34 +438,78 @@
           <!-- Unified Filters Row -->
           <div class="difficulty-filters">
             <!-- Clear Filters Button (Icon Only) -->
-            <button class="clear-filters-btn" id="clear-filters-btn" aria-label="Limpiar filtros">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <button
+              class="clear-filters-btn"
+              id="clear-filters-btn"
+              aria-label="Limpiar filtros"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <path
+                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                ></path>
               </svg>
             </button>
 
             <!-- Duración Dropdown Integrated as Chip -->
             <select class="duration-filter" id="duration-filter">
               <!-- Removed redundant "Duración" option -->
-              <option value="all" data-i18n-key="filter.all_female">Todas</option>
+              <option value="all" data-i18n-key="filter.all_female">
+                Todas
+              </option>
               <option value="1" data-i18n-key="filter.days1">1 día</option>
-              <option value="2-3" data-i18n-key="filter.days23">2-3 días</option>
-              <option value="4-5" data-i18n-key="filter.days45">4-5 días</option>
+              <option value="2-3" data-i18n-key="filter.days23">
+                2-3 días
+              </option>
+              <option value="4-5" data-i18n-key="filter.days45">
+                4-5 días
+              </option>
               <option value="6+" data-i18n-key="filter.days6p">6+ días</option>
             </select>
 
-            <button class="filter-chip active" data-difficulty="all" data-i18n-key="filter.all">
+            <button
+              class="filter-chip active"
+              data-difficulty="all"
+              data-i18n-key="filter.all"
+            >
               Todos
             </button>
-            <button class="filter-chip" data-difficulty="Easy" data-i18n-key="filter.easy">Fácil</button>
-            <button class="filter-chip" data-difficulty="Moderate" data-i18n-key="filter.moderate">
+            <button
+              class="filter-chip"
+              data-difficulty="Easy"
+              data-i18n-key="filter.easy"
+            >
+              Fácil
+            </button>
+            <button
+              class="filter-chip"
+              data-difficulty="Moderate"
+              data-i18n-key="filter.moderate"
+            >
               Moderado
             </button>
-            <button class="filter-chip" data-difficulty="Moderate-Difficult" data-i18n-key="filter.modDiff">
+            <button
+              class="filter-chip"
+              data-difficulty="Moderate-Difficult"
+              data-i18n-key="filter.modDiff"
+            >
               Moderado-Difícil
             </button>
-            <button class="filter-chip" data-difficulty="Difficult" data-i18n-key="filter.difficult">
+            <button
+              class="filter-chip"
+              data-difficulty="Difficult"
+              data-i18n-key="filter.difficult"
+            >
               Difícil
             </button>
           </div>
@@ -454,10 +525,98 @@
           </div>
         </div>
       </section>
+
+      <!-- TOUR CARD TEMPLATE (Hidden, reusable via template cloning) -->
+      <template id="tour-card-template">
+        <article class="tour-card">
+          <a href="#" class="tour-card__link">
+            <div class="tour-card__image-wrapper">
+              <img
+                src=""
+                alt=""
+                class="tour-card__image"
+                loading="lazy"
+                decoding="async"
+              />
+
+              <!-- Badges Overlay -->
+              <div class="tour-card__badges">
+                <span class="badge badge--date">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M7 1V3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H10.7546C9.65672 19.6304 9 17.8919 9 16C9 11.5817 12.5817 8 17 8C18.8919 8 20.6304 8.65672 22 9.75463V4C22 3.44772 21.5523 3 21 3H17V1H15V3H9V1H7ZM23 16C23 19.3137 20.3137 22 17 22C13.6863 22 11 19.3137 11 16C11 12.6863 13.6863 10 17 10C20.3137 10 23 12.6863 23 16ZM16 12V16.4142L18.2929 18.7071L19.7071 17.2929L18 15.5858V12H16Z"
+                    ></path>
+                  </svg>
+                  <span class="badge__text">11/10/25</span>
+                </span>
+
+                <span class="badge badge--altitude">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
+                    ></path>
+                  </svg>
+                  <span class="badge__text">3400m</span>
+                </span>
+
+                <span class="badge badge--duration">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M8.70098,5.75 C9.27833,4.75 10.7217,4.75 11.2991,5.75 L14.7991,11.8122 L15.701,10.25 C16.2784,9.25 17.7217,9.25 18.2991,10.25 L22.6292,17.75 C23.2066,18.75 22.4849,20 21.3302,20 L17.0001,20 L17.0001,19.9984 C16.9763,19.9995 16.9524,20 16.9282,20 L3.07182,20 C1.91711,20 1.19543,18.75 1.77278,17.75 L8.70098,5.75 Z M7.79128,11.3256 L8.50004,11.7981 L9.44534,11.1679 C9.78124,10.944 10.2188,10.944 10.5547,11.1679 L11.5,11.7981 L12.2088,11.3257 L10,7.5 L7.79128,11.3256 Z"
+                    ></path>
+                  </svg>
+                  <span class="badge__text">4 Días</span>
+                </span>
+              </div>
+
+              <!-- Arrow Icon -->
+              <div class="tour-card__arrow" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M13.4697 8.53033C13.1768 8.23744 13.1768 7.76256 13.4697 7.46967C13.7626 7.17678 14.2374 7.17678 14.5303 7.46967L18.5303 11.4697C18.8232 11.7626 18.8232 12.2374 18.5303 12.5303L14.5303 16.5303C14.2374 16.8232 13.7626 16.8232 13.4697 16.5303C13.1768 16.2374 13.1768 15.7626 13.4697 15.4697L16.1893 12.75H6.5C6.08579 12.75 5.75 12.4142 5.75 12C5.75 11.5858 6.08579 11.25 6.5 11.25H16.1893L13.4697 8.53033Z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Content Area -->
+          <div class="tour-card__content">
+            <div class="tour-card__header">
+              <h2 class="tour-card__title">Nevado del Tolima</h2>
+              <span class="tour-card__price">$780.000 COP</span>
+            </div>
+            <p class="tour-card__description">
+              Ruta poco concurrida hacia el mayor bosque de palmas de cera
+            </p>
+          </div>
+        </article>
+      </template>
     </main>
 
     <!-- FOOTER PLACEHOLDER (Outside Main for Sticky Reveal) -->
-    <div id="footer-placeholder" style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: -1;"></div>
+    <div
+      id="footer-placeholder"
+      style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: -1"
+    ></div>
 
     <!-- ===== MOBILE MENU OVERLAY ===== -->
     <div class="mobile-menu-overlay" id="mobile-menu">
@@ -590,8 +749,8 @@
       });
     </script>
 
-    <!-- Tours Page Loader -->
-    <script type="module" src="../js/tours-page-loader.js"></script>
+    <!-- OPTIMIZED Tours Page Loader -->
+    <script type="module" src="../js/tours-page-optimized.js"></script>
     <!-- Dynamic Component Loader -->
     <script src="../js/load-components.js"></script>
     <!-- Footer Reveal Script -->
