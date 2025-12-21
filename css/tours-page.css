@@ -236,6 +236,7 @@ html, body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   margin-top: 56px !important; /* Specific user request */
+  will-change: transform, opacity; /* Performance Hint */
 }
 
 /* Arrow Icon Container */
@@ -245,6 +246,7 @@ html, body {
   border-radius: 50%; /* Ensure circular shape */
   transition: all 0.3s ease; /* Animate transform and shadow too */
   padding: 8px; /* Ensure space for background */
+  will-change: transform, background-color;
 }
 
 /* Hover effect on card - Arrow circle turns vivid blue, moves left, adds shadow */
@@ -263,6 +265,7 @@ html, body {
   overflow: hidden;
   border-radius: 12px;
   transition: transform 0.3s ease;
+  will-change: transform;
 }
 
 .div-block-17.info-container:hover {
@@ -274,6 +277,7 @@ html, body {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  will-change: transform; /* Hint for parallax scrub */
 }
 
 /* Text container - EXACT spacing from index.html */

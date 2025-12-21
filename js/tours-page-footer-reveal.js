@@ -50,11 +50,17 @@
     // Function to update margin based on footer height
     const updateMargin = () => {
       const footerHeight = footerPlaceholder.offsetHeight;
-      mainContainer.style.marginBottom = footerHeight + 'px';
+      if (footerHeight > 0) {
+        mainContainer.style.marginBottom = footerHeight + 'px';
+        // Force refresh to ensure GSAP knows about the new page height
+        if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+        }
+      }
     };
 
-    // Initial update
-    setTimeout(updateMargin, 100);
+    // Initial update with a bit more buffer for content rendering
+    setTimeout(updateMargin, 200);
 
     // Update on resize
     window.addEventListener('resize', updateMargin);

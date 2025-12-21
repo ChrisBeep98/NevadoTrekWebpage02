@@ -504,131 +504,98 @@ function initAnimations() {
   // Fallback: ensure text is visible even if GSAP is not loaded
   setTimeout(() => {
     document.querySelectorAll('.tour-name-heading, .price-h, .body-medium').forEach(el => {
-      if (el.style.opacity === '0') {
+      if (window.getComputedStyle(el).opacity === '0') {
         el.style.opacity = '1';
       }
     });
-  }, 1000);
+  }, 1500);
 
-  if (typeof gsap === 'undefined') {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Image Parallax Effect - Optimized
-  const tourCards = document.querySelectorAll('.home-tour-card');
-  
-  tourCards.forEach(card => {
-    const img = card.querySelector('.main-tour-img');
-    if (!img) return;
-    
-    img.style.willChange = 'transform';
-    
-    gsap.to(img, {
-      y: 50,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: card,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-        invalidateOnRefresh: true
-      }
-    });
+  // 1. CLEANUP: Kill specific triggers to avoid memory leaks
+  ScrollTrigger.getAll().forEach(t => {
+    if (t.vars.id && t.vars.id.includes('tour-card-')) {
+      t.kill();
+    }
   });
 
-  // PER-CARD ANIMATIONS LOOP
-  // Iterate through each card to set up individual animations
+  const tourCards = document.querySelectorAll('.home-tour-card');
+  
   tourCards.forEach((card, index) => {
+    const img = card.querySelector('.main-tour-img');
     const title = card.querySelector('.tour-name-heading');
     const price = card.querySelector('.price-h');
     const description = card.querySelector('.body-medium');
-    
-    // Animate Card Entrance
-    gsap.from(card, {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: 'power3.out',
-      clearProps: 'opacity,transform',
+    const chips = card.querySelectorAll('.chip-tour-info-wrapper, .pink-chip, .div-block-56');
+
+    // 2. PARALLAX TRIGGER (High performance scrub)
+    if (img) {
+      img.style.willChange = 'transform';
+      gsap.to(img, {
+        y: 30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+          invalidateOnRefresh: true,
+          id: `tour-card-parallax-${index}`
+        }
+      });
+    }
+
+    // 3. ENTRANCE TIMELINE (Single Trigger for all elements)
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: card,
-        start: 'top 85%', // Trigger when top of card hits 85% of viewport height
-        toggleActions: 'play none none none'
+        start: 'top 90%',
+        toggleActions: 'play none none none',
+        id: `tour-card-entrance-${index}`
       }
     });
 
-    // Animate Title
-    if (title) {
-      gsap.from(title, {
-        opacity: 0,
-        y: 15,
-        duration: 0.8, // Increased duration
-        delay: 0.5, // Increased delay (was 0.2)
-        ease: 'power2.out',
-        clearProps: 'opacity,transform',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      });
-    }
+    // Animate container entrance
+    tl.from(card, {
+      opacity: 0,
+      y: 20,
+      duration: 0.6,
+      ease: 'power2.out'
+    });
 
-    // Animate Price
-    if (price) {
-      gsap.from(price, {
-        opacity: 0,
-        y: 15,
-        duration: 0.8,
-        delay: 0.7, // Increased delay (was 0.3)
-        ease: 'power2.out',
-        clearProps: 'opacity,transform',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      });
-    }
-
-    // Animate Description
-    if (description) {
-      gsap.from(description, {
-        opacity: 0,
-        y: 15,
-        duration: 0.8,
-        delay: 0.9, // Increased delay (was 0.4)
-        ease: 'power2.out',
-        clearProps: 'opacity,transform',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      });
-    }
-
-    // Animate Chips (optional but recommended for consistency)
-    const chips = card.querySelectorAll('.chip-tour-info-wrapper, .pink-chip, .div-block-56');
-    if (chips.length > 0) {
-      gsap.from(chips, {
+    // Staggered children reveal
+    const children = [];
+    if (title) children.push(title);
+    if (price) children.push(price);
+    if (description) children.push(description);
+    
+    if (children.length > 0) {
+      tl.from(children, {
         opacity: 0,
         y: 10,
-        duration: 0.6,
+        duration: 0.5,
         stagger: 0.1,
-        delay: 1.1, // Increased delay (was 0.5)
-        ease: 'back.out(1.2)',
-        clearProps: 'opacity,transform',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      });
+        ease: 'power2.out'
+      }, "-=0.3");
+    }
+
+    if (chips.length > 0) {
+      tl.from(chips, {
+        opacity: 0,
+        y: 5,
+        duration: 0.4,
+        stagger: 0.05,
+        ease: 'back.out(1.4)'
+      }, "-=0.2");
     }
   });
+
+  // Re-calculate all trigger positions
+  ScrollTrigger.refresh();
 }
 
 /**
