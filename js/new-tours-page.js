@@ -13,6 +13,8 @@ const TOURS_DATA = [
     currency: "COP",
     difficulty: "difficult",
     duration: "4-5",
+    altitude: "5220 msnm",
+    nextDate: "25/12/2025",
     image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb41abea4f4a82c1e6f2a6_DJI_0058.jpg",
     link: "TourPage.html"
   },
@@ -24,6 +26,8 @@ const TOURS_DATA = [
     currency: "COP",
     difficulty: "easy",
     duration: "1",
+    altitude: "2400 msnm",
+    nextDate: "28/12/2025",
     image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e190552a6862e84a46aafe_eit%2004.jpg",
     link: "TourPage.html"
   },
@@ -35,6 +39,8 @@ const TOURS_DATA = [
     currency: "COP",
     difficulty: "moderate",
     duration: "1",
+    altitude: "3950 msnm",
+    nextDate: null, // Test "Por definir"
     image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e1dcd9d2184c53066eda3a_edit%2012.jpg",
     link: "TourPage.html"
   },
@@ -46,6 +52,8 @@ const TOURS_DATA = [
     currency: "COP",
     difficulty: "difficult",
     duration: "2-3",
+    altitude: "4950 msnm",
+    nextDate: "15/01/2026",
     image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e2b07758b60449ec3c71b2__DSC1845-Mejorado-NR%201.jpg",
     link: "TourPage.html"
   },
@@ -57,6 +65,8 @@ const TOURS_DATA = [
     currency: "COP",
     difficulty: "easy",
     duration: "1",
+    altitude: "1900 msnm",
+    nextDate: "05/01/2026",
     image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e1962cdb928b053a0aac29_edit%2007%2007.jpg",
     link: "TourPage.html"
   },
@@ -68,6 +78,8 @@ const TOURS_DATA = [
     currency: "COP",
     difficulty: "difficult",
     duration: "6+",
+    altitude: "4800 msnm",
+    nextDate: "10/02/2026",
     image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb41abea4f4a82c1e6f2a6_DJI_0058.jpg",
     link: "TourPage.html"
   }
@@ -187,9 +199,13 @@ function initTourAnimations() {
 /**
  * Create tour card HTML
  */
+/**
+ * Create tour card HTML
+ */
 function createTourCard(tour) {
-  const difficultyLabel = DIFFICULTY_LABELS[tour.difficulty][currentLang];
+  // Translate chips data
   const durationLabel = DURATION_LABELS[tour.duration][currentLang];
+  const dateLabel = tour.nextDate || (currentLang === 'es' ? 'Por definir' : 'TBD');
   
   return `
     <article class="nt-tour-card">
@@ -203,14 +219,37 @@ function createTourCard(tour) {
               loading="lazy"
             />
             
-            <!-- Badge en esquina inferior izquierda -->
+            <!-- Badges Container -->
             <div class="nt-card-badges">
-              <span class="nt-badge nt-badge--difficulty">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+              
+              <!-- 1. Next Date (Red) -->
+              <span class="nt-badge nt-badge--date">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
-                ${difficultyLabel}
+                ${dateLabel}
               </span>
+
+              <!-- 2. Altitude (Glass) -->
+              <span class="nt-badge nt-badge--info">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/>
+                </svg>
+                ${tour.altitude || 'N/A'}
+              </span>
+
+              <!-- 3. Duration (Glass) -->
+              <span class="nt-badge nt-badge--info">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                ${durationLabel}
+              </span>
+
             </div>
             
             <!-- Flecha en esquina superior derecha -->
@@ -380,7 +419,7 @@ function setupMobileMenu() {
 
 /**
  * Initialize Footer Animations
- * Unified staggered entrance for all footer elements
+ * Staggered entrance based on viewport entry for maximum performance
  */
 function initFooterAnimations() {
   gsap.registerPlugin(ScrollTrigger);
@@ -388,44 +427,68 @@ function initFooterAnimations() {
   const footer = document.querySelector('.nt-footer-clean');
   if (!footer) return;
 
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: footer,
-      start: 'top 85%',
-      toggleActions: 'play none none reverse'
-    }
-  });
+  // -- 1. Top Row (Logo, Tagline, Nav) --
+  const footerTop = footer.querySelector('.nt-footer-top');
+  if (footerTop) {
+    gsap.from(footerTop.querySelectorAll('.nt-footer-logo-main, .nt-footer-tagline, .nt-footer-nav-col'), {
+      scrollTrigger: {
+        trigger: footerTop,
+        start: 'top 85%', // Trigger when top of section hits 85% of viewport
+        toggleActions: 'play none none reverse'
+      },
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power2.out',
+      clearProps: 'all' // Cleanup for cleaner DOM after animation
+    });
+  }
 
-  // 1. Reveal Separators & Top Row (Logo, Tagline, Nav)
-  tl.from('.nt-footer-separator', {
-    scaleX: 0,
-    duration: 1.2,
-    ease: 'expo.out'
-  })
-  .from('.nt-footer-logo-main, .nt-footer-tagline, .nt-footer-nav-col', {
-    y: 50,
-    opacity: 0,
-    duration: 1.0,
-    stagger: 0.1,
-    ease: 'power3.out'
-  }, '-=0.8')
-  
-  // 2. Reveal Giant Text
-  .from('.nt-text-big', {
-    y: 50,
-    opacity: 0,
-    scale: 1.05,
-    duration: 1.2,
-    ease: 'expo.out'
-  }, '-=0.6')
+  // -- 2. Giant Text Section --
+  const footerGiant = footer.querySelector('.nt-footer-giant');
+  if (footerGiant) {
+    const tlGiant = gsap.timeline({
+      scrollTrigger: {
+        trigger: footerGiant,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
+    });
 
-  // 3. Reveal Bottom Row
-  .from('.nt-footer-bottom', {
-    y: 30,
-    opacity: 0,
-    duration: 0.8,
-    ease: 'power2.out'
-  }, '-=1.0');
+    // Separators expand
+    tlGiant.from(footerGiant.querySelectorAll('.nt-footer-separator'), {
+      scaleX: 0,
+      duration: 1.2,
+      ease: 'expo.out',
+      stagger: 0.1
+    })
+    // Text rises matching the separators
+    .from(footerGiant.querySelector('.nt-text-big'), {
+      y: 60,
+      opacity: 0,
+      duration: 1.0,
+      ease: 'power3.out'
+    }, '<0.2'); // Start 0.2s after separators start
+  }
+
+  // -- 3. Bottom Row (Legal & Copyright) --
+  const footerBottom = footer.querySelector('.nt-footer-bottom');
+  if (footerBottom) {
+    gsap.from(footerBottom.children, {
+      scrollTrigger: {
+        trigger: footerBottom,
+        start: 'top 95%', // Trigger slightly earlier (lower on screen)
+        toggleActions: 'play none none reverse'
+      },
+      y: 20,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1, // Stagger copyright vs legal links
+      ease: 'power2.out',
+      clearProps: 'all'
+    });
+  }
 }
 
 // Initialize on load
