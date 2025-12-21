@@ -1,0 +1,47 @@
+/* ===================================
+   FOOTER - NO ANIMATIONS
+   All footer content static and visible
+   =================================== */
+
+/* Footer container - static position */
+#footer-placeholder,
+.section.is--footer {
+  position: static !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+/* All footer elements - immediately visible */
+.footer_giant-text,
+.footer_top-row,
+.footer_bottom-row,
+.footer_top-row > *,
+.footer_bottom-row > *,
+.parallax-char {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Disable scroll-triggered animations */
+.footer_giant-text,
+.footer_wrap,
+.footer_content {
+  will-change: auto !important;
+}
+
+/* Main content - no special margin */
+#main-content-wrapper,
+#tours-page-container {
+  margin-bottom: 0 !important;
+}
+
+/* Remove any GSAP animation states */
+[data-gsap-animated] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
