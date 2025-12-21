@@ -914,8 +914,8 @@
 
 .nt-footer-social-icons {
   display: flex;
-  flex-direction: column; /* Vertical alignment */
-  gap: 1rem;
+  flex-direction: row; /* Horizontal alignment again */
+  gap: 1.5rem;
   margin-top: 1rem;
 }
 
