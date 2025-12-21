@@ -760,8 +760,7 @@
 .nt-footer-inner {
   width: 100%;
   max-width: 100%;
-  padding-left: 5vw;
-  padding-right: 5vw;
+  padding: 10vh 5vw; /* Increased vertical padding for more breath */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -841,15 +840,14 @@
 .nt-footer-giant {
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto 0; /* Centers vertically in available space */
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 8vh 0; /* More horizontal breathing room */
   pointer-events: none;
   user-select: none;
-  position: relative; /* For pseudo-elements */
-  /* Borders removed, handling with pseudo-elements for animation */
-  padding: 4vw 0; /* Consistent symmetric padding inside borders */
-  flex-grow: 0; /* Do NOT grow, so borders stay close to text */
+  position: relative;
+  padding: 6vw 0; /* Consistent symmetric padding inside borders */
+  flex-grow: 0;
 }
 
 /* Separator Lines */
@@ -872,13 +870,14 @@
 
 .nt-text-big {
   font-family: 'Inter', sans-serif;
-  font-size: 10vw; /* Reduced size from 15vw */
-  font-weight: 700;
+  font-size: 10vw;
+  font-weight: 300; /* Increased weight by 100 as requested */
   letter-spacing: -0.02em;
   color: white;
   text-transform: uppercase;
   white-space: nowrap;
   line-height: 1;
+  text-align: left;
 }
 
 /* On extremely wide screens, cap the size */
@@ -913,9 +912,33 @@
   transition: color 0.2s ease;
 }
 
-.nt-footer-legal a:hover {
-  color: white;
+.nt-footer-social-icons {
+  display: flex;
+  flex-direction: column; /* Vertical alignment */
+  gap: 1rem;
+  margin-top: 1rem;
 }
+
+.nt-footer-social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.nt-footer-social-icons a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.nt-footer-social-icons svg {
+  width: 24px;
+  height: 24px;
+}
+
 
 /* Mobile Footer Responsiveness */
 @media (max-width: 991px) {
