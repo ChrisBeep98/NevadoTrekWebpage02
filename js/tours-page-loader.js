@@ -501,16 +501,20 @@ function applyLanguageToDynamicElements(lang) {
  * Initialize GSAP animations matching index.html
  */
 function initAnimations() {
-  // Fallback: ensure text is visible even if GSAP is not loaded
+  // Fallback: Ensure EVERYTHING is visible if GSAP/ScrollTrigger fails or doesn't trigger
   setTimeout(() => {
-    document.querySelectorAll('.tour-name-heading, .price-h, .body-medium').forEach(el => {
-      if (window.getComputedStyle(el).opacity === '0') {
+    document.querySelectorAll('.home-tour-card, .tour-name-heading, .price-h, .body-medium').forEach(el => {
+      const style = window.getComputedStyle(el);
+      if (style.opacity === '0' || style.visibility === 'hidden') {
         el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.transform = 'none';
       }
     });
-  }, 1500);
+  }, 2000);
 
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    document.querySelectorAll('.home-tour-card').forEach(el => el.style.opacity = '1');
     return;
   }
 
@@ -524,7 +528,8 @@ function initAnimations() {
   });
 
   const tourCards = document.querySelectorAll('.home-tour-card');
-  
+  if (tourCards.length === 0) return;
+
   tourCards.forEach((card, index) => {
     const img = card.querySelector('.main-tour-img');
     const title = card.querySelector('.tour-name-heading');
@@ -549,25 +554,28 @@ function initAnimations() {
       });
     }
 
-    // 3. ENTRANCE TIMELINE (Single Trigger for all elements)
+    // 3. ENTRANCE TIMELINE (Refined for maximum reliability)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: card,
-        start: 'top 90%',
+        start: 'top 95%',
         toggleActions: 'play none none none',
         id: `tour-card-entrance-${index}`
       }
     });
 
-    // Animate container entrance
+    // Force visibility and removal of any hidden states
+    gsap.set(card, { opacity: 1, visibility: 'visible' });
+
+    // Animate only position to avoid "invisible elements" bug
     tl.from(card, {
-      opacity: 0,
-      y: 20,
-      duration: 0.6,
-      ease: 'power2.out'
+      y: 30,
+      duration: 0.8,
+      ease: 'power3.out',
+      clearProps: 'all'
     });
 
-    // Staggered children reveal
+    // Staggered children reveal - Only movement
     const children = [];
     if (title) children.push(title);
     if (price) children.push(price);
@@ -575,22 +583,31 @@ function initAnimations() {
     
     if (children.length > 0) {
       tl.from(children, {
-        opacity: 0,
-        y: 10,
-        duration: 0.5,
+        y: 15,
+        duration: 0.6,
         stagger: 0.1,
-        ease: 'power2.out'
-      }, "-=0.3");
+        ease: 'power2.out',
+        clearProps: 'all'
+      }, "-=0.5");
     }
 
     if (chips.length > 0) {
       tl.from(chips, {
-        opacity: 0,
-        y: 5,
-        duration: 0.4,
+        y: 10,
+        duration: 0.5,
         stagger: 0.05,
-        ease: 'back.out(1.4)'
-      }, "-=0.2");
+        ease: 'back.out(1.4)',
+        clearProps: 'all'
+      }, "-=0.4");
+    }
+      tl.from(chips, {
+        opacity: 0,
+        y: 10,
+        duration: 0.5,
+        stagger: 0.05,
+        ease: 'back.out(1.4)',
+        clearProps: 'all'
+      }, "-=0.4");
     }
   });
 
