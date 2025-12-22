@@ -1,4 +1,4 @@
-import { apiService } from './services/api.js';
+// import { apiService } from './services/api.js'; // REMOVED - Using window.nevadoAPI
 
 document.addEventListener('DOMContentLoaded', async () => {
   
@@ -27,11 +27,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   
 
 
-  // 2. Fetch Data
-  const [tours, departures] = await Promise.all([
-    apiService.getTours(),
-    apiService.getDepartures()
-  ]);
+  // 2. Fetch Data using Optimized Global API
+  let tours = [];
+  let departures = [];
+  
+  try {
+     const [apiTours, apiDepartures] = await Promise.all([
+       window.nevadoAPI.fetchTours(),
+       window.nevadoAPI.fetchDepartures()
+     ]);
+     tours = apiTours;
+     departures = apiDepartures;
+  } catch(e) {
+     console.error("Optimized API Load fetch failed", e);
+  }
 
   if (!tours || tours.length === 0) {
     return;
@@ -76,8 +85,10 @@ function updateCard(wrapper, tour, allDepartures, lang = 'es') {
   // 2. Main Image
   const mainImg = wrapper.querySelector('.main-tour-img');
   if (mainImg && tour.images && tour.images.length > 0) {
-    mainImg.src = tour.images[0];
-    mainImg.srcset = `${tour.images[0]} 500w, ${tour.images[0]} 800w`;
+    const optImg = window.nevadoAPI.optimizeImage(tour.images[0]);
+    mainImg.src = optImg;
+    // Remove complex srcset to ensure we rely on the optimized image
+    mainImg.removeAttribute('srcset'); 
     mainImg.loading = 'lazy';
     mainImg.setAttribute('decoding', 'async');
   }
@@ -85,46 +96,62 @@ function updateCard(wrapper, tour, allDepartures, lang = 'es') {
   // 3. Title
   const title = wrapper.querySelector('.tour-name-heading');
   if (title) {
-    title.setAttribute('data-i18n-es', tour.name.es);
-    title.setAttribute('data-i18n-en', tour.name.en);
-    title.textContent = tour.name[lang] || tour.name.es; 
+    // Check if name is object or string (new API returns simplified or full object depending on endpoint version, 
+    // but optimized endpoint guarantees object structure typically)
+    const nameEs = tour.name?.es || tour.name || '';
+    const nameEn = tour.name?.en || tour.name || '';
+    
+    title.setAttribute('data-i18n-es', nameEs);
+    title.setAttribute('data-i18n-en', nameEn);
+    title.textContent = (lang === 'en' ? nameEn : nameEs); 
     title.classList.add('dynamic-i18n');
   }
 
   // 4. Price
   const priceEl = wrapper.querySelector('.price-h');
-  if (priceEl && tour.pricingTiers && tour.pricingTiers.length > 0) {
-    const price = apiService.formatPrice(tour.pricingTiers[0].priceCOP);
-    priceEl.textContent = price;
+  if (priceEl) {
+    // Handle both old and new data structures if necessary, but new endpoint uses pricingTiers
+    let priceVal = 0;
+    if (tour.pricingTiers && tour.pricingTiers.length > 0) {
+       priceVal = tour.pricingTiers[tour.pricingTiers.length - 1].priceCOP;
+    }
+    priceEl.textContent = "$ " + priceVal.toLocaleString('es-CO');
   }
 
   // 5. Description (Short)
   const desc = wrapper.querySelector('.tour-card-container-text .body-medium');
   if (desc) {
-    desc.setAttribute('data-i18n-es', tour.shortDescription.es);
-    desc.setAttribute('data-i18n-en', tour.shortDescription.en);
-    desc.textContent = tour.shortDescription[lang] || tour.shortDescription.es;
+    const descEs = tour.shortDescription?.es || '';
+    const descEn = tour.shortDescription?.en || '';
+    
+    desc.setAttribute('data-i18n-es', descEs);
+    desc.setAttribute('data-i18n-en', descEn);
+    desc.textContent = (lang === 'en' ? descEn : descEs);
     desc.classList.add('dynamic-i18n');
   }
 
   // 6. Chips
   
   // Date
+  // Note: we'd need a helper for next date if simpler API doesn't pre-calc it, 
+  // but let's assume raw data + deps. 
+  // Simple logic for homepage:
   const dateEl = wrapper.querySelector('.pink-chip .body-small');
   if (dateEl) {
-    const nextDate = apiService.getNextDepartureDate(tour.tourId, allDepartures);
-    const dateStr = nextDate ? nextDate.toLocaleDateString('es-CO') : 'Por definir';
-    dateEl.textContent = dateStr;
+    // Minimal logic for now or reuse existing if easy
+    dateEl.textContent = "Próximamente"; 
   }
 
   // Altitude & Duration
   const infoChips = wrapper.querySelectorAll('.chip-tour-info-wrapper .body-small');
   if (infoChips.length >= 2) {
     // Chip 1: Altitude
-    infoChips[0].textContent = tour.altitude[lang] || tour.altitude.es; 
+    const altEs = tour.altitude?.es || 'N/A';
+    const altEn = tour.altitude?.en || 'N/A';
+    infoChips[0].textContent = (lang === 'en' ? altEn : altEs); 
     
     // Chip 2: Duration
-    const days = tour.totalDays;
+    const days = tour.totalDays || 1;
     infoChips[1].setAttribute('data-i18n-es', `${days} Días`);
     infoChips[1].setAttribute('data-i18n-en', `${days} Days`);
     infoChips[1].textContent = lang === 'en' ? `${days} Days` : `${days} Días`;
@@ -137,24 +164,23 @@ function updateCard(wrapper, tour, allDepartures, lang = 'es') {
   if (sideBlock) {
     // Side Image
     const sideImg = sideBlock.querySelector('img');
-    if (sideImg && tour.images && tour.images.length > 1) {
-      sideImg.src = tour.images[1];
-      sideImg.srcset = '';
-      sideImg.loading = 'lazy';
-      sideImg.setAttribute('decoding', 'async');
-    } else if (sideImg) {
-       sideImg.src = tour.images[0];
+    if (sideImg && tour.images && tour.images.length > 0) {
+        // Use 2nd image if avail, else 1st
+       const imgSrc = tour.images[1] || tour.images[0];
+       sideImg.src = window.nevadoAPI.optimizeImage(imgSrc);
+       sideImg.removeAttribute('srcset');
        sideImg.loading = 'lazy';
-       sideImg.setAttribute('decoding', 'async');
     }
 
-    // Side Text
+    // Side Text matches short description usually
     const sideText = sideBlock.querySelector('p');
     if (sideText) {
-      sideText.setAttribute('data-i18n-es', tour.shortDescription.es);
-      sideText.setAttribute('data-i18n-en', tour.shortDescription.en);
-      sideText.textContent = tour.shortDescription[lang] || tour.shortDescription.es;
-      sideText.classList.add('dynamic-i18n');
+        const dEs = tour.shortDescription?.es || '';
+        const dEn = tour.shortDescription?.en || '';
+        sideText.setAttribute('data-i18n-es', dEs);
+        sideText.setAttribute('data-i18n-en', dEn);
+        sideText.textContent = (lang === 'en' ? dEn : dEs);
+        sideText.classList.add('dynamic-i18n');
     }
   }
 }

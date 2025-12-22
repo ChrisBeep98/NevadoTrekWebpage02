@@ -74,7 +74,7 @@ html {
   pointer-events: auto;
   /* Transparent at top */
   background: transparent;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: visible !important;
 }
 
@@ -86,7 +86,7 @@ html {
   max-width: 100%;
   padding: 0 !important;
   padding-top: 0px;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), padding 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: visible !important; /* Permitir escalado de contenidos */
 }
 
@@ -151,7 +151,7 @@ padding-right: 0 !important;
 .navbar-fixed .lang-switch-exclusion select,
 .navbar-fixed .menu-toggle-exclusion {
   color: white;
-  mix-blend-mode: difference;
+  /* mix-blend-mode: difference REMOVED FOR PERFORMANCE - CAUSES LAG */
 }
 
 .navbar-fixed .navbar-logo,
@@ -232,7 +232,7 @@ padding-right: 0 !important;
   letter-spacing: 0.08em;
   text-decoration: none;
   border-radius: 4px;
-  transition: all 0.25s ease;
+  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
   position: relative;
 }
 

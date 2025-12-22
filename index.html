@@ -71,8 +71,8 @@
       WebFont.load({
         google: {
           families: [
-            "Inter:300,regular,500,600,700,200italic,300italic,italic,500italic,600italic,700italic,800italic",
-            "Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic",
+            "Inter:400,600,700",
+            "Poppins:400,600,700italic",
           ],
         },
       });
@@ -4518,14 +4518,11 @@
       </section>
     </div>
     
-    <!-- Footer Reveal Script -->
-    <script src="js/tours-page-footer-reveal.js"></script>
-    <script>
-      // Initialize the reveal effect
-      if (typeof initFooterReveal === 'function') {
-        initFooterReveal();
-      }
-    </script>
+    <!-- CORE API CLIENT (Optimized) - Must act before home-loader -->
+    <script src="js/api-client.js"></script>
+
+    <!-- Footer Reveal Script (REDUNDANT ON HOME - REMOVED) -->
+    <!-- <script src="js/tours-page-footer-reveal.js"></script> -->
   </body>
 </html>
 
