@@ -1012,3 +1012,42 @@
     gap: var(--spacing-sm);
   }
 }
+/* ========================================
+   FOOTER REVEAL (CURTAIN EFFECT)
+   ======================================== */
+#nt-tours-reveal-wrapper {
+  background-color: var(--color-bg); /* Must be opaque to hide footer */
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#nt-tours-footer-reveal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  visibility: hidden; /* JavaScript will make it visible */
+}
+
+#nt-footer-spacer {
+  display: block;
+  width: 100%;
+}
+
+/* Fix for mobile where reveal might look jittery */
+@media (max-width: 767px) {
+  #nt-tours-footer-reveal {
+    position: relative;
+    visibility: visible;
+    z-index: auto;
+  }
+  #nt-tours-reveal-wrapper {
+    margin-bottom: 0 !important;
+    box-shadow: none;
+  }
+  #nt-footer-spacer {
+    display: none; /* Hide spacer since footer is relative now */
+  }
+}

@@ -81,177 +81,184 @@
       </div>
     </div>
 
-    <!-- NAVBAR (Reutilizado del index) -->
-    <nav id="navbar-exclusion" class="navbar-fixed" role="banner">
-      <div class="navbar-container">
-        <!-- Logo y Nombre -->
-        <a href="../index.html" class="navbar-brand">
-          <img
-            src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
-            loading="lazy"
-            alt="Nevado Trek Logo"
-            class="navbar-logo"
-          />
-          <p class="navbar-title"><em>Nevado</em><br /><em>Trek</em></p>
-        </a>
+    <!-- REVEAL WRAPPER START -->
+    <div id="nt-tours-reveal-wrapper">
+      <!-- NAVBAR (Reutilizado del index) -->
+      <nav id="navbar-exclusion" class="navbar-fixed" role="banner">
+        <div class="navbar-container">
+          <!-- Logo y Nombre -->
+          <a href="../index.html" class="navbar-brand">
+            <img
+              src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
+              loading="lazy"
+              alt="Nevado Trek Logo"
+              class="navbar-logo"
+            />
+            <p class="navbar-title"><em>Nevado</em><br /><em>Trek</em></p>
+          </a>
 
-        <!-- Links de Navegación -->
-        <div class="navbar-links">
-          <a
-            href="../index.html"
-            class="nav-link-exclusion"
-            data-i18n-key="nav.home"
-            >Inicio</a
-          >
-          <a
-            href="ToursPage.html"
-            class="nav-link-exclusion active"
-            data-i18n-key="nav.tours"
-            >Tours</a
-          >
-          <a
-            href="Gallery.html"
-            class="nav-link-exclusion"
-            data-i18n-key="nav.gallery"
-            >Galería</a
-          >
-        </div>
+          <!-- Links de Navegación -->
+          <div class="navbar-links">
+            <a
+              href="../index.html"
+              class="nav-link-exclusion"
+              data-i18n-key="nav.home"
+              >Inicio</a
+            >
+            <a
+              href="ToursPage.html"
+              class="nav-link-exclusion active"
+              data-i18n-key="nav.tours"
+              >Tours</a
+            >
+            <a
+              href="Gallery.html"
+              class="nav-link-exclusion"
+              data-i18n-key="nav.gallery"
+              >Galería</a
+            >
+          </div>
 
-        <!-- Acciones -->
-        <div class="navbar-actions">
-          <div class="lang-switch-exclusion">
-            <div class="lang-dropdown">
-              <button class="lang-btn" id="lang-btn">
-                <img
-                  src="https://flagcdn.com/w20/co.png"
-                  alt="Colombia"
-                  class="lang-flag"
-                  id="current-flag"
-                />
-                <span id="current-lang">ES</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </button>
-              <div class="lang-options" id="lang-options">
-                <div
-                  class="lang-option"
-                  data-lang="es"
-                  data-flag="https://flagcdn.com/w20/co.png"
-                >
+          <!-- Acciones -->
+          <div class="navbar-actions">
+            <div class="lang-switch-exclusion">
+              <div class="lang-dropdown">
+                <button class="lang-btn" id="lang-btn">
                   <img
                     src="https://flagcdn.com/w20/co.png"
                     alt="Colombia"
                     class="lang-flag"
+                    id="current-flag"
                   />
-                  <span>ES</span>
-                </div>
-                <div
-                  class="lang-option"
-                  data-lang="en"
-                  data-flag="https://flagcdn.com/w20/us.png"
-                >
-                  <img
-                    src="https://flagcdn.com/w20/us.png"
-                    alt="USA"
-                    class="lang-flag"
-                  />
-                  <span>EN</span>
+                  <span id="current-lang">ES</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                <div class="lang-options" id="lang-options">
+                  <div
+                    class="lang-option"
+                    data-lang="es"
+                    data-flag="https://flagcdn.com/w20/co.png"
+                  >
+                    <img
+                      src="https://flagcdn.com/w20/co.png"
+                      alt="Colombia"
+                      class="lang-flag"
+                    />
+                    <span>ES</span>
+                  </div>
+                  <div
+                    class="lang-option"
+                    data-lang="en"
+                    data-flag="https://flagcdn.com/w20/us.png"
+                  >
+                    <img
+                      src="https://flagcdn.com/w20/us.png"
+                      alt="USA"
+                      class="lang-flag"
+                    />
+                    <span>EN</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <a
-            href="https://wa.me/573001234567"
-            target="_blank"
-            class="header-contact-btn"
-          >
-            <span data-i18n-key="cta.contact">Contacto</span>
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
-              />
-            </svg>
-          </a>
-          <button class="menu-toggle-exclusion" aria-label="Menu">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
+            <a
+              href="https://wa.me/573001234567"
+              target="_blank"
+              class="header-contact-btn"
             >
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </nav>
-
-    <!-- MAIN CONTENT -->
-    <main class="nt-tours-main">
-      <!-- Hero Section -->
-      <section class="nt-tours-hero">
-        <div class="nt-container">
-          <h1 class="h-2 nt-hero-title">Nuestros Tours</h1>
-          <p class="h-5 nt-hero-subtitle">
-            Descubre aventuras inolvidables en los Andes colombianos
-          </p>
-        </div>
-      </section>
-
-      <!-- Filters Section -->
-      <section class="nt-filters-section">
-        <div class="nt-container">
-          <div class="nt-filters-wrapper">
-            <button class="nt-filter-chip active" data-filter="all">
-              Todos
+              <span data-i18n-key="cta.contact">Contacto</span>
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
+                />
+              </svg>
+            </a>
+            <button class="menu-toggle-exclusion" aria-label="Menu">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
             </button>
-            <button class="nt-filter-chip" data-filter="easy">Fácil</button>
-            <button class="nt-filter-chip" data-filter="moderate">
-              Moderado
-            </button>
-            <button class="nt-filter-chip" data-filter="difficult">
-              Difícil
-            </button>
-            <select class="nt-duration-filter" id="duration-filter">
-              <option value="all">Todas las duraciones</option>
-              <option value="1">1 día</option>
-              <option value="2-3">2-3 días</option>
-              <option value="4-5">4-5 días</option>
-              <option value="6+">6+ días</option>
-            </select>
           </div>
         </div>
-      </section>
+      </nav>
 
-      <!-- Tours Grid -->
-      <section class="nt-tours-grid-section">
-        <div class="nt-container">
-          <div class="nt-tours-grid" id="tours-grid">
-            <!-- Tours will be injected here by JavaScript -->
-            <div class="nt-loading">
-              <p>Cargando tours...</p>
+      <!-- MAIN CONTENT -->
+      <main class="nt-tours-main">
+        <!-- Hero Section -->
+        <section class="nt-tours-hero">
+          <div class="nt-container">
+            <h1 class="h-2 nt-hero-title">Nuestros Tours</h1>
+            <p class="h-5 nt-hero-subtitle">
+              Descubre aventuras inolvidables en los Andes colombianos
+            </p>
+          </div>
+        </section>
+
+        <!-- Filters Section -->
+        <section class="nt-filters-section">
+          <div class="nt-container">
+            <div class="nt-filters-wrapper">
+              <button class="nt-filter-chip active" data-filter="all">
+                Todos
+              </button>
+              <button class="nt-filter-chip" data-filter="easy">Fácil</button>
+              <button class="nt-filter-chip" data-filter="moderate">
+                Moderado
+              </button>
+              <button class="nt-filter-chip" data-filter="difficult">
+                Difícil
+              </button>
+              <select class="nt-duration-filter" id="duration-filter">
+                <option value="all">Todas las duraciones</option>
+                <option value="1">1 día</option>
+                <option value="2-3">2-3 días</option>
+                <option value="4-5">4-5 días</option>
+                <option value="6+">6+ días</option>
+              </select>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+
+        <!-- Tours Grid -->
+        <section class="nt-tours-grid-section">
+          <div class="nt-container">
+            <div class="nt-tours-grid" id="tours-grid">
+              <!-- Tours will be injected here by JavaScript -->
+              <div class="nt-loading">
+                <p>Cargando tours...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- REVEAL WRAPPER END -->
+
+    <!-- Spacer for Footer Reveal -->
+    <div id="nt-footer-spacer" style="pointer-events: none"></div>
 
     <!-- FOOTER -->
-    <footer class="nt-footer-clean">
+    <footer class="nt-footer-clean" id="nt-tours-footer-reveal">
       <div class="nt-footer-inner">
         <!-- Top Row: Logo + Inspiring Message + Nav -->
         <div class="nt-footer-top">
@@ -425,6 +432,9 @@
 
     <!-- New Tours Page Script -->
     <script src="../js/new-tours-page.js"></script>
+
+    <!-- Footer Reveal Script -->
+    <script src="../js/tours-page-footer-reveal.js"></script>
 
     <!-- Component Loader -->
     <script src="../js/load-components.js"></script>
