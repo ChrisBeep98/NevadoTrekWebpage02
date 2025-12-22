@@ -3,87 +3,8 @@
  * Maneja la carga de tours, filtros y interacciones
  */
 
-// Tour Data (mock data - en producción vendría de una API)
-const TOURS_DATA = [
-  {
-    id: 1,
-    title: "Nevado del Tolima",
-    description: "Ascenso a uno de los volcanes más emblemáticos de Colombia",
-    price: "780.000",
-    currency: "COP",
-    difficulty: "difficult",
-    duration: "4-5",
-    altitude: "5220 msnm",
-    nextDate: "25/12/2025",
-    image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb41abea4f4a82c1e6f2a6_DJI_0058.jpg",
-    link: "TourPage.html"
-  },
-  {
-    id: 2,
-    title: "Parque Cocora",
-    description: "Descubre el valle de las palmas de cera más alto del mundo",
-    price: "150.000",
-    currency: "COP",
-    difficulty: "easy",
-    duration: "1",
-    altitude: "2400 msnm",
-    nextDate: "28/12/2025",
-    image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e190552a6862e84a46aafe_eit%2004.jpg",
-    link: "TourPage.html"
-  },
-  {
-    id: 3,
-    title: "Laguna del Otún",
-    description: "Caminata hasta una de las lagunas más hermosas del Nevado del Ruiz",
-    price: "180.000",
-    currency: "COP",
-    difficulty: "moderate",
-    duration: "1",
-    altitude: "3950 msnm",
-    nextDate: null, // Test "Por definir"
-    image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e1dcd9d2184c53066eda3a_edit%2012.jpg",
-    link: "TourPage.html"
-  },
-  {
-    id: 4,
-    title: "Nevado Santa Isabel",
-    description: "Aventura glaciar en el corazón del Parque Nacional Los Nevados",
-    price: "850.000",
-    currency: "COP",
-    difficulty: "difficult",
-    duration: "2-3",
-    altitude: "4950 msnm",
-    nextDate: "15/01/2026",
-    image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e2b07758b60449ec3c71b2__DSC1845-Mejorado-NR%201.jpg",
-    link: "TourPage.html"
-  },
-  {
-    id: 5,
-    title: "Cascadas de Salento",
-    description: "Recorre las cascadas más impresionantes cerca de Salento",
-    price: "120.000",
-    currency: "COP",
-    difficulty: "easy",
-    duration: "1",
-    altitude: "1900 msnm",
-    nextDate: "05/01/2026",
-    image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68e1962cdb928b053a0aac29_edit%2007%2007.jpg",
-    link: "TourPage.html"
-  },
-  {
-    id: 6,
-    title: "Trek Los Nevados",
-    description: "Travesía completa por el Parque Nacional Los Nevados",
-    price: "1.200.000",
-    currency: "COP",
-    difficulty: "difficult",
-    duration: "6+",
-    altitude: "4800 msnm",
-    nextDate: "10/02/2026",
-    image: "https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb41abea4f4a82c1e6f2a6_DJI_0058.jpg",
-    link: "TourPage.html"
-  }
-];
+// Tour Data (will be populated from API)
+let TOURS_DATA = [];
 
 // Difficulty labels translation
 const DIFFICULTY_LABELS = {
@@ -112,12 +33,89 @@ let activeFilters = {
 /**
  * Initialize the page
  */
-function init() {
+async function init() {
+  await loadToursFromAPI();
   renderTours();
   setupFilters();
   setupLanguageSwitcher();
   setupNavbar();
   setupMobileMenu();
+}
+
+/**
+ * Load tours from API
+ * Optimized: Only 2 API calls + smaller JSON payload
+ */
+async function loadToursFromAPI() {
+  const grid = document.getElementById('tours-grid');
+  if (!grid) {
+    console.error('❌ Error: El contenedor #tours-grid no existe en el DOM.');
+    return;
+  }
+  
+  try {
+    // 1. Fetch tours (Optimized Listing)
+    const apiTours = await window.nevadoAPI.fetchTours();
+    
+    // 2. Fetch departures
+    const allDepartures = await window.nevadoAPI.fetchDepartures();
+    
+    if (!Array.isArray(apiTours)) {
+      throw new Error('apiTours no es un array');
+    }
+    
+    // 3. Map departures in memory
+    const now = Date.now() / 1000;
+    const departureMap = {};
+    if (Array.isArray(allDepartures)) {
+      allDepartures
+        .filter(d => d.status === 'open' && d.type === 'public' && d.date && d.date._seconds >= now)
+        .forEach(d => {
+          if (!departureMap[d.tourId] || d.date._seconds < departureMap[d.tourId]._seconds) {
+            departureMap[d.tourId] = d.date;
+          }
+        });
+    }
+    
+    // 4. Transform data
+    TOURS_DATA = apiTours.map(t => {
+      const nextDateTimestamp = departureMap[t.tourId];
+      const nextDateStr = window.nevadoAPI.formatDate(nextDateTimestamp);
+      
+      return {
+        id: t.tourId,
+        title: {
+          es: t.name?.es || '',
+          en: t.name?.en || ''
+        },
+        description: {
+          es: t.shortDescription?.es || '',
+          en: t.shortDescription?.en || ''
+        },
+        altitude: {
+          es: t.altitude?.es || 'N/A',
+          en: t.altitude?.en || 'N/A'
+        },
+        price: (t.pricingTiers && t.pricingTiers.length > 0
+          ? t.pricingTiers[t.pricingTiers.length - 1].priceCOP
+          : 0).toLocaleString('es-CO'),
+        currency: "COP",
+        difficulty: (t.difficulty || t.difficultyLevel || 'moderate').toLowerCase(),
+        duration: window.nevadoAPI.mapTotalDaysToDuration(t.totalDays),
+        nextDate: nextDateStr,
+        image: window.nevadoAPI.optimizeImage(
+          (t.images && t.images.length > 0) ? t.images[0] : "https://via.placeholder.com/400x300"
+        ),
+        link: "TourPage.html"
+      };
+    });
+    
+    console.log(`✅ TOURS_DATA procesado (${TOURS_DATA.length} tours)`);
+    
+  } catch (error) {
+    console.error('❌ Error fatal en loadToursFromAPI:', error);
+    grid.innerHTML = '<div class="nt-loading"><p style="color: #ef4444;">Error al cargar tours. Revisa la consola para más detalles.</p></div>';
+  }
 }
 
 /**
@@ -138,82 +136,36 @@ function renderTours() {
   
   grid.innerHTML = filteredTours.map(tour => createTourCard(tour)).join('');
 
-  // Initialize animations for the text inside newly rendered cards
+  // Initialize animations for the text inside newly rendered cards (Currently Disabled)
   initTourAnimations();
-  
-  // Refresh ScrollTrigger to ensure footer triggers are correct after height change
-  ScrollTrigger.refresh();
 }
 
 /**
  * Initialize animations for the tour card texts
+ * DISABLED for maximum scroll performance
  */
 function initTourAnimations() {
-  const cards = document.querySelectorAll('.nt-tour-card');
-  if (cards.length === 0) return;
-
-  // Clear existing triggers
-  ScrollTrigger.getAll().forEach(st => {
-    if (st.vars.trigger && (st.vars.trigger instanceof HTMLElement) && 
-       (st.vars.trigger.classList.contains('nt-card-content') || 
-        st.vars.trigger.classList.contains('nt-tour-card') || 
-        st.vars.trigger.classList.contains('nt-card-badges'))) {
-      st.kill();
-    }
-  });
-
-  cards.forEach((card) => {
-    // 1. Text Animation (Trigger on Card Top)
-    const texts = card.querySelectorAll('.nt-card-title, .nt-card-price, .nt-card-description');
-    if (texts.length > 0) {
-      gsap.from(texts, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%', // Animate text when card top enters
-          toggleActions: 'play none none reverse'
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power2.out',
-        clearProps: 'all'
-      });
-    }
-
-    // 2. Badges Animation (Trigger on Badges Position)
-    // This ensures they only animate when the chips THEMSELVES are in the viewport
-    const badgesContainer = card.querySelector('.nt-card-badges');
-    const badges = card.querySelectorAll('.nt-badge');
-    
-    if (badgesContainer && badges.length > 0) {
-      gsap.from(badges, {
-        scrollTrigger: {
-          trigger: badgesContainer, // Trigger specifically on the chips container
-          start: 'top 95%', // Wait until chips are almost fully within viewport
-          toggleActions: 'play none none reverse'
-        },
-        y: 15,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: 'back.out(1.5)', // Subtle bounce
-        clearProps: 'all'
-      });
-    }
-  });
+  return;
 }
 
 /**
  * Create tour card HTML
  */
-/**
- * Create tour card HTML
- */
 function createTourCard(tour) {
+  // Extract bilingual content based on current language
+  const title = typeof tour.title === 'object' 
+    ? (tour.title[currentLang] || tour.title.es || tour.title)
+    : tour.title;
+  const description = typeof tour.description === 'object' 
+    ? (tour.description[currentLang] || tour.description.es || tour.description)
+    : tour.description;
+  const altitude = typeof tour.altitude === 'object'
+    ? (tour.altitude[currentLang] || tour.altitude.es || tour.altitude)
+    : tour.altitude;
+  
   // Translate chips data
   const durationLabel = DURATION_LABELS[tour.duration][currentLang];
-  const dateLabel = tour.nextDate || (currentLang === 'es' ? 'Por definir' : 'TBD');
+  const dateLabel = tour.nextDate || (currentLang === 'es' ? 'Pronto' : 'Soon');
   
   return `
     <article class="nt-tour-card">
@@ -222,7 +174,7 @@ function createTourCard(tour) {
           <div class="nt-card-image-wrapper">
             <img 
               src="${tour.image}" 
-              alt="${tour.title}"
+              alt="${title}"
               class="nt-card-image"
               loading="lazy"
             />
@@ -246,7 +198,7 @@ function createTourCard(tour) {
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/>
                 </svg>
-                ${tour.altitude || 'N/A'}
+                ${altitude}
               </span>
 
               <!-- 3. Duration (Glass) -->
@@ -271,10 +223,10 @@ function createTourCard(tour) {
         
         <div class="nt-card-content">
           <div class="nt-card-header">
-            <h3 class="nt-card-title">${tour.title}</h3>
+            <h3 class="nt-card-title">${title}</h3>
             <span class="nt-card-price">$ ${tour.price}</span>
           </div>
-          <p class="nt-card-description">${tour.description}</p>
+          <p class="nt-card-description">${description}</p>
         </div>
       </a>
     </article>
@@ -500,12 +452,9 @@ function initFooterAnimations() {
 }
 
 // Initialize on load
+// Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-  setupNavbar();
-  renderTours();
-  setupFilters();
-  setupLanguageSwitcher();
-  setupMobileMenu();
+  init(); // Async init that handles loading and setup
   initFooterAnimations();
 });
 

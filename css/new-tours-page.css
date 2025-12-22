@@ -177,7 +177,7 @@
   background: transparent;
   border-radius: 0;
   overflow: visible;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   border: none;
   display: flex;
   flex-direction: column;
@@ -197,7 +197,7 @@
   border-radius: 6px;
   /* Tighter, more defined premium shadow */
   box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.12), 0 2px 6px -2px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   background: #ffffff; /* Ensure base for shadow */
 }
 
@@ -261,7 +261,6 @@
   color: white;
   line-height: 1;
   white-space: nowrap;
-  will-change: transform, opacity; /* Hint for browser optimization */
 }
 
 .nt-badge svg {
@@ -282,12 +281,10 @@
   stroke: white; /* Line icon */
 }
 
-/* 2. Info Chip (Glass/Blur) */
+/* 2. Info Chip (Glass/Blur - REMOVED BLUR FOR PERFORMANCE) */
 .nt-badge--info {
-  background-color: rgba(40, 53, 75, 0.356); /* Reduced opacity for more transparency */
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: .6px solid rgba(255, 255, 255, 0.15); /* Subtle white border */
+  background-color: rgba(40, 53, 75, 0.8); /* Solid-ish color instead of blur */
+  border: .6px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -354,7 +351,6 @@
   margin: 0;
   flex: 1;
   font-style: italic;
-  will-change: transform, opacity;
 }
 
 .nt-card-price {
@@ -363,7 +359,6 @@
   font-weight: 700;
   color: var(--color-primary);
   white-space: nowrap;
-  will-change: transform, opacity;
 }
 
 .nt-card-description {
@@ -375,7 +370,6 @@
   flex-grow: 1;
   font-style: italic;
   text-align: right;
-  will-change: transform, opacity;
 }
 
 .nt-card-footer {
@@ -523,29 +517,10 @@
 /* ========================================
    ANIMATIONS
    ======================================== */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+/* CSS Entrance animations removed to prevent scroll lag */
 .nt-tour-card {
-  animation: fadeInUp 0.5s ease-out backwards;
+  contain: content; /* Significant rendering performance boost */
 }
-
-.nt-tour-card:nth-child(1) { animation-delay: 0.05s; }
-.nt-tour-card:nth-child(2) { animation-delay: 0.1s; }
-.nt-tour-card:nth-child(3) { animation-delay: 0.15s; }
-.nt-tour-card:nth-child(4) { animation-delay: 0.2s; }
-.nt-tour-card:nth-child(5) { animation-delay: 0.25s; }
-.nt-tour-card:nth-child(6) { animation-delay: 0.3s; }
-.nt-tour-card:nth-child(7) { animation-delay: 0.35s; }
-.nt-tour-card:nth-child(8) { animation-delay: 0.4s; }
 
 /* ========================================
    RESPONSIVE
