@@ -184,12 +184,56 @@ function hideLoader() {
     setTimeout(() => {
       loader.classList.add('hidden');
       
+      // Trigger Header Animations
+      initHeaderEntranceAnimations();
+
       // Remove from DOM after transition
       setTimeout(() => {
         loader.remove();
       }, 500);
     }, 200);
   }
+}
+
+/**
+ * Modern Entrance Sequence using GSAP for Header and Filters
+ * Optimized for GPU and Performance
+ */
+function initHeaderEntranceAnimations() {
+  const tl = gsap.timeline({
+    defaults: {
+      ease: "power3.out",
+      duration: 1.2,
+      force3D: true
+    }
+  });
+
+  // 1. Hero Title
+  tl.fromTo('.nt-hero-title', 
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 1.4 },
+    0.3
+  );
+
+  // 2. Hero Subtitle
+  tl.fromTo('.nt-hero-subtitle',
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0 },
+    "-=1.1"
+  );
+
+  // 3. Filters Stagger
+  tl.fromTo('.nt-filter-chip, .nt-duration-filter',
+    { opacity: 0, y: 15 },
+    { 
+      opacity: 1, 
+      y: 0, 
+      stagger: 0.08,
+      duration: 1,
+      ease: "power2.out"
+    },
+    "-=0.8"
+  );
 }
 
 /**
