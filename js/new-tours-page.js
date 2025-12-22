@@ -134,10 +134,62 @@ function renderTours() {
     return;
   }
   
-  grid.innerHTML = filteredTours.map(tour => createTourCard(tour)).join('');
+  // Clear grid for fresh render
+  grid.innerHTML = '';
+  
+  // Start Batch Rendering
+  // Render first 6 immediately, then the rest in background
+  renderInBatches(filteredTours, grid, 0, 6);
+}
 
-  // Initialize animations for the text inside newly rendered cards (Currently Disabled)
-  initTourAnimations();
+/**
+ * Render tours in small batches to prevent Main Thread blocking (Lag)
+ */
+function renderInBatches(tours, container, startIndex, batchSize) {
+  const endIndex = Math.min(startIndex + batchSize, tours.length);
+  const batch = tours.slice(startIndex, endIndex);
+  
+  // Generate HTML for current batch
+  const batchHTML = batch.map(tour => createTourCard(tour)).join('');
+  
+  // Efficient DOM insertion
+  container.insertAdjacentHTML('beforeend', batchHTML);
+  
+  // Check if there are more tours to render
+  if (endIndex < tours.length) {
+    // Schedule next batch with a small delay to yield to Main Thread
+    // This allows the browser to paint the previous batch and handle user input
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        renderInBatches(tours, container, endIndex, batchSize);
+      }, 50); // 50ms breather
+    });
+  } else {
+    // Finished rendering all batches
+    initTourAnimations();
+    console.log('✅ All tour batches rendered');
+    
+    // Hide Preloader (Smooth Fade Out)
+    hideLoader();
+  }
+}
+
+/**
+ * Hide the initial preloader
+ */
+function hideLoader() {
+  const loader = document.getElementById('initial-loader');
+  if (loader) {
+    // Small delay to ensure paint is done
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      
+      // Remove from DOM after transition
+      setTimeout(() => {
+        loader.remove();
+      }, 500);
+    }, 200);
+  }
 }
 
 /**
@@ -382,73 +434,8 @@ function setupMobileMenu() {
  * Staggered entrance based on viewport entry for maximum performance
  */
 function initFooterAnimations() {
-  gsap.registerPlugin(ScrollTrigger);
-
-  const footer = document.querySelector('.nt-footer-clean');
-  if (!footer) return;
-
-  // -- 1. Top Row (Logo, Tagline, Nav) --
-  const footerTop = footer.querySelector('.nt-footer-top');
-  if (footerTop) {
-    gsap.from(footerTop.querySelectorAll('.nt-footer-logo-main, .nt-footer-tagline, .nt-footer-nav-col'), {
-      scrollTrigger: {
-        trigger: footerTop,
-        start: 'top 85%', // Trigger when top of section hits 85% of viewport
-        toggleActions: 'play none none reverse'
-      },
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'power2.out',
-      clearProps: 'all' // Cleanup for cleaner DOM after animation
-    });
-  }
-
-  // -- 2. Giant Text Section --
-  const footerGiant = footer.querySelector('.nt-footer-giant');
-  if (footerGiant) {
-    const tlGiant = gsap.timeline({
-      scrollTrigger: {
-        trigger: footerGiant,
-        start: 'top 85%',
-        toggleActions: 'play none none reverse'
-      }
-    });
-
-    // Separators expand
-    tlGiant.from(footerGiant.querySelectorAll('.nt-footer-separator'), {
-      scaleX: 0,
-      duration: 1.2,
-      ease: 'expo.out',
-      stagger: 0.1
-    })
-    // Text rises matching the separators
-    .from(footerGiant.querySelector('.nt-text-big'), {
-      y: 60,
-      opacity: 0,
-      duration: 1.0,
-      ease: 'power3.out'
-    }, '<0.2'); // Start 0.2s after separators start
-  }
-
-  // -- 3. Bottom Row (Legal & Copyright) --
-  const footerBottom = footer.querySelector('.nt-footer-bottom');
-  if (footerBottom) {
-    gsap.from(footerBottom.children, {
-      scrollTrigger: {
-        trigger: footerBottom,
-        start: 'top 95%', // Trigger slightly earlier (lower on screen)
-        toggleActions: 'play none none reverse'
-      },
-      y: 20,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1, // Stagger copyright vs legal links
-      ease: 'power2.out',
-      clearProps: 'all'
-    });
-  }
+  // Footer animations disabled for "Nuclear" performance mode
+  return;
 }
 
 // Initialize on load

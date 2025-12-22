@@ -61,21 +61,30 @@ window.nevadoAPI = {
   /**
    * Optimize Cloudinary image URLs
    */
+  /**
+   * Optimize Cloudinary image URLs
+   * HARDENED: Handles fallback for non-cloudinary images
+   */
   optimizeImage(url) {
-    if (!url || !url.includes('cloudinary.com')) return url;
+    if (!url) return "https://via.placeholder.com/600x450?text=No+Image";
     
-    const parts = url.split('/upload/');
-    if (parts.length !== 2) return url;
+    // Check if it's a Cloudinary URL
+    if (url.includes('cloudinary.com')) {
+        const parts = url.split('/upload/');
+        if (parts.length === 2) {
+            const pathAfterUpload = parts[1];
+            const versionMatch = pathAfterUpload.match(/v\d+\//);
+            if (versionMatch) {
+                const pathAfterVersion = pathAfterUpload.substring(pathAfterUpload.indexOf(versionMatch[0]));
+                // Optimized: 600px width, auto format, good quality
+                const optimized = 'w_600,h_450,c_fill,f_auto,q_auto:good,dpr_auto';
+                return `${parts[0]}/upload/${optimized}/${pathAfterVersion}`;
+            }
+        }
+    }
     
-    const pathAfterUpload = parts[1];
-    const versionMatch = pathAfterUpload.match(/v\d+\//);
-    if (!versionMatch) return url;
-    
-    const pathAfterVersion = pathAfterUpload.substring(pathAfterUpload.indexOf(versionMatch[0]));
-    
-    // Optimized: 600px width, auto format, good quality
-    const optimized = 'w_600,h_450,c_fill,f_auto,q_auto:good,dpr_auto';
-    
-    return `${parts[0]}/upload/${optimized}/${pathAfterVersion}`;
+    // Fallback for non-Cloudinary images (e.g., direct blobs or external sources)
+    // We can't resize them easily without a proxy, but we can ensure they load gracefully
+    return url;
   }
 };
