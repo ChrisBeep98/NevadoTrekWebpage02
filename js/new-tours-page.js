@@ -208,10 +208,10 @@ function initHeaderEntranceAnimations() {
     }
   });
 
-  // 1. Hero Title
+  // 1. Hero Title (Blur + Rise)
   tl.fromTo('.nt-hero-title', 
-    { opacity: 0, y: 30 },
-    { opacity: 1, y: 0, duration: 1.4 },
+    { opacity: 0, y: 30, filter: "blur(20px)" },
+    { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.6 },
     0.3
   );
 
