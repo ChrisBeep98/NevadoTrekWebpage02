@@ -261,19 +261,23 @@ function initTourAnimations() {
     gsap.registerPlugin(ScrollTrigger);
     
     cards.forEach((card) => {
+      // Check if card is already "in view" or close to it
+      const rect = card.getBoundingClientRect();
+      const isInViewport = rect.top < window.innerHeight;
+
       gsap.from(card, {
         opacity: 0,
         y: 30,
         duration: 0.8,
         ease: "power2.out",
+        // Add a slight delay if it's in the first row to wait for the loader/header
+        delay: isInViewport ? 0.6 : 0, 
         scrollTrigger: {
           trigger: card,
           start: "top 92%",
           toggleActions: "play none none none",
           once: true
         },
-        // Clear only transform to let CSS hover work, 
-        // keep opacity: 1 from the animation end
         onComplete: () => gsap.set(card, { clearProps: "transform" })
       });
     });
