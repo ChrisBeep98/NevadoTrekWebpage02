@@ -165,7 +165,7 @@
 .nt-tours-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Exactamente 2 columnas */
-  gap: 2rem; /* Reducido de var(--spacing-xl) para más espacio a las tarjetas */
+  gap: 4rem 2rem; /* Aumentada la separación vertical (+32px) para dar más aire */
 }
 
 /* Loading State */
