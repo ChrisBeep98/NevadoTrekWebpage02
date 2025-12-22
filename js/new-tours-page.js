@@ -166,11 +166,19 @@ function renderInBatches(tours, container, startIndex, batchSize) {
     });
   } else {
     // Finished rendering all batches
-    initTourAnimations();
     console.log('✅ All tour batches rendered');
     
-    // Hide Preloader (Smooth Fade Out)
-    hideLoader();
+    // Refresh ScrollTrigger to account for new page height
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+
+    const loader = document.getElementById('initial-loader');
+    if (loader && !loader.classList.contains('hidden')) {
+      // First load: hide loader then entrance sequence
+      hideLoader();
+    } else {
+      // Subsequent filtering/updates: animate cards immediately
+      initTourAnimations();
+    }
   }
 }
 
@@ -234,14 +242,51 @@ function initHeaderEntranceAnimations() {
     },
     "-=0.8"
   );
+
+  // 4. Initial Tour Card Entrance (The ones in view)
+  initTourAnimations();
 }
 
 /**
- * Initialize animations for the tour card texts
- * DISABLED for maximum scroll performance
+ * Initialize staggered entrance animations for the tour cards
+ * Uses ScrollTrigger for reveal-on-scroll functionality
  */
 function initTourAnimations() {
-  return;
+  const cards = document.querySelectorAll('.nt-tour-card');
+  if (cards.length === 0 || !window.gsap) return;
+
+  gsap.killTweensOf(cards);
+
+  if (window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    cards.forEach((card) => {
+      gsap.from(card, {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 92%",
+          toggleActions: "play none none none",
+          once: true
+        },
+        // Clear only transform to let CSS hover work, 
+        // keep opacity: 1 from the animation end
+        onComplete: () => gsap.set(card, { clearProps: "transform" })
+      });
+    });
+  } else {
+    gsap.from(cards, { 
+      opacity: 0, 
+      y: 20, 
+      stagger: 0.05, 
+      duration: 0.6, 
+      ease: "power2.out",
+      onComplete: () => gsap.set(cards, { clearProps: "transform" })
+    });
+  }
 }
 
 /**
