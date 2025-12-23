@@ -106,7 +106,7 @@ async function loadToursFromAPI() {
         image: window.nevadoAPI.optimizeImage(
           (t.images && t.images.length > 0) ? t.images[0] : "https://via.placeholder.com/400x300"
         ),
-        link: "TourPage.html"
+        link: `TourPage.html?id=${t.tourId}`
       };
     });
     
