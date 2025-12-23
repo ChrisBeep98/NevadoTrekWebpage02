@@ -3,12 +3,22 @@
     cursor: pointer;
     /* CSS scale removed to be handled by JS/GSAP for better compatibility with scroll zoom */
     transition: filter 0.4s ease;
+    border-radius: 6px; /* User requested 6px radius */
 }
 
-/* Container shadow - to avoid clipping by overflow:hidden */
+/* Container shadow and radius - to avoid clipping by overflow:hidden */
 .image-parallax-mask {
     transition: box-shadow 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     will-change: box-shadow;
+    border-radius: 6px; /* Match image radius */
+    overflow: hidden;   /* Ensure clipping follows the radius */
+}
+
+/* Specific fix for images that are large/scroll-zoom */
+.scroll-zoom-image, 
+.parallax-image-medium,
+#big-image-03 {
+    border-radius: 6px !important;
 }
 
 .image-parallax-mask:has(.nt-hover-image:hover) {
