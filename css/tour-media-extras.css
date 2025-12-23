@@ -65,20 +65,19 @@
     transform: scale(0.98);
 }
 
-/* LIGHTBOX VIEWER (Same as Gallery) */
+/* LIGHTBOX VIEWER - Advanced Layout */
 .nt-lightbox {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    background: rgba(0, 0, 0, 0.85); /* Semi-transparent black */
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    z-index: 9999999 !important; /* Extremely high to cover Webflow navbars */
+    z-index: 9999999 !important;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row; /* Desktop: side by side */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -89,13 +88,24 @@
     pointer-events: auto;
 }
 
+/* Main Display Area */
+.nt-lightbox-main {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
 .nt-lightbox-img {
-    max-width: 90vw;
-    max-height: 85vh;
+    max-width: 100%;
+    max-height: 90vh;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    transform: scale(0.9);
+    transform: scale(0.95);
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
@@ -103,28 +113,61 @@
     transform: scale(1);
 }
 
+/* Thumbnails Strip */
+.nt-lightbox-thumbs {
+    width: 120px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.nt-lightbox-thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.nt-lightbox-thumb:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.nt-lightbox-thumb.active {
+    opacity: 1;
+    border-color: #2563eb;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+}
+
+/* Navigation Buttons */
 .nt-lightbox-close {
     position: absolute;
-    top: 2rem;
-    right: 2rem;
+    top: 1.5rem;
+    left: 1.5rem; /* Move to left to avoid thumbnails on right */
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #ffffff;
-    font-size: 28px;
-    width: 48px;
-    height: 48px;
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 100;
-}
-
-.nt-lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
+    z-index: 1000;
 }
 
 .nt-lightbox-prev,
@@ -134,60 +177,57 @@
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    outline: none;
     border-radius: 50%;
-    width: 56px;
-    height: 56px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
     color: #ffffff;
     z-index: 100;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.nt-lightbox-prev {
-    left: 2rem;
-}
-
-.nt-lightbox-next {
-    right: 2rem;
-}
-
-.nt-lightbox-prev:hover,
-.nt-lightbox-next:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-50%) scale(1.1);
-}
+.nt-lightbox-prev { left: 1rem; }
+.nt-lightbox-next { right: 1rem; }
 
 /* Mobile Lightbox Adjustments */
 @media screen and (max-width: 767px) {
-    .nt-lightbox-img {
-        max-width: 95vw;
-        max-height: 80vh;
+    .nt-lightbox {
+        flex-direction: column; /* Stack image on top, thumbs below */
     }
-    
+
+    .nt-lightbox-main {
+        padding: 1rem;
+        padding-top: 4rem;
+        height: 70vh;
+    }
+
+    .nt-lightbox-thumbs {
+        width: 100%;
+        height: 100px;
+        flex-direction: row; /* Horizontal scroll */
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.75rem;
+    }
+
+    .nt-lightbox-thumb {
+        height: 100%;
+        width: auto;
+        aspect-ratio: 1;
+    }
+
     .nt-lightbox-close {
         top: 1rem;
-        right: 1rem;
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
+        left: 1rem;
     }
 
     .nt-lightbox-prev,
     .nt-lightbox-next {
-        width: 44px;
-        height: 44px;
-    }
-
-    .nt-lightbox-prev {
-        left: 1rem;
-    }
-
-    .nt-lightbox-next {
-        right: 1rem;
+        width: 40px;
+        height: 40px;
     }
 }

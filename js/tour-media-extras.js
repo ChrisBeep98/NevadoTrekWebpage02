@@ -52,14 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const html = `
             <div class="nt-lightbox" id="nt-lightbox">
-                <button class="nt-lightbox-close" id="nt-lightbox-close" aria-label="Close">×</button>
-                <button class="nt-lightbox-prev" id="nt-lightbox-prev" aria-label="Previous">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-                <button class="nt-lightbox-next" id="nt-lightbox-next" aria-label="Next">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                </button>
-                <img src="" alt="Viewer" class="nt-lightbox-img" id="nt-lightbox-img">
+                <div class="nt-lightbox-main">
+                    <button class="nt-lightbox-close" id="nt-lightbox-close" aria-label="Close">×</button>
+                    <button class="nt-lightbox-prev" id="nt-lightbox-prev" aria-label="Previous">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button class="nt-lightbox-next" id="nt-lightbox-next" aria-label="Next">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                    <img src="" alt="Viewer" class="nt-lightbox-img" id="nt-lightbox-img">
+                </div>
+                <div class="nt-lightbox-thumbs" id="nt-lightbox-thumbs"></div>
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', html);
@@ -69,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lightbox = document.getElementById('nt-lightbox');
     const lightboxImg = document.getElementById('nt-lightbox-img');
+    const thumbsContainer = document.getElementById('nt-lightbox-thumbs');
     const closeBtn = document.getElementById('nt-lightbox-close');
     const prevBtn = document.getElementById('nt-lightbox-prev');
     const nextBtn = document.getElementById('nt-lightbox-next');
@@ -79,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openLightbox = (images, index) => {
         currentImages = images;
         currentIndex = index;
+        renderThumbnails();
         updateLightbox();
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -89,11 +94,38 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = '';
     };
 
+    const renderThumbnails = () => {
+        thumbsContainer.innerHTML = '';
+        currentImages.forEach((src, idx) => {
+            const thumb = document.createElement('img');
+            thumb.src = src;
+            thumb.className = 'nt-lightbox-thumb';
+            thumb.onclick = (e) => {
+                e.stopPropagation();
+                currentIndex = idx;
+                updateLightbox();
+            };
+            thumbsContainer.appendChild(thumb);
+        });
+    };
+
     const updateLightbox = () => {
         if (currentImages[currentIndex]) {
             lightboxImg.src = currentImages[currentIndex];
         }
         
+        // Update Thumbnails Active Class
+        const thumbs = thumbsContainer.querySelectorAll('.nt-lightbox-thumb');
+        thumbs.forEach((thumb, idx) => {
+            if (idx === currentIndex) {
+                thumb.classList.add('active');
+                // Scroll into view within the container
+                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else {
+                thumb.classList.remove('active');
+            }
+        });
+
         // Hide navigation if only one image
         const hasMultiple = currentImages.length > 1;
         prevBtn.style.display = hasMultiple ? 'flex' : 'none';
