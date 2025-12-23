@@ -197,21 +197,39 @@
 .nt-lightbox-prev { left: 1rem; }
 .nt-lightbox-next { right: 1rem; }
 
-/* GLASS PILLAR NAVIGATION (Final Refined Minimalist) */
+/* GLASS PILLAR NAVIGATION (Indicator Fix) */
 .index {
-    background: transparent !important;
+    background: none !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 8px !important; /* Tighter spacing for a more compact look */
+    gap: 8px !important; 
     align-items: flex-end !important;
     position: relative !important;
     width: auto !important;
 }
 
+/* Ensure the wrapper divs for links are also transparent without killing the indicator */
+.index > div:not(.div-block-140) {
+    background: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
 .div-block-142 {
+    background: none !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: none !important;
     position: fixed !important;
     right: 2.5rem !important;
     padding-top: 360px !important; 
