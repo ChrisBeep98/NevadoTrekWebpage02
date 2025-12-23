@@ -658,6 +658,27 @@
   .nt-filters-section {
     padding: var(--spacing-md) 0;
   }
+  
+  /* Mobile Card Adjustments */
+  .nt-card-description {
+    text-align: left; /* Align description to left */
+  }
+
+  .nt-card-badges {
+    bottom: 12px;
+    left: 12px;
+    gap: 6px; /* Reduced gap */
+  }
+
+  .nt-badge {
+    padding: 6px 10px; /* Reduced padding */
+    font-size: 0.7rem; /* Smaller text */
+  }
+  
+  .nt-badge svg {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 /* ========================================
