@@ -66,9 +66,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyLanguageToDynamicElements(currentLang);
     
     // Refresh ScrollTrigger after dynamic content is injected and translated
-    // This ensures all scroll-based triggers are calculated based on the final layout
     if (typeof ScrollTrigger !== 'undefined') {
       ScrollTrigger.refresh();
+      // Also refresh the custom horizontal loops specifically
+      if (window.refreshScrollLoops) window.refreshScrollLoops();
     }
   }, 100);
 });
@@ -215,6 +216,8 @@ function applyLanguageToDynamicElements(lang) {
 window.addEventListener('languageChange', (e) => {
   if (e.detail && e.detail.lang) {
     applyLanguageToDynamicElements(e.detail.lang);
+    // Refresh scroll triggers after text content potentially changes width
+    if (window.refreshScrollLoops) window.refreshScrollLoops();
   }
 });
 

@@ -260,13 +260,20 @@
   }
 
   /**
-   * Performance: Pause animations when page is not visible
+   * Performance: Pause GSAP ticker when page is not visible
+   * This is more efficient than pausing the entire body CSS
    */
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      document.body.style.animationPlayState = 'paused';
-    } else {
-      document.body.style.animationPlayState = 'running';
+    if (typeof gsap !== 'undefined') {
+        if (document.hidden) {
+            gsap.ticker.sleep();
+        } else {
+            gsap.ticker.wake();
+            // Force refresh when coming back to ensure sync
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh();
+            }
+        }
     }
   });
 

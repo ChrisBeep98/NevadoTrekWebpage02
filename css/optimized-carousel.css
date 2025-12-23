@@ -8,17 +8,24 @@
   display: flex;
   justify-content: center; /* Center content initially */
   position: relative;
-  /* Prevent interaction if needed, or allow selecting text */
+  /* Hyper-Optimization: Isolate layout/paint */
+  contain: layout paint;
   user-select: none;
 }
 
 .track {
   display: flex;
-  /* Critical for performance */
-  will-change: transform; 
+  /* Hyper-Optimization: Isolate layout/paint and promote to GPU */
+  will-change: transform;
+  transform: translateZ(0); 
+  backface-visibility: hidden;
+  
   /* Ensure width fits content so we can calculate proper scrolling */
   width: fit-content;
   white-space: nowrap;
+
+  /* FLICKER PREVENTION */
+  opacity: 0;
 }
 
 .item {
@@ -36,9 +43,9 @@
   white-space: nowrap;
 }
 
-/* Responsive adjustments if necessary */
+/* Responsive adjustments - currently following natural font scaling */
 @media screen and (max-width: 768px) {
   .horizontal-loop .style-h1 {
-     /* Allow fonts to scale naturally or add specific overrides if "textos largos" become an issue */
+     font-size: clamp(1.8rem, 6vw, 3rem);
   }
 }
