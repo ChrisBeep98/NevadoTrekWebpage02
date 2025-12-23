@@ -21,6 +21,37 @@
     border-radius: 6px !important;
 }
 
+/* MOBILE OVERRIDES (≤767px) */
+@media screen and (max-width: 767px) {
+    #main-tour-image,
+    #fullscreen-img2,
+    #big-image-03,
+    .parallax-image-medium,
+    .scroll-zoom-image {
+        height: 86vh !important;
+        min-height: 86vh !important; /* Force reset of the 1000px min-height */
+        max-height: 86vh !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        border-radius: 0 !important; /* Remove radius for edge-to-edge feel */
+    }
+
+    /* Reset container radius for these images on mobile */
+    .image-parallax-mask:has(#main-tour-image),
+    .image-parallax-mask:has(#fullscreen-img2),
+    .image-parallax-mask:has(#big-image-03) {
+        border-radius: 0 !important;
+    }
+
+    /* Ensure containers don't force height */
+    .mini-parallax-wrapper,
+    .parallax-wrapper,
+    .mini-image-container {
+        height: auto !important;
+        min-height: auto !important;
+    }
+}
+
 .image-parallax-mask:has(.nt-hover-image:hover) {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
     z-index: 5;
