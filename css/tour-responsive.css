@@ -188,12 +188,20 @@ section {
   }
 }
 
-  /* Override global hide for CTA inside the fixed container */
+  /* Override global hide and style for CTA inside the fixed container */
   .mobile-fixed-cta-container .header-cta-primary {
     display: flex !important;
     width: 100% !important;
     height: 48px !important;
-    /* Removed border-radius override to inherit 50px from inline style */
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    border-radius: 50px !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-family: 'Inter', sans-serif !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
   }
   
