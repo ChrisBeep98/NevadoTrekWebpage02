@@ -119,9 +119,7 @@ padding-right: 0 !important;
 }
 #navbar-exclusion.navbar-fixed.scrolled {
   margin-top: 12px;
-  padding: 0 !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
+  padding: 0 5em !important; /* UNIFICADO: Mismo padding que TourPage (era 0) */
   margin-left: 0 !important;
 }
 
@@ -541,7 +539,7 @@ padding-right: 0 !important;
   /* Scrolled state adjustments for tablet */
   #navbar-exclusion.navbar-fixed.scrolled {
     max-width: 70%;
-    padding: 0.5em 1.5em;
+    padding: 0 1.5em !important; /* Ajustado para tablet (era 0.5em 1.5em) */
   }
   
   #navbar-exclusion.navbar-fixed.scrolled .navbar-container {
