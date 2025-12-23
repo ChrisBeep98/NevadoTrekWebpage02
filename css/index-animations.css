@@ -565,6 +565,7 @@ padding-right: 0 !important;
     max-width: 85%;
     padding: 0.4em 1.2em;
     top: 0.75em !important;
+    height: 72px !important; /* Altura fija mobile - UNIFICADO */
   }
   
   #navbar-exclusion.navbar-fixed.scrolled .navbar-logo {
