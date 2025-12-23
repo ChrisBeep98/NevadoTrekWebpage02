@@ -100,7 +100,13 @@ async function loadToursFromAPI() {
           ? t.pricingTiers[t.pricingTiers.length - 1].priceCOP
           : 0).toLocaleString('es-CO'),
         currency: "COP",
-        difficulty: (t.difficulty || t.difficultyLevel || 'moderate').toLowerCase(),
+        difficulty: (function(d) {
+          const lower = (d || '').toLowerCase();
+          if (['easy', 'facil', 'baja'].includes(lower)) return 'easy';
+          if (['moderate', 'medium', 'media', 'moderado'].includes(lower)) return 'moderate';
+          if (['difficult', 'hard', 'dificil', 'challenging', 'extreme', 'alta'].includes(lower)) return 'difficult';
+          return 'moderate'; // Default fallback
+        })(t.difficulty || t.difficultyLevel),
         duration: window.nevadoAPI.mapTotalDaysToDuration(t.totalDays),
         nextDate: nextDateStr,
         image: window.nevadoAPI.optimizeImage(
@@ -111,6 +117,7 @@ async function loadToursFromAPI() {
     });
     
     console.log(`✅ TOURS_DATA procesado (${TOURS_DATA.length} tours)`);
+    updateAvailableFilters();
     
   } catch (error) {
     console.error('❌ Error fatal en loadToursFromAPI:', error);
@@ -231,7 +238,7 @@ function initHeaderEntranceAnimations() {
   );
 
   // 3. Filters Stagger
-  tl.fromTo('.nt-filter-chip, .nt-duration-filter',
+  tl.fromTo('.nt-filter-chip, .nt-select-wrapper',
     { opacity: 0, y: 15 },
     { 
       opacity: 1, 
@@ -414,6 +421,63 @@ function setupFilters() {
       activeFilters.duration = e.target.value;
       renderTours();
     });
+  }
+}
+
+/**
+ * Update available filters based on existing tours
+ * Hides options that have no matching tours
+ */
+function updateAvailableFilters() {
+  // 1. Get unique values from data
+  const existingDifficulties = new Set(TOURS_DATA.map(t => t.difficulty));
+  const existingDurations = new Set(TOURS_DATA.map(t => t.duration));
+  
+  console.log('🔍 Smart Filters Debug:');
+  console.log('Unique Difficulties found:', Array.from(existingDifficulties));
+  console.log('Unique Durations found:', Array.from(existingDurations));
+
+  // 2. Update Difficulty Chips
+  const difficultyChips = document.querySelectorAll('.nt-filter-chip[data-filter]');
+  difficultyChips.forEach(chip => {
+    const filterValue = chip.dataset.filter;
+    if (filterValue === 'all') return; // Always show 'All'
+
+    if (existingDifficulties.has(filterValue)) {
+      chip.style.display = '';
+    } else {
+      chip.style.display = 'none';
+      chip.classList.remove('active'); // Ensure hidden chips aren't active
+    }
+  });
+
+  // 3. Update Duration Select
+  const durationSelect = document.getElementById('duration-filter');
+  if (durationSelect) {
+    let currentSelectionValid = false;
+    
+    Array.from(durationSelect.options).forEach(option => {
+      const filterValue = option.value;
+      if (filterValue === 'all') {
+        currentSelectionValid = true; // Always valid
+        return;
+      }
+
+      if (existingDurations.has(filterValue)) {
+        option.style.display = '';
+        option.disabled = false;
+        if (durationSelect.value === filterValue) currentSelectionValid = true;
+      } else {
+        option.style.display = 'none';
+        option.disabled = true;
+      }
+    });
+
+    // Reset if current selection is no longer valid
+    if (!currentSelectionValid && durationSelect.value !== 'all') {
+      durationSelect.value = 'all';
+      activeFilters.duration = 'all';
+    }
   }
 }
 

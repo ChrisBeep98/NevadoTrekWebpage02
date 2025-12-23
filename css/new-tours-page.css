@@ -129,8 +129,28 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
+.nt-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  opacity: 0; /* Init hidden for GSAP */
+  will-change: transform, opacity;
+}
+
+.nt-select-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+  color: var(--color-text-light);
+  width: 16px;
+  height: 16px;
+}
+
 .nt-duration-filter {
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 2.5rem 0.625rem 2.75rem; /* Right padding for chevron, Left for icon */
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-full);
   background: var(--color-bg);
@@ -140,9 +160,12 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 180px;
-  opacity: 0;
-  will-change: transform, opacity;
+  min-width: 160px; /* Reduced slightly */
+  appearance: none; /* Remove default arrow for custom styling */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
 }
 
 .nt-duration-filter:hover {

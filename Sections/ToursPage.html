@@ -228,13 +228,30 @@
               <button class="nt-filter-chip" data-filter="difficult">
                 Difícil
               </button>
-              <select class="nt-duration-filter" id="duration-filter">
-                <option value="all">Todas las duraciones</option>
-                <option value="1">1 día</option>
-                <option value="2-3">2-3 días</option>
-                <option value="4-5">4-5 días</option>
-                <option value="6+">6+ días</option>
-              </select>
+              <div class="nt-select-wrapper">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="nt-select-icon"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <select class="nt-duration-filter" id="duration-filter">
+                  <option value="all">Duración</option>
+                  <option value="1">1 día</option>
+                  <option value="2-3">2-3 días</option>
+                  <option value="4-5">4-5 días</option>
+                  <option value="6+">6+ días</option>
+                </select>
+              </div>
             </div>
           </div>
         </section>
