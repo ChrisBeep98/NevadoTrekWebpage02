@@ -146,7 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
     closeBtn.onclick = closeLightbox;
     prevBtn.onclick = (e) => { e.stopPropagation(); prev(); };
     nextBtn.onclick = (e) => { e.stopPropagation(); next(); };
+    
+    // Close on background click (Both main area and outer container)
     lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); };
+    document.querySelector('.nt-lightbox-main').onclick = (e) => {
+        if (e.target === document.querySelector('.nt-lightbox-main')) closeLightbox();
+    };
 
     // Keyboard
     document.addEventListener('keydown', (e) => {

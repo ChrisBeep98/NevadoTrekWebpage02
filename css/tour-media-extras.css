@@ -155,7 +155,7 @@
 .nt-lightbox-close {
     position: absolute;
     top: 1.5rem;
-    left: 1.5rem; /* Move to left to avoid thumbnails on right */
+    right: 1.5rem; /* Moved to right per user request */
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #ffffff;
@@ -168,6 +168,12 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.nt-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
 }
 
 .nt-lightbox-prev,
