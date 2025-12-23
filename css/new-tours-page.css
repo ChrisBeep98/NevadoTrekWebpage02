@@ -64,7 +64,7 @@
 .nt-hero-title {
   margin-bottom: var(--spacing-md);
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   opacity: 0;
   will-change: transform, opacity, filter;
