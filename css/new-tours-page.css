@@ -597,14 +597,26 @@
   
   .nt-filters-wrapper {
     justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: var(--spacing-xs);
+    flex-wrap: nowrap; /* Prevent wrapping */
+    overflow-x: auto; /* Enable horizontal scroll */
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+    padding-bottom: var(--spacing-sm); /* Increased padding for shadow visibility */
+    padding-left: 16px; /* Inner padding for scroll start */
+    padding-right: 16px; /* Inner padding for scroll end */
+    margin-left: -16px; /* Negative margin to span full width */
+    margin-right: -16px; /* Negative margin to span full width */
+    gap: 12px;
   }
   
   .nt-filters-wrapper::-webkit-scrollbar {
-    display: none;
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+  
+  /* Ensure first/last items have spacing when scrolling */
+  .nt-filters-wrapper::after {
+    content: "";
+    flex: 0 0 16px;
   }
   
   .nt-tours-grid {
