@@ -678,7 +678,20 @@
   .nt-card-badges {
     bottom: 12px;
     left: 12px;
+    right: 12px; /* Forced right margin to ensure wrapping */
     gap: 6px; /* Reduced gap */
+  }
+
+  .nt-card-arrow {
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .nt-card-arrow svg {
+    width: 16px;
+    height: 16px;
   }
 
   .nt-badge {
