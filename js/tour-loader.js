@@ -448,31 +448,32 @@ function initTOC() {
   sections.forEach(section => observer.observe(section));
 
   function updateActiveState(activeIndex) {
+    const indicator = document.querySelector('.div-block-141');
+    const track = document.querySelector('.div-block-140');
+
     tocItems.forEach((item, index) => {
       if (index === activeIndex) {
         item.classList.remove('f-grey');
-        item.style.fontWeight = '600';
+        item.style.fontWeight = '700';
         item.style.color = '#042e4d';
 
-        if (indicator) {
-          // Get positions relative to the index container
-          const indexContainer = document.querySelector('.index');
+        if (indicator && track) {
           const itemRect = item.getBoundingClientRect();
-          const indexRect = indexContainer.getBoundingClientRect();
+          const trackRect = track.getBoundingClientRect();
           
-          // Calculate offset from top of index container
-          // Add half the item height to center the indicator on the text
+          // Calculate precise center alignment relative to the track
           const itemHeight = itemRect.height;
-          const offset = (itemRect.top - indexRect.top) + (itemHeight / 2) - (indicator.offsetHeight / 2) - 32;
+          const indicatorHeight = indicator.offsetHeight;
+          const offset = (itemRect.top - trackRect.top) + (itemHeight / 2) - (indicatorHeight / 2);
           
           indicator.style.transform = `translateY(${offset}px)`;
-          indicator.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          indicator.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
         }
       } else {
         if (!item.classList.contains('f-grey')) {
           item.classList.add('f-grey');
         }
-        item.style.fontWeight = '400';
+        item.style.fontWeight = '500';
         item.style.color = '';
       }
     });
