@@ -1,0 +1,151 @@
+/* HOVER EFFECTS - Safely scoped to avoid layout breakage */
+.nt-hover-image {
+    cursor: pointer;
+    /* CSS scale removed to be handled by JS/GSAP for better compatibility with scroll zoom */
+    transition: filter 0.4s ease;
+}
+
+/* Container shadow - to avoid clipping by overflow:hidden */
+.image-parallax-mask {
+    transition: box-shadow 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    will-change: box-shadow;
+}
+
+.image-parallax-mask:has(.nt-hover-image:hover) {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    z-index: 5;
+}
+
+.nt-hover-image:hover {
+    filter: brightness(1.05);
+}
+
+.nt-hover-image:active {
+    transform: scale(0.98);
+}
+
+/* LIGHTBOX VIEWER (Same as Gallery) */
+.nt-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(4, 46, 77, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.nt-lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nt-lightbox-img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.nt-lightbox.active .nt-lightbox-img {
+    transform: scale(1);
+}
+
+.nt-lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 28px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.nt-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.nt-lightbox-prev,
+.nt-lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    outline: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #ffffff;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nt-lightbox-prev {
+    left: 2rem;
+}
+
+.nt-lightbox-next {
+    right: 2rem;
+}
+
+.nt-lightbox-prev:hover,
+.nt-lightbox-next:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Mobile Lightbox Adjustments */
+@media screen and (max-width: 767px) {
+    .nt-lightbox-img {
+        max-width: 95vw;
+        max-height: 80vh;
+    }
+    
+    .nt-lightbox-close {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .nt-lightbox-prev,
+    .nt-lightbox-next {
+        width: 44px;
+        height: 44px;
+    }
+
+    .nt-lightbox-prev {
+        left: 1rem;
+    }
+
+    .nt-lightbox-next {
+        right: 1rem;
+    }
+}

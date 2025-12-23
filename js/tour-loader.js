@@ -595,8 +595,18 @@ function renderTourImages(tour) {
     
     if (imageSource) {
       img.src = imageSource;
-      img.srcset = ''; // Clear hardcoded srcset to favor dynamic image
+      img.srcset = ''; 
       img.alt = `${tour.name.es} - Imagen ${index + 1}`;
+      
+      // Apply hover effect class
+      img.classList.add('nt-hover-image');
+      
+      // Open Lightbox on click
+      img.onclick = () => {
+        if (window.NT_TourViewer) {
+          window.NT_TourViewer.open(tour.images, index);
+        }
+      };
     }
   });
 }
