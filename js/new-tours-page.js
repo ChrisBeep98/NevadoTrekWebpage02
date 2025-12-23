@@ -40,6 +40,7 @@ async function init() {
   setupLanguageSwitcher();
   setupNavbar();
   setupMobileMenu();
+  setupAnimations();
 }
 
 /**
@@ -559,10 +560,43 @@ function setupLanguageSwitcher() {
     currentFlagImg.src = 'https://flagcdn.com/w20/us.png';
   }
   
-  // Initial translation for static elements (footer, filters, etc.)
   if (window.NT_I18N && window.NT_I18N.apply) {
     window.NT_I18N.apply(savedLang);
   }
+}
+
+/**
+ * Setup Entrance Animations
+ */
+function setupAnimations() {
+  if (typeof gsap === 'undefined') return;
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 }});
+
+  // 1. Hero Title & Subtitle (Blur + Fade + Scale)
+  tl.fromTo('.nt-hero-title', 
+    { opacity: 0, y: 30, filter: 'blur(10px)', scale: 0.95 },
+    { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, delay: 0.5 }
+  )
+  .fromTo('.nt-hero-subtitle',
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0 },
+    '-=0.8'
+  );
+
+  // 2. Filters (Stagger)
+  tl.fromTo('.nt-filter-chip, .nt-select-wrapper',
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, stagger: 0.05 },
+    '-=0.6'
+  );
+
+  // 3. Grid Entrance
+  tl.fromTo('.nt-tours-grid',
+    { opacity: 0 },
+    { opacity: 1, duration: 1.5 },
+    '-=1'
+  );
 }
 
 /**

@@ -211,64 +211,20 @@ function removeSentinel() {
  * Initialize Header Animations
  */
 function initHeaderAnimations() {
-    const title = document.querySelector('.page-title');
-    const subtitle = document.querySelector('.page-subtitle');
-  
-    // Title Letter Reveal
-    if (title) {
-      const text = title.textContent.trim();
-      if (text.length > 0) {
-        title.textContent = ''; 
-        title.style.opacity = '1'; 
-        
-        const cleanText = text.replace(/\s+/g, ' ').trim();
-        const words = cleanText.split(' ');
-        
-        let globalLetterIndex = 0;
-  
-        words.forEach((word, index) => {
-          const wordSpan = document.createElement('span');
-          wordSpan.style.display = 'inline-block';
-          wordSpan.style.whiteSpace = 'nowrap';
-          if (index < words.length - 1) {
-               wordSpan.style.marginRight = '0.25em'; 
-          }
-          
-          const letters = word.split('');
-          letters.forEach(char => {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.className = 'letter'; 
-            
-            const delay = 200 + (globalLetterIndex * 20); 
-            span.style.animationDelay = `${delay}ms`;
-            
-            wordSpan.appendChild(span);
-            globalLetterIndex++;
-          });
-          
-          title.appendChild(wordSpan);
-        });
-      }
-    }
-  
-    // Subtitle Fade Up
-    if (subtitle && typeof gsap !== 'undefined') {
-      gsap.fromTo(subtitle, 
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          delay: 0.8, 
-          ease: 'power2.out'
-        }
-      );
-    } else if (subtitle) {
-      subtitle.style.transition = 'opacity 1s ease, transform 1s ease';
-      subtitle.style.opacity = '1';
-      subtitle.style.transform = 'translateY(0)';
-    }
+    if (typeof gsap === 'undefined') return;
+
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 }});
+
+    // 1. Hero Title & Subtitle (Blur + Fade + Scale)
+    tl.fromTo('.nt-hero-title', 
+      { opacity: 0, y: 30, filter: 'blur(10px)', scale: 0.95 },
+      { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, delay: 0.3 }
+    )
+    .fromTo('.nt-hero-subtitle',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0 },
+      '-=0.8'
+    );
 }
 
 /**

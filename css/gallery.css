@@ -18,34 +18,6 @@ html, body {
 }
 
 /* === HEADER SECTION === */
-.gallery-page-header {
-  padding: 4em 5em 1em 5em; /* Desktop margins */
-  text-align: center;
-}
-
-.header-content {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.page-title {
-  margin-bottom: 0.2em; /* Reduced gap */
-  color: var(--color--dark, #042e4d);
-  font-family: Inter, sans-serif; /* Explicit font family */
-  /* Animation setup */
-  opacity: 0; /* Hidden initially for JS */
-  transform: translateY(20px);
-}
-
-.page-subtitle {
-  color: var(--font-grey-100, #687075);
-  font-weight: 300;
-  margin-top: 0;
-  font-family: Inter, sans-serif;
-  /* Animation setup */
-  opacity: 0; /* Hidden initially for GSAP */
-  transform: translateY(10px);
-}
 
 /* ===================================
    NAVBAR LINK STYLES

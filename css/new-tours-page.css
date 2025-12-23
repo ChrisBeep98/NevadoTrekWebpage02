@@ -42,43 +42,10 @@
   padding-top: 88px; /* Altura del navbar */
 }
 
-/* Container */
-.nt-container {
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 5vw;
-  padding-right: 5vw;
-}
 
 /* ========================================
    HERO SECTION
    ======================================== */
-.nt-tours-hero {
-  padding-top: var(--spacing-3xl);
-  padding-bottom: var(--spacing-2xl);
-  text-align: center;
-  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
-}
-
-.nt-hero-title {
-  margin-bottom: var(--spacing-md);
-  color: var(--color-primary);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  opacity: 0;
-  will-change: transform, opacity, filter;
-}
-
-.nt-hero-subtitle {
-  color: var(--color-text-light);
-  font-weight: 400;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0;
-  will-change: transform, opacity;
-}
 
 /* ========================================
    FILTERS SECTION
@@ -602,31 +569,13 @@
 
 @media (max-width: 767px) {
   .nt-container {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    /* Styles moved to hero-common.css */
   }
 
   .nt-tours-main {
     padding-top: 72px;
   }
   
-  .nt-tours-hero {
-    padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-md);
-    text-align: left;
-  }
-  
-  .nt-hero-title {
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .nt-hero-subtitle {
-    font-size: 1rem;
-    text-align: left;
-    margin-left: 0;
-    max-width: 100%;
-  }
   
   .nt-filters-wrapper {
     justify-content: flex-start;
