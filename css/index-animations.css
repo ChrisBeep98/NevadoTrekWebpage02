@@ -442,11 +442,19 @@ padding-right: 0 !important;
   z-index: 1000;
 }
 
-.lang-dropdown:hover .lang-options,
-.lang-dropdown.open .lang-options {
+.lang-dropdown.open .lang-options,
+.lang-dropdown.show .lang-options {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+/* Force close override to beat hover state */
+.lang-options.force-close {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  display: none !important;
+  pointer-events: none !important;
 }
 
 .lang-option {

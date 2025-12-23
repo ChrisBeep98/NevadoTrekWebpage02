@@ -3902,14 +3902,24 @@
         // Handle option clicks
         if (langOptions) {
           langOptions.querySelectorAll(".lang-option").forEach(function (opt) {
-            opt.addEventListener("click", function () {
+            opt.addEventListener("click", function (e) {
+              e.stopPropagation();
+              
+               // FORCE CLOSE mechanism to beat hover state
+               langOptions.classList.add('force-close');
+               langOptions.classList.remove("show");
+               
+               // Remove lock after 300ms (enough time to move mouse out)
+               setTimeout(() => {
+                 langOptions.classList.remove('force-close');
+               }, 300);
+              
               var newLang = this.getAttribute("data-lang");
               var newFlag = this.getAttribute("data-flag");
               localStorage.setItem("lang", newLang);
               if (currentLang) currentLang.textContent = newLang.toUpperCase();
               if (currentFlag) currentFlag.src = newFlag;
-              // Close dropdown
-              langOptions.classList.remove("show");
+              
               apply(newLang);
             });
           });

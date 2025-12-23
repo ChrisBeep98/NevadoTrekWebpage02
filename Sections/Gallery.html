@@ -351,6 +351,14 @@
       document.querySelectorAll(".lang-option").forEach((option) => {
         option.addEventListener("click", (e) => {
           e.stopPropagation();
+
+          // FORCE CLOSE mechanism
+          langOptions.classList.add("force-close");
+          langOptions.classList.remove("show");
+          setTimeout(() => {
+            langOptions.classList.remove("force-close");
+          }, 300);
+
           const lang = option.dataset.lang;
           const flag = option.dataset.flag;
 
@@ -358,7 +366,6 @@
           currentFlagImg.src = flag;
 
           localStorage.setItem("lang", lang);
-          langOptions.classList.remove("show");
 
           // Dispatch event for gallery loader
           window.dispatchEvent(

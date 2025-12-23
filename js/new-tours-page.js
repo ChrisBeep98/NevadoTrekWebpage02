@@ -529,6 +529,16 @@ function setupLanguageSwitcher() {
   document.querySelectorAll('.lang-option').forEach(option => {
     option.addEventListener('click', (e) => {
       e.stopPropagation();
+
+      // FORCE CLOSE mechanism to beat hover state
+      langOptions.classList.add('force-close');
+      langOptions.classList.remove('show');
+      
+      // Remove lock after 300ms
+      setTimeout(() => {
+        langOptions.classList.remove('force-close');
+      }, 300);
+
       const lang = option.dataset.lang;
       const flag = option.dataset.flag;
 
@@ -537,7 +547,6 @@ function setupLanguageSwitcher() {
 
       localStorage.setItem('lang', lang);
       currentLang = lang;
-      langOptions.classList.remove('show');
       
       // Re-render tours with new language
       renderTours();
