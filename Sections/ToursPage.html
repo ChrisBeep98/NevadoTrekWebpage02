@@ -19,6 +19,7 @@
     <!-- Nueva página de Tours Styles -->
     <link href="../css/new-tours-page.css" rel="stylesheet" type="text/css" />
     <link href="../css/hero-common.css" rel="stylesheet" type="text/css" />
+    <link href="../css/new-mobile-menu.css" rel="stylesheet" type="text/css" />
 
     <!-- Shared Navbar Styles -->
     <link href="../css/index-animations.css" rel="stylesheet" type="text/css" />
@@ -184,18 +185,11 @@
                 />
               </svg>
             </a>
-            <button class="menu-toggle-exclusion" aria-label="Menu">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <line x1="3" y1="6" x2="21" y2="6"></line>
+            <!-- Refactored Hamburger Button -->
+            <button class="nm-menu-toggle" aria-label="Menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
                 <line x1="3" y1="18" x2="21" y2="18"></line>
               </svg>
             </button>
@@ -440,51 +434,45 @@
       </div>
     </footer>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobile-menu">
-      <div class="mobile-menu-wrapper">
-        <div class="mobile-menu-header">
-          <span class="mobile-menu-title">Menú</span>
-          <button
-            class="mobile-menu-close-btn"
-            id="mobile-menu-close"
-            aria-label="Cerrar"
-          >
-            ✕
-          </button>
-        </div>
-        <div class="mobile-menu-links">
-          <a href="../index.html" class="mobile-nav-link">
-            <span class="nav-icon">🏠</span>
-            <span data-i18n-key="nav.home">Inicio</span>
-          </a>
-          <div class="nav-separator"></div>
-          <a href="ToursPage.html" class="mobile-nav-link">
-            <span class="nav-icon">🏔️</span>
-            <span data-i18n-key="nav.tours">Tours</span>
-          </a>
-          <div class="nav-separator"></div>
-          <a href="Gallery.html" class="mobile-nav-link">
-            <span class="nav-icon">📸</span>
-            <span data-i18n-key="nav.gallery">Galería</span>
-          </a>
-          <div class="nav-separator"></div>
-          <a
-            href="https://wa.me/573001234567"
-            target="_blank"
-            class="mobile-menu-cta"
-          >
-            <span data-i18n-key="cta.contact">Contacto</span>
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
-              />
-            </svg>
-          </a>
-        </div>
+    <!-- Rewritten Mobile Menu Overlay (Circular Reveal) -->
+    <div class="nm-overlay">
+      <div class="nm-header">
+        <span class="nm-title">Menú</span>
+        <button class="nm-close-btn" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nm-nav-links">
+        <a href="../index.html" class="nm-link-item" data-i18n-key="nav.home"
+          >Inicio</a
+        >
+        <div class="nm-separator"></div>
+        <a href="ToursPage.html" class="nm-link-item" data-i18n-key="nav.tours"
+          >Tours</a
+        >
+        <div class="nm-separator"></div>
+        <a href="Gallery.html" class="nm-link-item" data-i18n-key="nav.gallery"
+          >Galería</a
+        >
+      </div>
+
+      <div class="nm-cta-container">
+        <a href="https://wa.me/573001234567" target="_blank" class="nm-cta-btn">
+          <span data-i18n-key="cta.contact">Contacto</span>
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
+            />
+          </svg>
+        </a>
       </div>
     </div>
 
+    <script src="../js/new-mobile-menu.js"></script>
     <!-- Scripts -->
     <!-- Core Scripts Only - GSAP Restored for Entrance & Scroll Animations -->
     <script src="../js/gsap.min.js"></script>

@@ -1,0 +1,186 @@
+/* Refactored Mobile Menu Styles - Namespace Isolated */
+/* Prefix: nm- (New Menu) */
+
+/* 1. Hamburger Toggle (Re-integrated into header) */
+.nm-menu-toggle {
+    display: none; /* Hidden on desktop */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2147483648; /* Topmost z-index */
+    padding: 8px;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+@media screen and (max-width: 991px) {
+    .nm-menu-toggle {
+        display: flex;
+    }
+}
+
+.nm-menu-toggle svg {
+    width: 24px; /* Resized to be smaller */
+    height: 24px;
+    stroke: #042e4d;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nm-menu-toggle:active svg {
+    transform: scale(0.9);
+}
+
+/* 2. Menu Overlay (The Circular Reveal Container) */
+.nm-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    /* 80% Height Constraint as requested */
+    height: 80vh; 
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 2147483647;
+    
+    /* Center Content Layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2em;
+    
+    /* Initial State for GSAP Animation */
+    /* Clip path circle starting at top right (0% radius) */
+    clip-path: circle(0% at 100% 0%); 
+    -webkit-clip-path: circle(0% at 100% 0%);
+    visibility: hidden;
+    
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    border-bottom-left-radius: 40px;
+}
+
+/* 3. Header inside Menu */
+.nm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2em;
+}
+
+.nm-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #042e4d;
+    opacity: 0; /* Animated with GSAP */
+    transform: translateY(-20px);
+}
+
+.nm-close-btn {
+    background: #f1f5f9;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0; /* Animated with GSAP */
+    transform: scale(0.5);
+}
+
+.nm-close-btn:hover {
+    background: #e2e8f0;
+    transform: rotate(90deg) scale(1.1) !important; /* !important to override GSAP state if needed on hover */
+}
+
+.nm-close-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: #042e4d;
+    stroke-width: 2;
+}
+
+/* 4. Navigation Links */
+.nm-nav-links {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5em;
+    width: 100%;
+}
+
+.nm-link-item {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #042e4d;
+    text-decoration: none;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: color 0.3s ease;
+}
+
+.nm-link-item:hover {
+    color: #2563eb;
+}
+
+.nm-separator {
+    width: 40px;
+    height: 2px;
+    background-color: rgba(4, 46, 77, 0.1);
+    border-radius: 2px;
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+/* 5. CTA Button (Primary Blue Pill Style from Index) */
+.nm-cta-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.nm-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 32px;
+    border-radius: 50px;
+    background: #2563eb; /* Primary Blue */
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    width: 90%;
+    max-width: 320px;
+}
+
+.nm-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+    background: #1d4ed8; /* Darker blue */
+}
+
+.nm-cta-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: #ffffff;
+}

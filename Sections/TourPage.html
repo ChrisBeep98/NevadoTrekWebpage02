@@ -68,6 +68,7 @@
     </style>
     <!-- Custom Tour Animations -->
     <link href="../css/tour-animations.css" rel="stylesheet" type="text/css" />
+    <link href="../css/new-mobile-menu.css" rel="stylesheet" type="text/css" />
     <!-- Footer Overrides & Hover Effects -->
     <link href="../css/footer-overrides.css" rel="stylesheet" type="text/css" />
     <!-- Booking Modal Styles -->
@@ -501,18 +502,11 @@
             </svg>
             <span>Reservar Tour</span>
           </a>
-          <button class="menu-toggle-exclusion" aria-label="Menu">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#042e4d"
-              stroke-width="2"
-            >
-              <line x1="3" y1="6" x2="21" y2="6"></line>
+          <!-- Refactored Hamburger Button -->
+          <button class="nm-menu-toggle" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
           </button>
@@ -1915,93 +1909,45 @@
       </div>
     </footer>
 
-    <!-- ===== MOBILE MENU OVERLAY ===== -->
-    <!-- ===== MOBILE MENU OVERLAY & CTA ===== -->
-    <!-- Mobile Menu Overlay (70vh slide from top) -->
-    <div class="mobile-menu-overlay" id="mobile-menu">
-      <!-- Header with separate Close Button -->
-      <div class="mobile-menu-header">
-        <span class="mobile-menu-title">Menú</span>
-        <button
-          class="mobile-menu-close-btn"
-          id="mobile-menu-close"
-          aria-label="Cerrar"
-        >
-          ✕
+    <!-- Rewritten Mobile Menu Overlay (Circular Reveal) -->
+    <div class="nm-overlay">
+      <div class="nm-header">
+        <span class="nm-title">Menú</span>
+        <button class="nm-close-btn" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
       </div>
 
-      <!-- Nav Links Container -->
-      <div class="mobile-menu-links">
-        <a href="../index.html" class="mobile-nav-link">
-          <span class="nav-icon">🏠</span>
-          <span data-i18n-key="nav.home">Inicio</span>
-        </a>
-        <div class="nav-separator"></div>
-        <a href="ToursPage.html" class="mobile-nav-link">
-          <span class="nav-icon"></span>
-          <span data-i18n-key="nav.tours">Tours</span>
-        </a>
-        <div class="nav-separator"></div>
-        <a href="Gallery.html" class="mobile-nav-link">
-          <span class="nav-icon">📸</span>
-          <span data-i18n-key="nav.gallery">Galería</span>
-        </a>
+      <div class="nm-nav-links">
+        <a href="../index.html" class="nm-link-item" data-i18n-key="nav.home"
+          >Inicio</a
+        >
+        <div class="nm-separator"></div>
+        <a href="ToursPage.html" class="nm-link-item" data-i18n-key="nav.tours"
+          >Tours</a
+        >
+        <div class="nm-separator"></div>
+        <a href="Gallery.html" class="nm-link-item" data-i18n-key="nav.gallery"
+          >Galería</a
+        >
       </div>
-    </div>
 
-    <!-- Fixed Bottom CTA (Always visible on mobile) -->
-    <!-- Fixed Bottom CTA (Always visible on mobile) -->
-    <div class="mobile-fixed-cta-container">
-      <div class="mobile-fixed-price-info">
-        <span
-          class="price-label dynamic-i18n"
-          data-i18n-es="Desde"
-          data-i18n-en="From"
-          >Desde</span
-        >
-        <span class="price-value" id="mobile-fixed-price">...</span>
-      </div>
-      <div class="mobile-fixed-btn-wrapper">
-        <a
-          href="#booking"
-          id="mobile-fixed-btn"
-          class="header-cta-primary"
-          style="
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            height: 56px;
-            padding: 0 20px;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            border: none;
-            border-radius: 50px;
-            text-decoration: none;
-            font-family: Inter, sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            color: #ffffff;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-            width: 100%;
-          "
-        >
-          <svg
-            style="width: 18px; height: 18px; fill: #ffffff; flex-shrink: 0"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+      <div class="nm-cta-container">
+        <a href="https://wa.me/573001234567" target="_blank" class="nm-cta-btn">
+          <span data-i18n-key="cta.contact">Contacto</span>
+          <svg viewBox="0 0 24 24">
             <path
-              d="M7 1V3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V4C22 3.44772 21.5523 3 21 3H17V1H15V3H9V1H7ZM4 9V19H20V9H4ZM6 11H8V13H6V11ZM11 11H13V13H11V11ZM16 11H18V13H16V11ZM6 15H8V17H6V15ZM11 15H13V17H11V15ZM16 15H18V17H16V15Z"
+              d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
             />
           </svg>
-          <span>Reservar</span>
         </a>
       </div>
     </div>
 
+    <script src="../js/new-mobile-menu.js"></script>
     <script
       src="../js/jquery-3.5.1.min.dc5e7f18c8.js"
       type="text/javascript"

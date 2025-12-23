@@ -616,35 +616,6 @@ function setupNavbar() {
 }
 
 /**
- * Setup mobile menu
- */
-function setupMobileMenu() {
-  const menuToggle = document.querySelector('.menu-toggle-exclusion');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const menuClose = document.getElementById('mobile-menu-close');
-  
-  if (!menuToggle || !mobileMenu || !menuClose) return;
-  
-  menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  });
-  
-  menuClose.addEventListener('click', () => {
-    mobileMenu.classList.remove('active');
-    document.body.style.overflow = '';
-  });
-  
-  // Close on outside click
-  mobileMenu.addEventListener('click', (e) => {
-    if (e.target === mobileMenu) {
-      mobileMenu.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-}
-
-/**
  * Initialize Footer Animations
  * Staggered entrance based on viewport entry for maximum performance
  */
