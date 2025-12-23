@@ -207,8 +207,10 @@
         <!-- Hero Section -->
         <section class="nt-tours-hero">
           <div class="nt-container">
-            <h1 class="h-2 nt-hero-title">Nuestros Tours</h1>
-            <p class="h-5 nt-hero-subtitle">
+            <h1 class="h-2 nt-hero-title" data-i18n-key="page.tours.title">
+              Nuestros Tours
+            </h1>
+            <p class="h-5 nt-hero-subtitle" data-i18n-key="page.tours.subtitle">
               Descubre aventuras inolvidables en los Andes colombianos
             </p>
           </div>
@@ -240,14 +242,32 @@
                   ></path>
                 </svg>
               </button>
-              <button class="nt-filter-chip active" data-filter="all">
+              <button
+                class="nt-filter-chip active"
+                data-filter="all"
+                data-i18n-key="filter.all"
+              >
                 Todos
               </button>
-              <button class="nt-filter-chip" data-filter="easy">Fácil</button>
-              <button class="nt-filter-chip" data-filter="moderate">
+              <button
+                class="nt-filter-chip"
+                data-filter="easy"
+                data-i18n-key="filter.easy"
+              >
+                Fácil
+              </button>
+              <button
+                class="nt-filter-chip"
+                data-filter="moderate"
+                data-i18n-key="filter.moderate"
+              >
                 Moderado
               </button>
-              <button class="nt-filter-chip" data-filter="difficult">
+              <button
+                class="nt-filter-chip"
+                data-filter="difficult"
+                data-i18n-key="filter.difficult"
+              >
                 Difícil
               </button>
               <div class="nt-select-wrapper">
@@ -267,11 +287,19 @@
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
                 <select class="nt-duration-filter" id="duration-filter">
-                  <option value="all">Duración</option>
-                  <option value="1">1 día</option>
-                  <option value="2-3">2-3 días</option>
-                  <option value="4-5">4-5 días</option>
-                  <option value="6+">6+ días</option>
+                  <option value="all" data-i18n-key="filter.duration">
+                    Duración
+                  </option>
+                  <option value="1" data-i18n-key="filter.days1">1 día</option>
+                  <option value="2-3" data-i18n-key="filter.days23">
+                    2-3 días
+                  </option>
+                  <option value="4-5" data-i18n-key="filter.days45">
+                    4-5 días
+                  </option>
+                  <option value="6+" data-i18n-key="filter.days6p">
+                    6+ días
+                  </option>
                 </select>
               </div>
             </div>

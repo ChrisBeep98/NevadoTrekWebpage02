@@ -545,6 +545,9 @@ function setupLanguageSwitcher() {
       if (window.NT_I18N && window.NT_I18N.apply) {
         window.NT_I18N.apply(lang);
       }
+
+      // Dispatch global event for other listeners
+      window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
     });
   });
 

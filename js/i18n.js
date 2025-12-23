@@ -38,8 +38,8 @@ window.NT_I18N=(function(){
       "faq.a4":"Tu referencia ‘BK-YYYYMMDD-XXX’ te permite consultar estado: pendiente, confirmada, pagada o cancelada.",
       "faq.q5":"¿Qué incluye el tour y qué no?",
       "faq.a5":"Incluye guía certificado y equipo básico; extras como seguros especiales o gastos personales no están incluidos.",
-      "filter.difficulty": "Dificultad:",
-      "filter.duration": "Duración:",
+      "filter.difficulty": "Dificultad",
+      "filter.duration": "Duración",
       "filter.all": "Todos",
       "filter.all_female": "Todas",
       "filter.easy": "Fácil",
@@ -93,8 +93,8 @@ window.NT_I18N=(function(){
       "faq.a4":"Your ‘BK-YYYYMMDD-XXX’ reference lets you check status: pending, confirmed, paid or cancelled.",
       "faq.q5":"What’s included in the tour and what isn’t?",
       "faq.a5":"Includes a certified guide and basic gear; extras like special insurance or personal expenses aren’t included.",
-      "filter.difficulty": "Difficulty:",
-      "filter.duration": "Duration:",
+      "filter.difficulty": "Difficulty",
+      "filter.duration": "Duration",
       "filter.all": "All",
       "filter.all_female": "All",
       "filter.easy": "Easy",
@@ -167,8 +167,26 @@ window.NT_I18N=(function(){
     });
   }
 
+  // Automatic reaction to language change event
+  window.addEventListener('languageChange', function(e) {
+    if (e.detail && e.detail.lang) {
+      apply(e.detail.lang);
+    }
+  });
+
   return {
     dict: dict,
-    apply: apply
+    apply: apply,
+    // Function to set language and dispatch event, to be called from other modules
+    setLanguage: function(lang) {
+      localStorage.setItem('lang', lang);
+      // Update static elements via global i18n
+      if (window.NT_I18N && window.NT_I18N.apply) {
+        window.NT_I18N.apply(lang);
+      }
+
+      // Dispatch global event for other listeners
+      window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+    }
   };
 })();
