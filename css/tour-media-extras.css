@@ -205,7 +205,7 @@
     padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 15px !important; /* Elegant spacing between pills */
+    gap: 8px !important; /* Tighter spacing for a more compact look */
     align-items: flex-end !important;
     position: relative !important;
     width: auto !important;
