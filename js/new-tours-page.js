@@ -422,6 +422,27 @@ function setupFilters() {
       renderTours();
     });
   }
+
+  // Clear Filters Button
+  const clearBtn = document.getElementById('clear-filters-btn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      // 1. Reset State
+      activeFilters = { difficulty: 'all', duration: 'all' };
+
+      // 2. Reset Difficulty Chips
+      document.querySelectorAll('.nt-filter-chip').forEach(c => {
+        c.classList.remove('active');
+        if (c.dataset.filter === 'all') c.classList.add('active');
+      });
+
+      // 3. Reset Duration Select
+      if (durationFilter) durationFilter.value = 'all';
+
+      // 4. Re-render
+      renderTours();
+    });
+  }
 }
 
 /**

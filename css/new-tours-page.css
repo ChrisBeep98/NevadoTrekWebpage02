@@ -129,6 +129,31 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
+.nt-filter-clear {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  min-width: 40px; /* Prevent squashing on mobile */
+  flex-shrink: 0; /* Prevent flex shrinking */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: #ef4444; /* Red border */
+  color: #ef4444; /* Red icon */
+}
+
+.nt-filter-clear:hover {
+  background: #fef2f2;
+  border-color: #dc2626;
+  color: #dc2626;
+  transform: translateY(-1px) rotate(0deg); /* Prevent rotation if any */
+}
+
+.nt-filter-clear svg {
+  width: 18px;
+  height: 18px;
+}
+
 .nt-select-wrapper {
   position: relative;
   display: flex;
