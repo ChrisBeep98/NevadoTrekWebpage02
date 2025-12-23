@@ -454,7 +454,7 @@ function initTOC() {
     tocItems.forEach((item, index) => {
       if (index === activeIndex) {
         item.classList.remove('f-grey');
-        item.style.fontWeight = '700';
+        item.style.fontWeight = '600'; // Match new CSS weight
         item.style.color = '#042e4d';
 
         if (indicator && track) {
@@ -473,7 +473,7 @@ function initTOC() {
         if (!item.classList.contains('f-grey')) {
           item.classList.add('f-grey');
         }
-        item.style.fontWeight = '500';
+        item.style.fontWeight = '400'; // Match new CSS weight
         item.style.color = '';
       }
     });

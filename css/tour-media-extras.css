@@ -246,13 +246,13 @@
 
 /* Navigation Labels - Glass Pills (ALL STATES) */
 .index p.body-medium {
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.06em !important;
-    text-transform: uppercase !important;
+    font-size: 12.5px !important;
+    font-weight: 400 !important; /* Lighter weight as requested (-100 from 500) */
+    letter-spacing: 0.02em !important;
+    text-transform: none !important; /* Lowercase (normal text) */
     color: #475569 !important;
     margin: 0 !important;
-    padding: 8px 18px !important; /* Strict consistent padding */
+    padding: 7px 16px !important; /* Slightly tighter padding for smaller font */
     border-radius: 50px !important;
     cursor: pointer !important;
     position: relative !important;
@@ -275,8 +275,8 @@
 /* Active Section Label - Premium Focus */
 .index p.body-medium:not(.f-grey) {
     color: #042e4d !important;
-    font-weight: 700 !important;
-    background: rgba(255, 255, 255, 0.95) !important; /* Brighter pill */
+    font-weight: 600 !important; /* Lighter weight as requested (-100 from 700) */
+    background: rgba(255, 255, 255, 0.95) !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
     transform: translateX(-8px) !important;
