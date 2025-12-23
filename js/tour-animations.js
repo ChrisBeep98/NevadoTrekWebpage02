@@ -36,8 +36,21 @@
     if (document.body.classList.contains('animations-started')) return;
     document.body.classList.add('animations-started');
 
-    // Add small delay to ensure rendering is completely finished
+    const hideLoader = () => {
+      const loader = document.getElementById('initial-loader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.remove();
+        }, 500); // Wait for transition
+      }
+    };
+
+    // Add small delay to ensure rendering is completely finished and loader is seen
+    // Increased to 600ms (half second + small buffer) for a premium feel
     setTimeout(() => {
+      hideLoader();
+      
       initFloatingNavbar(); // Floating pill navbar effect
       initMobileMenu(); // Mobile menu toggle
       initTitleLetterReveal();

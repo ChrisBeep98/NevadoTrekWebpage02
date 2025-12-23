@@ -21,18 +21,49 @@
     />
     <!-- Critical: Hide hero placeholder before JS loads -->
     <style id="nt-flicker-prevention">
+      /* UNLEASH THE ULTIMATE CLOAK: Hide everything except the preloader on load */
+      body:not(.animations-started)
+        > *:not(#initial-loader):not(script):not(style) {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+
+      /* Hero letters reveal logic (keep for transition consistency) */
       .h-1,
       .tour-subtitle,
       .chip-tour-info-wrapper {
-        opacity: 0 !important;
-        visibility: hidden !important;
+        opacity: 0;
       }
-      /* Allow JS to reveal them */
       .h-1.nt-ready,
       .tour-subtitle.reveal,
       .chip-tour-info-wrapper.reveal {
         opacity: 1 !important;
         visibility: visible !important;
+      }
+
+      /* Loader Animations */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
     <!-- Custom Tour Animations -->
@@ -289,6 +320,47 @@
     />
   </head>
   <body class="body-2">
+    <!-- PRELOADER -->
+    <div
+      id="initial-loader"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #ffffff;
+        z-index: 9999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.5s ease;
+      "
+    >
+      <div class="loader-content" style="text-align: center">
+        <img
+          src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
+          alt="Nevado Trek"
+          style="
+            width: 80px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+          "
+        />
+        <div
+          class="spinner"
+          style="
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0070e0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+          "
+        ></div>
+      </div>
+    </div>
     <!-- ===== NAVBAR FIXED CON EFECTO EXCLUSIÓN ===== -->
     <nav id="navbar-exclusion" class="navbar-fixed" role="banner">
       <div class="navbar-container">
