@@ -667,9 +667,14 @@ h2.style-h1._03.italic {
 #nt-footer-spacer {
   display: block !important;
   width: 100%;
-  height: 2000px !important; /* Force extreme height for testing/robustness */
-  min-height: 94vh;
+  height: 0; /* Default to 0, let JS set it for Tours/Gallery */
   pointer-events: none;
+}
+
+/* FIX: Restore explicit height ONLY for Index (body.body) to ensure full reveal */
+body.body #nt-footer-spacer {
+  height: 2000px !important;
+  min-height: 94vh;
 }
 
 
