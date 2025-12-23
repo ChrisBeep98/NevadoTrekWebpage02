@@ -1,67 +1,103 @@
 /**
  * Index Page Footer Reveal
- * Handles the "Curtain" effect for the footer on the index page
- * The main content scrolls OVER the fixed footer, revealing it at the end
+ * Handles the "Curtain" effect where content slides over the footer.
+ * Optimized with requestAnimationFrame and ResizeObserver.
  */
 
 (function() {
-  // Run immediately on DOMContentLoaded since footer is now inlined
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFooterReveal);
-  } else {
-    // DOM already loaded, run now
-    initFooterReveal();
-  }
-
   function initFooterReveal() {
-    const footerPlaceholder = document.getElementById('footer-placeholder');
-    
-    if (!footerPlaceholder) {
-      console.warn('Footer placeholder not found');
+    const wrapper = document.getElementById('main-content-wrapper');
+    const footer = document.getElementById('nt-tours-footer-reveal');
+    const spacer = document.getElementById('nt-footer-spacer');
+
+    if (!wrapper || !footer || !spacer) {
+      console.warn('Index Footer Reveal elements not found');
       return;
     }
 
-    // The main content wrapper - everything except the footer
-    const mainContainer = document.getElementById('main-content-wrapper');
+    // 1. Initial State
+    console.log('Index Footer Reveal: Initializing robustness v5 (Extreme)...');
     
-    if (!mainContainer) {
-      console.warn('Main content wrapper not found for curtain reveal');
-      return;
-    }
+    // Set a very safe initial height to ensure scrollability
+    spacer.style.height = '1200px'; 
+    spacer.style.display = 'block';
 
-    // CRITICAL: Style the main content container
-    // It must have a background color and be ABOVE the footer
-    mainContainer.style.position = 'relative';
-    mainContainer.style.zIndex = '10'; // Above the footer
-    mainContainer.style.backgroundColor = '#ffffff'; // Must be opaque
+    wrapper.style.position = 'relative';
+    wrapper.style.zIndex = '100';
+    wrapper.style.backgroundColor = '#ffffff'; 
+    
+    footer.style.position = 'fixed';
+    footer.style.bottom = '0';
+    footer.style.left = '0';
+    footer.style.width = '100%';
+    footer.style.zIndex = '1';
+    footer.style.visibility = 'visible'; 
 
-    // Style the footer: fixed at bottom, BEHIND main content
-    footerPlaceholder.style.position = 'fixed';
-    footerPlaceholder.style.bottom = '0';
-    footerPlaceholder.style.left = '0';
-    footerPlaceholder.style.width = '100%';
-    footerPlaceholder.style.zIndex = '1'; // Behind main content
+    // 2. Height calculation logic
+    let ticking = false;
 
-    // Function to update margin-bottom based on footer height
-    // This creates space for the footer to be revealed
-    const updateMargin = () => {
-      const footerHeight = footerPlaceholder.offsetHeight;
-      mainContainer.style.marginBottom = footerHeight + 'px';
+    const updateFooterHeight = () => {
+      if (ticking) return;
+      ticking = true;
+
+      const scrollH = footer.scrollHeight;
+      const offsetH = footer.offsetHeight;
+      const rectH = footer.getBoundingClientRect().height;
+      
+      // Use the absolute maximum height 
+      let maxHeight = Math.max(scrollH, offsetH, rectH, 1200);
+      
+      // Sync spacer height
+      spacer.style.height = maxHeight + 'px';
+      spacer.style.display = 'block';
+
+      // Clear wrapper padding just in case
+      wrapper.style.paddingBottom = '0px';
+
+      console.log('Index Footer Reveal: Height updated via spacer to', maxHeight, 'px');
+      
+      ticking = false;
     };
 
-    // Initial update with small delay to ensure render
-    setTimeout(updateMargin, 100);
-    setTimeout(updateMargin, 500); // Double-check after longer delay
+    const requestUpdate = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateFooterHeight);
+        ticking = true;
+      }
+    };
 
-    // Update on resize
-    window.addEventListener('resize', updateMargin);
-    
-    // Use ResizeObserver for more robust height tracking
-    if (typeof ResizeObserver !== 'undefined') {
-      const ro = new ResizeObserver(() => {
-        updateMargin();
-      });
-      ro.observe(footerPlaceholder);
+    // 3. Observers
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(requestUpdate);
+      ro.observe(footer);
     }
+    
+    if (window.MutationObserver) {
+      const mo = new MutationObserver(requestUpdate);
+      mo.observe(footer, { childList: true, subtree: true, attributes: true });
+    }
+
+    // 4. Repeated triggers
+    updateFooterHeight();
+    
+    // Many retries because Webflow/GSAP might change layout later
+    [100, 300, 500, 800, 1200, 2000, 3000, 5000].forEach(delay => {
+      setTimeout(updateFooterHeight, delay);
+    });
+
+    window.addEventListener('resize', requestUpdate);
+    window.addEventListener('load', updateFooterHeight);
+    window.addEventListener('scroll', updateFooterHeight, { passive: true });
+
+    // Handle i18n
+    window.addEventListener('languageChange', () => {
+      setTimeout(updateFooterHeight, 200);
+    });
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initFooterReveal();
+  } else {
+    document.addEventListener('DOMContentLoaded', initFooterReveal);
   }
 })();

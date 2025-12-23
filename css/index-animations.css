@@ -40,6 +40,7 @@
    SAFEGUARD: Prevent residual animation/hiding on split text 
    Since we removed the Webflow trigger, we must ensure any split spans stay visible
 */
+/* Safeguard: Ensure split spans stay visible */
 .split-lines_large span, 
 .split-lines_large .word-span, 
 .split-lines_large .letter-span {
@@ -642,3 +643,49 @@ h2.style-h1._03.italic {
   max-width: none !important;
   white-space: nowrap !important;
 }
+
+/* ========================================
+   FOOTER REVEAL (CURTAIN EFFECT)
+   ======================================== */
+#main-content-wrapper {
+  background-color: #ffffff; /* Must be opaque to hide footer */
+  position: relative;
+  z-index: 100; /* Increased to stay above footer and most content */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  display: flow-root;
+}
+
+#nt-tours-footer-reveal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  visibility: visible !important; /* Forced visible for reveal */
+}
+
+#nt-footer-spacer {
+  display: block !important;
+  width: 100%;
+  height: 2000px !important; /* Force extreme height for testing/robustness */
+  min-height: 94vh;
+  pointer-events: none;
+}
+
+
+/* Fix for mobile where reveal might look jittery */
+@media (max-width: 767px) {
+  #nt-tours-footer-reveal {
+    position: relative;
+    visibility: visible;
+    z-index: auto;
+  }
+  #main-content-wrapper {
+    padding-bottom: 0 !important;
+    box-shadow: none;
+  }
+  #nt-footer-spacer {
+    display: none;
+  }
+}
+

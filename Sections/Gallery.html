@@ -403,42 +403,158 @@
       </div>
     </nav>
 
-    <!-- MAIN CONTENT -->
-    <main
-      id="gallery-page-container"
-      style="
-        position: relative;
-        z-index: 10;
-        background-color: #ffffff;
-        margin-bottom: 0px;
-        width: 100%;
-      "
-    >
-      <!-- HEADER SECTION -->
-      <section class="gallery-page-header">
-        <div class="header-content">
-          <h1 class="h-2 page-title" data-i18n-key="page.gallery.title">
-            Galería
-          </h1>
-          <p class="h-5 page-subtitle" data-i18n-key="page.gallery.subtitle">
-            Momentos inolvidables en los Andes colombianos
-          </p>
-        </div>
-      </section>
+    <!-- REVEAL WRAPPER START -->
+    <div id="nt-tours-reveal-wrapper">
+      <!-- MAIN CONTENT -->
+      <main
+        id="gallery-page-container"
+        style="
+          position: relative;
+          z-index: 10;
+          background-color: #ffffff;
+          margin-bottom: 0px;
+          width: 100%;
+        "
+      >
+        <!-- HEADER SECTION -->
+        <section class="gallery-page-header">
+          <div class="header-content">
+            <h1 class="h-2 page-title" data-i18n-key="page.gallery.title">
+              Galería
+            </h1>
+            <p class="h-5 page-subtitle" data-i18n-key="page.gallery.subtitle">
+              Momentos inolvidables en los Andes colombianos
+            </p>
+          </div>
+        </section>
 
-      <!-- GALLERY GRID SECTION -->
-      <section class="gallery-grid-section">
-        <div class="gallery-grid" id="gallery-grid">
-          <!-- Dynamic Content Loaded by JS -->
-        </div>
-      </section>
-    </main>
+        <!-- GALLERY GRID SECTION -->
+        <section class="gallery-grid-section">
+          <div class="gallery-grid" id="gallery-grid">
+            <!-- Dynamic Content Loaded by JS -->
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- REVEAL WRAPPER END -->
 
-    <!-- FOOTER PLACEHOLDER (Outside Main for Sticky Reveal) -->
-    <div
-      id="footer-placeholder"
-      style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: -1"
-    ></div>
+    <!-- Spacer for Footer Reveal -->
+    <div id="nt-footer-spacer" style="pointer-events: none"></div>
+
+    <!-- FOOTER -->
+    <footer class="nt-footer-clean" id="nt-tours-footer-reveal">
+      <div class="nt-footer-inner">
+        <!-- Top Row: Logo + Inspiring Message + Nav -->
+        <div class="nt-footer-top">
+          <div class="nt-footer-brand-section">
+            <img
+              src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
+              alt="Nevado Trek"
+              class="nt-footer-logo-main"
+            />
+            <h3 class="nt-footer-tagline" data-i18n-key="footer.tagline">
+              Donde la tierra toca el cielo y el silencio se vuelve eterno.
+            </h3>
+          </div>
+
+          <div class="nt-footer-nav-wrapper">
+            <div class="nt-footer-nav-col">
+              <h4 data-i18n-key="footer.explore">Explorar</h4>
+              <a href="../index.html" data-i18n-key="nav.home">Inicio</a>
+              <a href="ToursPage.html" data-i18n-key="nav.tours">Tours</a>
+              <a href="Gallery.html" data-i18n-key="nav.gallery">Galería</a>
+            </div>
+            <div class="nt-footer-nav-col">
+              <h4 data-i18n-key="footer.social">Social</h4>
+              <div class="nt-footer-social-icons">
+                <a
+                  href="https://instagram.com/nevadotrek"
+                  target="_blank"
+                  aria-label="Instagram"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect
+                      x="2"
+                      y="2"
+                      width="20"
+                      height="20"
+                      rx="5"
+                      ry="5"
+                    ></rect>
+                    <path
+                      d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                    ></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+                <a
+                  href="https://facebook.com/nevadotrek"
+                  target="_blank"
+                  aria-label="Facebook"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                    ></path>
+                  </svg>
+                </a>
+                <a href="mailto:info@nevadotrek.com" aria-label="Email">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                    ></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Giant Text -->
+        <div class="nt-footer-giant">
+          <div class="nt-footer-separator nt-footer-separator--top"></div>
+          <span class="nt-text-big">NEVADO TREK</span>
+          <div class="nt-footer-separator nt-footer-separator--bottom"></div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="nt-footer-bottom">
+          <div class="nt-footer-copyright">
+            <span data-i18n-key="footer.rights"
+              >&copy; 2025 Nevado Trek. Todos los derechos reservados.</span
+            >
+          </div>
+          <div class="nt-footer-legal">
+            <a href="#" data-i18n-key="footer.privacy"
+              >Política de Privacidad</a
+            >
+            <a href="#" data-i18n-key="footer.terms">Términos y Condiciones</a>
+          </div>
+        </div>
+      </div>
+    </footer>
 
     <!-- ===== MOBILE MENU OVERLAY ===== -->
     <div class="mobile-menu-overlay" id="mobile-menu">

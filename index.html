@@ -221,7 +221,7 @@
 
   <body class="body">
     <!-- MAIN CONTENT WRAPPER (for curtain reveal effect) -->
-    <div id="main-content-wrapper" style="background-color: #ffffff; position: relative; z-index: 10;">
+    <div id="main-content-wrapper" style="background-color: #ffffff; position: relative; z-index: 100; display: flow-root; min-height: 100vh;">
     <!-- ===== NAVBAR FIXED CON EFECTO EXCLUSIÓN ===== -->
     <nav id="navbar-exclusion" class="navbar-fixed" role="banner">
       <div class="navbar-container">
@@ -3839,58 +3839,126 @@
             </div>
           </div>
         </div>
-      <!-- FINAL FOOTER (Static & Robust) -->
-      <div id="footer-container-final" style="position: relative; z-index: 20; background-color: #fff; width: 100%; clear: both;">
-        <section id="about" class="section is--footer antigravity-footer" style="padding-top: 50px;">
-          <div class="aerokit_common-container _50px-padding">
-            <div class="footer_wrap">
-              <!-- Top Row: Links & Meta -->
-              <div class="footer_top-row">
-                <div class="footer_links-col">
-                  <span class="footer_label" data-i18n-key="footer.explore">Explorar</span>
-                  <div class="footer_links-grid">
-                    <a href="index.html" class="footer_link-premium" data-i18n-key="nav.home" style="pointer-events: auto">Inicio</a>
 
-                    <a href="Sections/Gallery.html" class="footer_link-premium" data-i18n-key="nav.gallery" style="pointer-events: auto">Galería</a>
-                  </div>
-                </div>
+    </main>
+    </div><!-- End #main-content-wrapper -->
 
-                <div class="footer_links-col">
-                  <span class="footer_label" data-i18n-key="footer.social">Social</span>
-                  <div class="footer_links-grid">
-                    <a href="https://instagram.com/nevadotrek" target="_blank" class="footer_link-premium" style="pointer-events: auto" data-i18n-key="footer.instagram">Instagram</a>
-                    <a href="https://facebook.com/nevadotrek" target="_blank" class="footer_link-premium" style="pointer-events: auto" data-i18n-key="footer.facebook">Facebook</a>
-                    <a href="mailto:info@nevadotrek.com" class="footer_link-premium" style="pointer-events: auto" data-i18n-key="footer.email">Email</a>
-                  </div>
-                </div>
+    <div id="nt-footer-spacer" style="pointer-events: none; height: 2000px !important; display: block !important;"></div>
 
-                <div class="footer_brand-col">
-                  <img src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg" loading="lazy" alt="Logo" class="footer_logo-small" />
-                  <p class="footer_tagline" data-i18n-key="mg.last">Donde el frailejón guarda silencio...</p>
-                </div>
-              </div>
+    <!-- FOOTER -->
+    <footer class="nt-footer-clean" id="nt-tours-footer-reveal">
+      <div class="nt-footer-inner">
+        <!-- Top Row: Logo + Inspiring Message + Nav -->
+        <div class="nt-footer-top">
+          <div class="nt-footer-brand-section">
+            <img
+              src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
+              alt="Nevado Trek"
+              class="nt-footer-logo-main"
+            />
+            <h3 class="nt-footer-tagline" data-i18n-key="footer.tagline">
+              Donde la tierra toca el cielo y el silencio se vuelve eterno.
+            </h3>
+          </div>
 
-              <!-- Middle Row: Giant Display Text -->
-              <div class="footer_middle-row">
-                <h2 class="footer_giant-text">NEVADO TREK</h2>
-              </div>
-
-              <!-- Bottom Row: Minor Details -->
-              <div class="footer_bottom-row">
-                <div class="footer_legal">
-                  <span data-i18n-key="footer.copy">© 2025 Nevado Trek</span>
-                  <span class="footer_bullet">&bull;</span>
-                  <span data-i18n-key="footer.madeby">Made by Christian Sandoval</span>
-                </div>
-                <div class="footer_lang-toggle">
-                  <span data-i18n-key="footer.lang">Esp / Eng</span>
-                </div>
+          <div class="nt-footer-nav-wrapper">
+            <div class="nt-footer-nav-col">
+              <h4 data-i18n-key="footer.explore">Explorar</h4>
+              <a href="index.html" data-i18n-key="nav.home">Inicio</a>
+              <a href="Sections/ToursPage.html" data-i18n-key="nav.tours">Tours</a>
+              <a href="Sections/Gallery.html" data-i18n-key="nav.gallery">Galería</a>
+            </div>
+            <div class="nt-footer-nav-col">
+              <h4 data-i18n-key="footer.social">Social</h4>
+              <div class="nt-footer-social-icons">
+                <a
+                  href="https://instagram.com/nevadotrek"
+                  target="_blank"
+                  aria-label="Instagram"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect
+                      x="2"
+                      y="2"
+                      width="20"
+                      height="20"
+                      rx="5"
+                      ry="5"
+                    ></rect>
+                    <path
+                      d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                    ></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+                <a
+                  href="https://facebook.com/nevadotrek"
+                  target="_blank"
+                  aria-label="Facebook"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                    ></path>
+                  </svg>
+                </a>
+                <a href="mailto:info@nevadotrek.com" aria-label="Email">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                    ></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+
+        <!-- Giant Text -->
+        <div class="nt-footer-giant">
+          <div class="nt-footer-separator nt-footer-separator--top"></div>
+          <span class="nt-text-big">NEVADO TREK</span>
+          <div class="nt-footer-separator nt-footer-separator--bottom"></div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="nt-footer-bottom">
+          <div class="nt-footer-copyright">
+            <span data-i18n-key="footer.rights"
+              >&copy; 2025 Nevado Trek. Todos los derechos reservados.</span
+            >
+          </div>
+          <div class="nt-footer-legal">
+            <a href="#" data-i18n-key="footer.privacy"
+              >Política de Privacidad</a
+            >
+            <a href="#" data-i18n-key="footer.terms">Términos y Condiciones</a>
+          </div>
+        </div>
       </div>
-    </main>
+    </footer>
     <script src="js/i18n.js"></script>
     <script>
       (function () {
@@ -4457,72 +4525,10 @@
     </script>
     <script src="js/optimized-carousel.js" type="text/javascript"></script>
     
-    </div><!-- End #main-content-wrapper -->
-    
-    <!-- FOOTER (Inlined for CORS compatibility) -->
-    <div id="footer-placeholder" style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: -1;">
-      <section id="about" class="section is--footer antigravity-footer">
-        <div class="aerokit_common-container _50px-padding">
-          <div class="footer_wrap">
-            <!-- Top Row: Links & Meta -->
-            <div class="footer_top-row">
-              <div class="footer_links-col" style="opacity: 1 !important;">
-                <span class="footer_label" data-i18n-key="footer.explore" style="opacity: 1 !important;">Explorar</span>
-                <div class="footer_links-grid">
-                  <a href="index.html" class="footer_link-premium" data-i18n-key="nav.home" style="pointer-events: auto; opacity: 1 !important;">Inicio</a>
 
-                  <a href="Sections/Gallery.html" class="footer_link-premium" data-i18n-key="nav.gallery" style="pointer-events: auto; opacity: 1 !important;">Galería</a>
-                </div>
-              </div>
-
-              <div class="footer_links-col" style="opacity: 1 !important;">
-                <span class="footer_label" data-i18n-key="footer.social" style="opacity: 1 !important;">Social</span>
-                <div class="footer_links-grid">
-                  <a href="https://instagram.com/nevadotrek" target="_blank" class="footer_link-premium" style="pointer-events: auto; opacity: 1 !important;" data-i18n-key="footer.instagram">Instagram</a>
-                  <a href="https://facebook.com/nevadotrek" target="_blank" class="footer_link-premium" style="pointer-events: auto; opacity: 1 !important;" data-i18n-key="footer.facebook">Facebook</a>
-                  <a href="mailto:info@nevadotrek.com" class="footer_link-premium" style="pointer-events: auto; opacity: 1 !important;" data-i18n-key="footer.email">Email</a>
-                </div>
-              </div>
-
-              <div class="footer_brand-col" style="opacity: 1 !important;">
-                <img
-                  src="https://cdn.prod.website-files.com/68cb38dfbae5b4c56edac13a/68cb5ce8c1d01041b785dbbc_68718d175d5c3bac2cb5bb76_mainLogo.6fc859d138dc2b4452694a44bdc7e57f%201.svg"
-                  loading="lazy"
-                  alt="Logo"
-                  class="footer_logo-small"
-                />
-                <p class="footer_tagline" data-i18n-key="mg.last" style="opacity: 1 !important;">
-                  Donde el frailejón guarda silencio...
-                </p>
-              </div>
-            </div>
-
-            <!-- Middle Row: Giant Display Text -->
-            <div class="footer_middle-row">
-              <h2 class="footer_giant-text" style="opacity: 1 !important;">NEVADO TREK</h2>
-            </div>
-
-            <!-- Bottom Row: Minor Details -->
-            <div class="footer_bottom-row">
-              <div class="footer_legal" style="opacity: 1 !important;">
-                <span data-i18n-key="footer.copy">© 2025 Nevado Trek</span>
-                <span class="footer_bullet">&bull;</span>
-                <span data-i18n-key="footer.madeby">Made by Christian Sandoval</span>
-              </div>
-              <div class="footer_lang-toggle" style="opacity: 1 !important;">
-                <span data-i18n-key="footer.lang">Esp / Eng</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-    
     <!-- CORE API CLIENT (Optimized) - Must act before home-loader -->
     <script src="js/api-client.js"></script>
-
-    <!-- Footer Reveal Script (REDUNDANT ON HOME - REMOVED) -->
-    <!-- <script src="js/tours-page-footer-reveal.js"></script> -->
+    <script src="js/index-footer-reveal.js"></script>
   </body>
 </html>
 
