@@ -50,17 +50,17 @@
     /* Center Content Layout */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start; /* Changed from space-between to control spacing manually */
     padding: 2em;
     
     /* Initial State for GSAP Animation */
-    /* Clip path circle starting at top right (0% radius) */
     clip-path: circle(0% at 100% 0%); 
     -webkit-clip-path: circle(0% at 100% 0%);
     visibility: hidden;
     
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    border-bottom-left-radius: 40px;
+    /* Stronger Shadow & No Radius */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border-bottom-left-radius: 0;
 }
 
 /* 3. Header inside Menu */
@@ -70,6 +70,7 @@
     align-items: center;
     width: 100%;
     margin-bottom: 2em;
+    flex: 0 0 auto;
 }
 
 .nm-title {
@@ -98,7 +99,7 @@
 
 .nm-close-btn:hover {
     background: #e2e8f0;
-    transform: rotate(90deg) scale(1.1) !important; /* !important to override GSAP state if needed on hover */
+    transform: rotate(90deg) scale(1.1) !important; 
 }
 
 .nm-close-btn svg {
@@ -112,11 +113,15 @@
 .nm-nav-links {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
     justify-content: center;
     align-items: center;
     gap: 1.5em;
     width: 100%;
+    
+    /* Spacing Logic: Push down from header, but stay slightly above center */
+    margin-top: auto;
+    /* Removed margin-bottom to allow equal distribution with cta */
+    flex-grow: 0; 
 }
 
 .nm-link-item {
@@ -149,6 +154,9 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    
+    /* Spacing Logic: Push up from bottom and down from links equally */
+    margin-bottom: auto;
     margin-top: auto;
     opacity: 0;
     transform: translateY(20px);
