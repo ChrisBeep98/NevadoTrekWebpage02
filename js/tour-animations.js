@@ -693,6 +693,7 @@
     titleElement.innerHTML = '';
     
     // Reveal the parent element now that letters are about to be created
+    titleElement.classList.add('nt-ready'); // Critical for flicker prevention override
     titleElement.style.opacity = '1'; /* Critical: Make parent visible so children can be seen */
     
     // Split text into letters and wrap each in a span
