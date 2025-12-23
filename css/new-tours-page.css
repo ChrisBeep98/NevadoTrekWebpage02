@@ -337,16 +337,18 @@
   stroke: white; /* Line icon */
 }
 
-/* 2. Info Chip (Glass/Blur - REMOVED BLUR FOR PERFORMANCE) */
+/* 2. Info Chip (Heavy Blur / Glass Style) */
 .nt-badge--info {
-  background-color: rgba(40, 53, 75, 0.8); /* Solid-ish color instead of blur */
-  border: .6px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.25); /* Transparent dark background */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Crisp thin border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle depth */
+  backdrop-filter: blur(16px); /* "Un montón de blur" */
+  -webkit-backdrop-filter: blur(16px);
+  color: white;
 }
 
 .nt-badge--info svg {
-  /* No forced fill/stroke here to allow inline SVG attributes to control it */
-  color: white; 
+  color: white;
 }
 
 /* Arrow en esquina superior derecha */
