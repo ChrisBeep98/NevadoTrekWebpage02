@@ -138,20 +138,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-color: #ef4444; /* Red border */
-  color: #ef4444; /* Red icon */
+  border-color: var(--color-border); /* Match standard chip */
+  color: var(--color-text-light); /* Subtle icon color */
 }
 
 .nt-filter-clear:hover {
-  background: #fef2f2;
-  border-color: #dc2626;
-  color: #dc2626;
-  transform: translateY(-1px) rotate(0deg); /* Prevent rotation if any */
+  background: #eff6ff; /* Match standard hover (Blue) */
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+  transform: translateY(-1px) rotate(0deg);
 }
 
 .nt-filter-clear svg {
   width: 18px;
   height: 18px;
+  stroke-width: 2.5px; /* Make it slightly bolder like text */
 }
 
 .nt-select-wrapper {
