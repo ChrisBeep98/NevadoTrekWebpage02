@@ -130,6 +130,22 @@
   will-change: transform, opacity;
 }
 
+.lang-dropdown.open .lang-options,
+.lang-dropdown.show .lang-options,
+.lang-options.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Force close override to beat hover state */
+.lang-options.force-close {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  display: none !important;
+  pointer-events: none !important;
+}  
 .nt-select-icon {
   position: absolute;
   left: 1rem;

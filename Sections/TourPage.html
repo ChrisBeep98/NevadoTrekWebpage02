@@ -1933,6 +1933,16 @@
           options.forEach((option) => {
             option.addEventListener("click", (e) => {
               e.stopPropagation(); // prevent bubbling to document click
+
+              // FORCE CLOSE mechanism
+              if (langOptions) {
+                langOptions.classList.add("force-close");
+                langOptions.classList.remove("show");
+                setTimeout(() => {
+                  langOptions.classList.remove("force-close");
+                }, 300);
+              }
+
               const lang = option.getAttribute("data-lang");
               const flag = option.getAttribute("data-flag");
 
@@ -1948,9 +1958,6 @@
               window.dispatchEvent(
                 new CustomEvent("languageChange", { detail: { lang } })
               );
-
-              // Close dropdown
-              langOptions.classList.remove("show");
             });
           });
         }
