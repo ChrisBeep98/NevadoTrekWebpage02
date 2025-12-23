@@ -91,6 +91,24 @@ export const apiService = {
   },
 
   /**
+   * Universal price formatter based on language
+   * @param {Object|number} priceData - Either a number (assumed COP) or {priceCOP, priceUSD}
+   * @param {string} lang - 'es' or 'en'
+   */
+  formatPriceByLang(priceData, lang = 'es') {
+    const isUSD = lang === 'en';
+    let price = 0;
+
+    if (typeof priceData === 'object' && priceData !== null) {
+      price = isUSD ? (priceData.priceUSD || 0) : (priceData.priceCOP || 0);
+    } else {
+      price = priceData || 0;
+    }
+
+    return isUSD ? this.formatPriceUSD(price) : this.formatPrice(price);
+  },
+
+  /**
    * Helper to get the next available date from a list of departures for a specific tour
    */
   getNextDepartureDate(tourId, departures) {

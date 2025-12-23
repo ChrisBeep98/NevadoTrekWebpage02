@@ -141,6 +141,30 @@ window.NT_I18N=(function(){
         p.textContent = v.replace(/MASL/g, "MSNM").replace(/Day(s)?/gi, "Día$1");
       }
     });
+
+    // 4. Force Price Localization (COP/USD)
+    // Elements with data-tour-price-cop and data-tour-price-usd will be updated
+    document.querySelectorAll('[data-tour-price-cop]').forEach(el => {
+      const cop = el.getAttribute('data-tour-price-cop');
+      const usd = el.getAttribute('data-tour-price-usd');
+      const prefix = el.getAttribute('data-price-prefix') || ''; // e.g., "Desde "
+
+      if (l === 'en' && usd) {
+        const formatted = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 0
+        }).format(usd);
+        el.textContent = prefix + formatted;
+      } else if (cop) {
+        const formatted = new Intl.NumberFormat('es-CO', {
+          style: 'currency',
+          currency: 'COP',
+          minimumFractionDigits: 0
+        }).format(cop);
+        el.textContent = prefix + formatted;
+      }
+    });
   }
 
   return {

@@ -83,8 +83,47 @@ window.nevadoAPI = {
         }
     }
     
-    // Fallback for non-Cloudinary images (e.g., direct blobs or external sources)
-    // We can't resize them easily without a proxy, but we can ensure they load gracefully
+    // Fallback for non-Cloudinary images
     return url;
+  },
+
+  /**
+   * Helper to format price in COP
+   */
+  formatPrice(price) {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price);
+  },
+
+  /**
+   * Helper to format price in USD
+   */
+  formatPriceUSD(price) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price);
+  },
+
+  /**
+   * Universal price formatter based on language
+   */
+  formatPriceByLang(priceData, lang = 'es') {
+    const isUSD = lang === 'en';
+    let price = 0;
+
+    if (typeof priceData === 'object' && priceData !== null) {
+      price = isUSD ? (priceData.priceUSD || 0) : (priceData.priceCOP || 0);
+    } else {
+      price = priceData || 0;
+    }
+
+    return isUSD ? this.formatPriceUSD(price) : this.formatPrice(price);
   }
 };

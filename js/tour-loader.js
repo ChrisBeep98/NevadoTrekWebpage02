@@ -198,11 +198,8 @@ function renderDates(tour, departures) {
 
     // Get price
     const price = dateObj.price || tour.price || 0;
-    const formattedPrice = new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0
-    }).format(price);
+    const priceData = typeof price === 'object' ? price : { priceCOP: price, priceUSD: Math.round(price / 4000) }; // Fallback for simple numbers
+    const formattedPrice = apiService.formatPriceByLang(priceData, currentLang);
 
     // Status color
     let statusColor = available <= 3 ? '#f59e0b' : '#10b981';
@@ -837,13 +834,9 @@ function renderPricing(tour) {
       tier.priceCOP < min.priceCOP ? tier : min
     , tour.pricingTiers[0]);
 
-    const formattedPrice = new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      maximumFractionDigits: 0
-    }).format(lowestPrice.priceCOP);
-
-    priceEl.textContent = `Desde ${formattedPrice}`;
+    const formattedPrice = apiService.formatPriceByLang(lowestPrice, currentLang);
+    const prefix = currentLang === 'en' ? 'From ' : 'Desde ';
+    priceEl.textContent = `${prefix}${formattedPrice}`;
   }
 
   // Update the "Reservar Tour" button link

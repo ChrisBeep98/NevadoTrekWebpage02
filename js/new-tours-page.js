@@ -96,10 +96,10 @@ async function loadToursFromAPI() {
           es: t.altitude?.es || 'N/A',
           en: t.altitude?.en || 'N/A'
         },
-        price: (t.pricingTiers && t.pricingTiers.length > 0
-          ? t.pricingTiers[t.pricingTiers.length - 1].priceCOP
-          : 0).toLocaleString('es-CO'),
-        currency: "COP",
+        pricing: {
+          priceCOP: t.pricingTiers?.length > 0 ? t.pricingTiers[t.pricingTiers.length - 1].priceCOP : 0,
+          priceUSD: t.pricingTiers?.length > 0 ? t.pricingTiers[t.pricingTiers.length - 1].priceUSD : 0
+        },
         difficulty: (function(d) {
           const lower = (d || '').toLowerCase();
           if (['easy', 'facil', 'baja'].includes(lower)) return 'easy';
@@ -376,7 +376,7 @@ function createTourCard(tour) {
         <div class="nt-card-content">
           <div class="nt-card-header">
             <h3 class="nt-card-title">${title}</h3>
-            <span class="nt-card-price">$ ${tour.price}</span>
+            <span class="nt-card-price">${window.nevadoAPI.formatPriceByLang(tour.pricing, currentLang)}</span>
           </div>
           <p class="nt-card-description">${description}</p>
         </div>
