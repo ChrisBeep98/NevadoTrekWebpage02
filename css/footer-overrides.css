@@ -34,7 +34,7 @@
   left: 0;
   width: 100%;
   z-index: 1; /* Behind main content (z-index 100) */
-  min-height: 94vh; /* Default height */
+  min-height: auto; /* Allow natural content height */
   display: flex;
   flex-direction: column;
   visibility: visible; /* Forced visible to ensure reveal works immediately */

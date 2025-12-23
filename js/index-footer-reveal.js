@@ -45,7 +45,7 @@
       const rectH = footer.getBoundingClientRect().height;
       
       // Use the absolute maximum height 
-      let maxHeight = Math.max(scrollH, offsetH, rectH, 1200);
+      let maxHeight = Math.max(scrollH, offsetH, rectH);
       
       // Sync spacer height
       spacer.style.height = maxHeight + 'px';

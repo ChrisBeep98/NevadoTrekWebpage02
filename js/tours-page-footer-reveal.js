@@ -27,14 +27,26 @@
     footer.style.zIndex = '1';
 
     // 2. Optimized Height Handling
-    let ticking = false;
-
     const updateFooterMargin = () => {
-      const footerHeight = footer.offsetHeight;
+      if (ticking) return;
+      ticking = true;
+
+      // Use getBoundingClientRect for the most accurate visual height
+      const rect = footer.getBoundingClientRect();
+      const footerHeight = Math.ceil(rect.height);
+
       if (footerHeight > 0) {
-        // Use spacer height for better cross-browser reliability
+        // Sync spacer height identically 
         spacer.style.height = footerHeight + 'px';
-        // Ensure footer is visible now that we have space
+        spacer.style.display = 'block';
+        spacer.style.margin = '0';
+        spacer.style.padding = '0';
+        
+        // Safety: Ensure wrapper doesn't have extra bottom space
+        wrapper.style.marginBottom = '0px';
+        wrapper.style.paddingBottom = '0px';
+        
+        // Ensure footer is visible
         footer.style.visibility = 'visible';
       }
       ticking = false;
@@ -47,20 +59,15 @@
       }
     };
 
-    // Initial trigger
+    // Initial triggers
     updateFooterMargin();
-    // Second trigger after a delay to account for potential image/font loads
-    setTimeout(updateFooterMargin, 500);
-    setTimeout(updateFooterMargin, 2000);
+    [500, 1000, 2000, 3000].forEach(delay => setTimeout(updateFooterMargin, delay));
 
     // 3. Robust Observers
-    // ResizeObserver tracks height changes (e.g., dynamic content or mobile resize)
     if (window.ResizeObserver) {
-      const ro = new ResizeObserver(() => {
-        requestUpdate();
-      });
+      const ro = new ResizeObserver(requestUpdate);
       ro.observe(footer);
-      ro.observe(document.body); // Also watch body for general layout shifts
+      // Removed body observer to avoid potential feedback loops with spacer
     }
 
     window.addEventListener('resize', requestUpdate);

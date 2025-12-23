@@ -159,7 +159,7 @@
    TOURS GRID SECTION
    ======================================== */
 .nt-tours-grid-section {
-  padding: var(--spacing-3xl) 0;
+  padding: var(--spacing-3xl) 0 0 0; /* No bottom padding, handled by footer spacer */
 }
 
 .nt-tours-grid {

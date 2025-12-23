@@ -321,7 +321,7 @@ html, body {
    =================================== */
 
 .gallery-grid-section {
-  padding: 2em 5em 5em 5em;
+  padding: 2em 5em 0 5em; /* No bottom padding, handled by footer spacer */
   min-height: 60vh;
 }
 
