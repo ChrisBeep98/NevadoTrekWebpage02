@@ -19,6 +19,22 @@
       rel="stylesheet"
       type="text/css"
     />
+    <!-- Critical: Hide hero placeholder before JS loads -->
+    <style id="nt-flicker-prevention">
+      .h-1,
+      .tour-subtitle,
+      .chip-tour-info-wrapper {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+      /* Allow JS to reveal them */
+      .h-1.nt-ready,
+      .tour-subtitle.reveal,
+      .chip-tour-info-wrapper.reveal {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    </style>
     <!-- Custom Tour Animations -->
     <link href="../css/tour-animations.css" rel="stylesheet" type="text/css" />
     <!-- Footer Overrides & Hover Effects -->

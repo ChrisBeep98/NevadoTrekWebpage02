@@ -364,17 +364,11 @@
         height: 40px;
     }
 }
-/* Initial Hidden State for Flicker Prevention */
-.h-1, 
-.tour-subtitle, 
-.chip-tour-info-wrapper {
-    opacity: 0;
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-/* Revelation Class for Subtitle/Chips */
+/* Revelation Class for Subtitle/Chips/Title */
+.h-1.nt-ready,
 .tour-subtitle.reveal, 
 .chip-tour-info-wrapper.reveal {
     opacity: 1 !important;
+    visibility: visible !important;
     transform: translateY(0) !important;
 }
