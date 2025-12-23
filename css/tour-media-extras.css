@@ -96,12 +96,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 0.5rem; /* Minimized padding */
 }
 
 .nt-lightbox-img {
-    max-width: 100%;
-    max-height: 90vh;
+    max-width: 98%; /* Maximize horizontal space */
+    max-height: 95vh; /* Maximize vertical space */
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
