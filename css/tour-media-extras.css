@@ -364,3 +364,17 @@
         height: 40px;
     }
 }
+/* Initial Hidden State for Flicker Prevention */
+.h-1, 
+.tour-subtitle, 
+.chip-tour-info-wrapper {
+    opacity: 0;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Revelation Class for Subtitle/Chips */
+.tour-subtitle.reveal, 
+.chip-tour-info-wrapper.reveal {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
