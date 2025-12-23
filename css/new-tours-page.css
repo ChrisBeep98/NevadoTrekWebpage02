@@ -649,7 +649,7 @@
   
   .nt-tours-grid {
     grid-template-columns: 1fr; /* 1 columna en móvil */
-    gap: var(--spacing-md);
+    gap: calc(var(--spacing-md) + 20px);
   }
   
   .nt-card-header {

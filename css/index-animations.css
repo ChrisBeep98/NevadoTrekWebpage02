@@ -692,5 +692,12 @@ body.body #nt-footer-spacer {
   #nt-footer-spacer {
     display: none;
   }
+  
+  /* Increase gap between tour cards on home page */
+  .tours-2 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 44px !important; /* Original was likely 24px, now +20px */
+  }
 }
 
