@@ -313,3 +313,54 @@
         display: none !important;
     }
 }
+/* Mobile Lightbox Adjustments */
+@media screen and (max-width: 767px) {
+    .nt-lightbox {
+        flex-direction: column; /* Stack image on top, thumbs below */
+    }
+
+    .nt-lightbox-main {
+        padding: 0.5rem;
+        padding-top: 3.5rem; /* Space for close button and header spacing */
+        flex: 1; /* Take all available space remaining */
+        height: auto;
+    }
+
+    .nt-lightbox-img {
+        width: 100%;
+        height: 65vh !important; /* Force a tall vertical area */
+        max-height: 65vh !important;
+        object-fit: cover !important; /* Crop to fill the vertical space */
+        object-position: center !important;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nt-lightbox-thumbs {
+        width: 100%;
+        height: 100px;
+        flex-direction: row; /* Horizontal scroll */
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.75rem;
+    }
+
+    .nt-lightbox-thumb {
+        height: 100%;
+        width: auto;
+        aspect-ratio: 1;
+    }
+
+    .nt-lightbox-close {
+        top: 1rem;
+        left: 1rem;
+    }
+
+    .nt-lightbox-prev,
+    .nt-lightbox-next {
+        width: 40px;
+        height: 40px;
+    }
+}
