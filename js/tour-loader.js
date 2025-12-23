@@ -95,23 +95,11 @@ function renderTourPage(tour, allDepartures) {
   // --- INFO CHIPS (in .div-block-42) ---
   renderInfoChips(tour);
 
-  // --- HERO IMAGE ---
-  const mainImages = document.querySelectorAll('.scroll-zoom-image');
-  if (mainImages.length > 0 && tour.images && tour.images.length > 0) {
-    mainImages.forEach((img, index) => {
-      if (tour.images[index]) {
-        img.src = tour.images[index];
-        img.srcset = ''; // Clear hardcoded srcset
-        img.alt = tour.name.es;
-      }
-    });
-  }
+  // --- TOUR IMAGES (Mapped sequentially 0-5) ---
+  renderTourImages(tour);
 
   // --- DESCRIPTION ---
   renderDescription(tour);
-
-  // --- SECONDARY IMAGES ---
-  renderSecondaryImages(tour);
 
   // --- ITINERARY ---
   renderItinerary(tour);
@@ -584,31 +572,33 @@ function renderDescription(tour) {
 }
 
 /**
- * Render secondary images
+ * Render all tour images (mapped 0-5 sequentially)
  */
-function renderSecondaryImages(tour) {
-  if (!tour.images || tour.images.length < 2) return;
+function renderTourImages(tour) {
+  if (!tour.images || tour.images.length === 0) return;
 
-  // Image in curtain 1
-  const img1 = document.querySelector('#mini-curtain-1 .mini-image');
-  if (img1 && tour.images[1]) {
-    img1.src = tour.images[1];
-    img1.srcset = '';
-  }
+  const selectors = [
+    '#main-tour-image',                // 0: Top Hero
+    '#mini-curtain-1 .mini-image',     // 1: First small curtain
+    '#fullscreen-img2',                // 2: Second big image
+    '#mini-curtain-2 .mini-image',     // 3: Second small curtain
+    '.parallax-image-medium',          // 4: Bottom parallax image
+    '#big-image-03'                    // 5: Final big image
+  ];
 
-  // Image in curtain 2
-  const img2 = document.querySelector('#mini-curtain-2 .mini-image');
-  if (img2 && tour.images[2]) {
-    img2.src = tour.images[2];
-    img2.srcset = '';
-  }
+  selectors.forEach((selector, index) => {
+    const img = document.querySelector(selector);
+    if (!img) return;
 
-  // Medium parallax image
-  const medImg = document.querySelector('.parallax-image-medium');
-  if (medImg && tour.images[3]) {
-    medImg.src = tour.images[3];
-    medImg.srcset = '';
-  }
+    // Use current index, or fallback to hero if we run out of images
+    const imageSource = tour.images[index] || tour.images[0];
+    
+    if (imageSource) {
+      img.src = imageSource;
+      img.srcset = ''; // Clear hardcoded srcset to favor dynamic image
+      img.alt = `${tour.name.es} - Imagen ${index + 1}`;
+    }
+  });
 }
 
 /**
