@@ -7,6 +7,9 @@ import { initBookingModal } from './booking-modal.js?v=2';
  * Handles bilingual content (ES/EN)
  */
 
+// Global variables for this module
+let currentLang = localStorage.getItem('lang') || 'es';
+
 document.addEventListener('DOMContentLoaded', async () => {
 
 
@@ -45,12 +48,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 5. Listen for language changes
     window.addEventListener('languageChange', (e) => {
-      const lang = e.detail.lang;
-      applyLanguageToDynamicElements(lang);
+      currentLang = e.detail.lang;
+      applyLanguageToDynamicElements(currentLang);
+      
+      // Re-render price-dependent elements
+      if (window.tourData) {
+        renderPricing(window.tourData);
+        // Dates section is replaced entirely, so we re-render it
+        renderDates(window.tourData, departures);
+      }
     });
 
     // 6. Apply current language
-    const currentLang = localStorage.getItem('lang') || 'es';
     applyLanguageToDynamicElements(currentLang);
 
     // 7. Signal that content is ready
@@ -186,10 +195,11 @@ function renderDates(tour, departures) {
     const date = new Date(dateObj.date._seconds * 1000);
     
     // Format date parts
+    const locale = currentLang === 'en' ? 'en-US' : 'es-CO';
     const dayNumber = date.getDate();
-    const month = new Intl.DateTimeFormat('es-CO', { month: 'long' }).format(date);
+    const month = new Intl.DateTimeFormat(locale, { month: 'long' }).format(date);
     const year = date.getFullYear();
-    const weekday = new Intl.DateTimeFormat('es-CO', { weekday: 'long' }).format(date);
+    const weekday = new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(date);
 
     // Calculate availability
     const total = dateObj.maxCapacity || 8;
@@ -292,8 +302,14 @@ function renderDates(tour, departures) {
   html += `</div>`;
   datesSection.innerHTML = html;
 
-  // Insert after itinerary section
-  parentGrid.parentNode.insertBefore(datesSection, parentGrid.nextSibling);
+  // Check if it already exists to replace instead of duplicate
+  const existingSection = document.querySelector('[data-toc-section="fechas"]');
+  if (existingSection) {
+    existingSection.replaceWith(datesSection);
+  } else {
+    // Insert after itinerary section
+    parentGrid.parentNode.insertBefore(datesSection, parentGrid.nextSibling);
+  }
 
   // Add "Fechas" to TOC
   addFechasToTOC();
@@ -636,9 +652,11 @@ function createAccordionItem(day, index) {
       <div class="acordion-body" style="height: 0px; opacity: 0;">
         <div class="accordion-spacer"></div>
         <div class="div-block-59">
-          ${day.activities.map(act => `
-            <p class="mg-bottom-0 body-large dynamic-i18n" data-i18n-es="${act.es}" data-i18n-en="${act.en}">${act.es}</p>
-          `).join('')}
+          ${(day.activities || []).map(act => {
+            const es = (typeof act === 'object' ? act.es : act) || '';
+            const en = (typeof act === 'object' ? act.en : es) || '';
+            return `<p class="mg-bottom-0 body-large dynamic-i18n" data-i18n-es="${es}" data-i18n-en="${en}">${es}</p>`;
+          }).join('')}
         </div>
       </div>
     </div>
@@ -734,9 +752,13 @@ function createListItem(item, iconType = 'check') {
 
   const p = document.createElement('p');
   p.className = 'body-medium dynamic-i18n';
-  p.setAttribute('data-i18n-es', item.es);
-  p.setAttribute('data-i18n-en', item.en);
-  p.textContent = item.es;
+  
+  const es = (typeof item === 'object' ? item.es : item) || '';
+  const en = (typeof item === 'object' ? item.en : es) || '';
+  
+  p.setAttribute('data-i18n-es', es);
+  p.setAttribute('data-i18n-en', en);
+  p.textContent = es;
 
   const iconDiv = document.createElement('div');
   iconDiv.className = 'div-block-92';
@@ -830,9 +852,11 @@ function renderPricing(tour) {
   const priceEl = document.querySelector('.price-h') || document.querySelector('.h-6.price-h');
   if (priceEl) {
     // Use the lowest price tier
-    const lowestPrice = tour.pricingTiers.reduce((min, tier) => 
-      tier.priceCOP < min.priceCOP ? tier : min
-    , tour.pricingTiers[0]);
+    const lowestPrice = (tour.pricingTiers || []).reduce((min, tier) => {
+      const price = tier.priceCOP || 0;
+      const minPrice = min.priceCOP || 0;
+      return price < minPrice ? tier : min;
+    }, tour.pricingTiers[0] || { priceCOP: 0, priceUSD: 0 });
 
     const formattedPrice = apiService.formatPriceByLang(lowestPrice, currentLang);
     const prefix = currentLang === 'en' ? 'From ' : 'Desde ';
