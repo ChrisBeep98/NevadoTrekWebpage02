@@ -120,11 +120,10 @@
 }
 
 .ntm-separator {
-  width: 80px;
-  height: 2px;
-  background: rgba(4, 46, 77, 0.08);
-  margin: 0.8em 0;
-  border-radius: 2px;
+  width: calc(100% - 32px);
+  height: 1px;
+  background: rgba(4, 46, 77, 0.08); /* Slightly more visible */
+  margin: 1.5em auto; /* Center with auto margins */
 }
 
 /* Primary CTA Button (Consistent Blue Rounded) */
