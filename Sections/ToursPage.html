@@ -37,6 +37,15 @@
 
     <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="../webclip.png" rel="apple-touch-icon" />
+
+    <style>
+      /* FORCE 72px on mobile pill state */
+      @media screen and (max-width: 991px) {
+        #navbar-exclusion.navbar-fixed.scrolled {
+          height: 72px !important;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -472,10 +481,30 @@
           <a
             href="https://wa.me/573001234567"
             target="_blank"
-            class="mobile-menu-cta"
+            class="button-6 small"
+            style="
+              margin-top: 32px !important;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 10px;
+              text-decoration: none;
+              width: 80%;
+              padding: 12px 32px;
+              border-radius: 50px;
+              background: #2563eb;
+              color: #ffffff;
+              font-family: Inter, sans-serif;
+              font-size: 14px;
+              font-weight: 500;
+            "
           >
             <span data-i18n-key="cta.contact">Contacto</span>
-            <svg viewBox="0 0 24 24">
+            <svg
+              style="width: 16px; height: 16px; fill: #ffffff; flex-shrink: 0"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
               />
