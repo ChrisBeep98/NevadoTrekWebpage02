@@ -64,7 +64,9 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.5;
+  opacity: 0;
+  transform: translateY(15px);
+  will-change: opacity, transform;
 }
 
 .ntm-menu-close {
@@ -120,10 +122,12 @@
 }
 
 .ntm-separator {
-  width: calc(100% - 32px);
+  width: 0; /* Shrink to 0 for drawing animation */
   height: 1px;
-  background: rgba(4, 46, 77, 0.08); /* Slightly more visible */
-  margin: 1.5em auto; /* Center with auto margins */
+  background: rgba(4, 46, 77, 0.08);
+  margin: 1.5em auto;
+  opacity: 0;
+  will-change: width, opacity;
 }
 
 /* Primary CTA Button (Consistent Blue Rounded) */
