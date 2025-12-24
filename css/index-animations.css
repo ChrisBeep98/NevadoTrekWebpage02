@@ -276,9 +276,9 @@ padding-right: 0 !important;
   right: 50%;
 }
 
-/* Cuando es PILL (scrolled): quitar blend mode de los links */
 #navbar-exclusion.scrolled .nav-link-exclusion,
-#navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion {
+#navbar-exclusion.navbar-fixed.scrolled .nav-link-exclusion,
+#navbar-exclusion.navbar-fixed.scrolled .navbar-title {
   mix-blend-mode: normal !important;
   color: #042e4d !important; /* Texto oscuro */
 }
@@ -542,8 +542,7 @@ padding-right: 0 !important;
   }
   
   .header-contact-btn {
-    padding: 10px 12px !important;
-    border-radius: 50% !important;
+    display: none !important;
   }
   
   /* Scrolled state adjustments for tablet */
