@@ -39,8 +39,7 @@
   will-change: clip-path, opacity;
   
   box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  border-bottom-left-radius: 32px;
-  border-bottom-right-radius: 32px;
+  border-radius: 0 !important;
 }
 
 .ntm-menu-overlay.active {
@@ -91,9 +90,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding-bottom: 2em;
+  padding: 1em 0 3em 0;
 }
 
 .ntm-nav {
@@ -105,14 +104,19 @@
 }
 
 .ntm-nav-link {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
   color: var(--ntm-text);
   text-decoration: none;
   font-family: Inter, sans-serif;
-  font-size: 1.5em;
+  font-size: 1.25em;
   font-weight: 500;
   letter-spacing: 0.02em;
-  padding: 0.4em;
-  transition: color 0.3s ease;
+  padding: 0.8em 0;
+  transition: color 0.3s ease, background 0.2s ease;
   opacity: 0;
   transform: translateY(20px);
 }
@@ -130,9 +134,10 @@
   will-change: width, opacity;
 }
 
-/* Primary CTA Button (Consistent Blue Rounded) */
+/* Primary CTA Button */
 .ntm-cta {
-  margin-top: 2em;
+  margin-top: auto;
+  margin-bottom: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
