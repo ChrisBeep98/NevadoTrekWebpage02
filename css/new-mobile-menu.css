@@ -106,9 +106,10 @@
   color: var(--ntm-text);
   text-decoration: none;
   font-family: Inter, sans-serif;
-  font-size: 2em;
-  font-weight: 600;
-  padding: 0.2em;
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.4em;
   transition: color 0.3s ease;
   opacity: 0;
   transform: translateY(20px);
@@ -119,10 +120,11 @@
 }
 
 .ntm-separator {
-  width: 40px;
-  height: 1px;
-  background: rgba(4, 46, 77, 0.1);
-  margin: 0.5em 0;
+  width: 80px;
+  height: 2px;
+  background: rgba(4, 46, 77, 0.08);
+  margin: 0.8em 0;
+  border-radius: 2px;
 }
 
 /* Primary CTA Button (Consistent Blue Rounded) */
@@ -162,6 +164,6 @@ body.ntm-open {
 }
 
 @media screen and (max-height: 600px) {
-  .ntm-nav-link { font-size: 1.6em; }
+  .ntm-nav-link { font-size: 1.3em; }
   .ntm-cta { padding: 12px 30px; margin-top: 1.5em; }
 }
