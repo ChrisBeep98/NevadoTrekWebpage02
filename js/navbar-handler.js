@@ -10,6 +10,76 @@
   function init() {
     setupScrollEffect();
     setupMobileMenu();
+    setupLanguageSwitcher();
+  }
+
+  /**
+   * Setup language switcher dropdown with robust toggle logic
+   */
+  function setupLanguageSwitcher() {
+    const langBtn = document.getElementById('lang-btn');
+    const langOptions = document.getElementById('lang-options');
+    const currentFlag = document.getElementById('current-flag');
+    const currentLang = document.getElementById('current-lang');
+    
+    if (!langBtn || !langOptions) return;
+    
+    const dropdown = langBtn.closest('.lang-dropdown');
+    
+    // Toggle dropdown
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isShowing = dropdown.classList.contains('show') || langOptions.classList.contains('show');
+      
+      // Close all first to be clean
+      document.querySelectorAll('.lang-dropdown, .lang-options').forEach(el => el.classList.remove('show', 'open'));
+      
+      if (!isShowing) {
+        if (dropdown) dropdown.classList.add('show');
+        langOptions.classList.add('show');
+      }
+    });
+    
+    // Close on outside click
+    document.addEventListener('click', () => {
+      if (dropdown) dropdown.classList.remove('show', 'open');
+      langOptions.classList.remove('show', 'open');
+    });
+    
+    // Handle language selection
+    const options = langOptions.querySelectorAll('.lang-option');
+    options.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        const lang = option.getAttribute('data-lang');
+        const flag = option.getAttribute('data-flag');
+        
+        // Update UI
+        if (currentLang) currentLang.textContent = lang.toUpperCase();
+        if (currentFlag) currentFlag.src = flag;
+        
+        // Update storage and apply i18n
+        if (window.NT_I18N && window.NT_I18N.setLanguage) {
+          window.NT_I18N.setLanguage(lang);
+        } else {
+          localStorage.setItem('lang', lang);
+          window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+        }
+        
+        // Close dropdown
+        if (dropdown) dropdown.classList.remove('show', 'open');
+        langOptions.classList.remove('show', 'open');
+      });
+    });
+
+    // Initialize UI from localStorage
+    const savedLang = localStorage.getItem('lang') || 'es';
+    const activeOption = langOptions.querySelector(`.lang-option[data-lang="${savedLang}"]`);
+    if (activeOption) {
+      if (currentLang) currentLang.textContent = savedLang.toUpperCase();
+      if (currentFlag) currentFlag.src = activeOption.getAttribute('data-flag');
+    }
   }
   
   /**
