@@ -22,6 +22,7 @@
 
     <!-- Shared Navbar Styles -->
     <link href="../css/index-animations.css" rel="stylesheet" type="text/css" />
+    <link href="../css/new-mobile-menu.css" rel="stylesheet" type="text/css" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -449,71 +450,6 @@
       </div>
     </footer>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobile-menu">
-      <div class="mobile-menu-wrapper">
-        <div class="mobile-menu-header">
-          <span class="mobile-menu-title">Menú</span>
-          <button
-            class="mobile-menu-close-btn"
-            id="mobile-menu-close"
-            aria-label="Cerrar"
-          >
-            ✕
-          </button>
-        </div>
-        <div class="mobile-menu-links">
-          <a href="../index.html" class="mobile-nav-link">
-            <span class="nav-icon">🏠</span>
-            <span data-i18n-key="nav.home">Inicio</span>
-          </a>
-          <div class="nav-separator"></div>
-          <a href="ToursPage.html" class="mobile-nav-link">
-            <span class="nav-icon">🏔️</span>
-            <span data-i18n-key="nav.tours">Tours</span>
-          </a>
-          <div class="nav-separator"></div>
-          <a href="Gallery.html" class="mobile-nav-link">
-            <span class="nav-icon">📸</span>
-            <span data-i18n-key="nav.gallery">Galería</span>
-          </a>
-          <div class="nav-separator"></div>
-          <a
-            href="https://wa.me/573001234567"
-            target="_blank"
-            class="button-6 small"
-            style="
-              margin-top: 32px !important;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 10px;
-              text-decoration: none;
-              width: 80%;
-              padding: 12px 32px;
-              border-radius: 50px;
-              background: #2563eb;
-              color: #ffffff;
-              font-family: Inter, sans-serif;
-              font-size: 14px;
-              font-weight: 500;
-            "
-          >
-            <span data-i18n-key="cta.contact">Contacto</span>
-            <svg
-              style="width: 16px; height: 16px; fill: #ffffff; flex-shrink: 0"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
-              />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-
     <!-- Scripts -->
     <!-- Core Scripts Only - GSAP Restored for Entrance & Scroll Animations -->
     <script src="../js/gsap.min.js"></script>
@@ -532,6 +468,41 @@
 
     <!-- Footer Reveal Script -->
     <script src="../js/nt-footer-reveal.js"></script>
+    <script src="../js/new-mobile-menu.js"></script>
+
+    <!-- NEW NTM MOBILE MENU (White Theme) -->
+    <div class="ntm-menu-overlay" id="ntm-menu">
+      <div class="ntm-menu-header">
+        <span class="ntm-menu-title">Menú</span>
+        <button class="ntm-menu-close" id="ntm-close" aria-label="Cerrar">
+          ✕
+        </button>
+      </div>
+      <div class="ntm-menu-content">
+        <nav class="ntm-nav">
+          <a href="../index.html" class="ntm-nav-link"
+            ><span data-i18n-key="nav.home">Inicio</span></a
+          >
+          <div class="ntm-separator"></div>
+          <a href="ToursPage.html" class="ntm-nav-link"
+            ><span data-i18n-key="nav.tours">Tours</span></a
+          >
+          <div class="ntm-separator"></div>
+          <a href="Gallery.html" class="ntm-nav-link"
+            ><span data-i18n-key="nav.gallery">Galería</span></a
+          >
+        </nav>
+
+        <a href="https://wa.me/573001234567" target="_blank" class="ntm-cta">
+          <span data-i18n-key="cta.contact">Contacto</span>
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
 
     <!-- Component Loader -->
     <script src="../js/load-components.js"></script>

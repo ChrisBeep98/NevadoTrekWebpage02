@@ -1,0 +1,167 @@
+/* =====================================================
+   NEW MOBILE MENU (NTM) - WHITE THEME (v3)
+   Fixed Scaling & 80svh Stability
+   ===================================================== */
+
+:root {
+  --ntm-bg: rgba(255, 255, 255, 0.98);
+  --ntm-accent: #2563eb;
+  --ntm-text: #042e4d; /* Dark Navy */
+  --ntm-transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ntm-menu-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 80vh !important;
+  height: 80svh !important; 
+  background: var(--ntm-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 2147483647 !important;
+  display: flex !important;
+  flex-direction: column;
+  
+  /* Prevent font-inherit issues on index */
+  font-size: 16px !important;
+  
+  /* Circular expansion initial state */
+  clip-path: circle(0% at 100% 0%);
+  -webkit-clip-path: circle(0% at 100% 0%);
+  
+  visibility: hidden;
+  pointer-events: none;
+  
+  /* GPU & Stability - Avoid transforms that break fixed positioning if parent has one */
+  will-change: clip-path, opacity;
+  
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+}
+
+.ntm-menu-overlay.active {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.ntm-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5em 2em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ntm-menu-title {
+  color: var(--ntm-text);
+  font-family: Poppins, sans-serif;
+  font-size: 1.1em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.ntm-menu-close {
+  background: transparent;
+  border: none;
+  color: var(--ntm-text);
+  font-size: 2.2em;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.ntm-menu-close:hover {
+  transform: rotate(90deg);
+}
+
+.ntm-menu-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2em;
+}
+
+.ntm-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.8em;
+}
+
+.ntm-nav-link {
+  color: var(--ntm-text);
+  text-decoration: none;
+  font-family: Inter, sans-serif;
+  font-size: 2em;
+  font-weight: 600;
+  padding: 0.2em;
+  transition: color 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.ntm-nav-link:hover {
+  color: var(--ntm-accent);
+}
+
+.ntm-separator {
+  width: 40px;
+  height: 1px;
+  background: rgba(4, 46, 77, 0.1);
+  margin: 0.5em 0;
+}
+
+/* Primary CTA Button (Consistent Blue Rounded) */
+.ntm-cta {
+  margin-top: 2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 44px;
+  background: var(--ntm-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-family: Inter, sans-serif;
+  font-size: 1.1em;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.ntm-cta:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.ntm-cta svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Prevent body scroll */
+body.ntm-open {
+  overflow: hidden !important;
+}
+
+@media screen and (max-height: 600px) {
+  .ntm-nav-link { font-size: 1.6em; }
+  .ntm-cta { padding: 12px 30px; margin-top: 1.5em; }
+}
