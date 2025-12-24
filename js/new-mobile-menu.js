@@ -81,7 +81,13 @@
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) closeTl.restart();
     });
+
+    // Mark as initialized
+    menuToggle.dataset.ntmInitialized = "true";
   }
+
+  // Expose to window for component loader
+  window.initMobileMenu = initNTM;
 
   // Init on load
   if (document.readyState === 'loading') {

@@ -4,7 +4,12 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadComponent("footer-placeholder", "../components/footer.html");
+  // Determine prefix based on current path
+  const isSection = window.location.pathname.includes('/Sections/');
+  const prefix = isSection ? '../' : './';
+  
+  loadComponent("footer-placeholder", prefix + "components/footer.html");
+  loadComponent("ntm-menu", prefix + "components/mobile-menu.html");
 });
 
 async function loadComponent(elementId, componentPath) {
@@ -52,6 +57,25 @@ async function loadComponent(elementId, componentPath) {
     // Trigger i18n for the newly loaded content
     if (window.NT_I18N && window.NT_I18N.apply) {
         window.NT_I18N.apply();
+    }
+
+    // Special handling for Mobile Menu initialization
+    if (elementId === 'ntm-menu') {
+        const isSection = window.location.pathname.includes('/Sections/');
+        const prefix = isSection ? '../' : './';
+        
+        // Correct paths for internal links
+        element.querySelectorAll('.ntm-nav-link').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && !href.startsWith('http') && !href.startsWith('#')) {
+                const cleanHref = href.replace(/^(\.\.\/|\.\/)/, '');
+                link.setAttribute('href', prefix + cleanHref);
+            }
+        });
+
+        if (window.initMobileMenu) {
+            window.initMobileMenu();
+        }
     }
 
   } catch (error) {
