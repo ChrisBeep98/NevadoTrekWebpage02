@@ -116,9 +116,13 @@
   font-weight: 500;
   letter-spacing: 0.02em;
   padding: 0.8em 0;
-  transition: color 0.3s ease, background 0.2s ease;
+  transition: color 0.3s ease;
   opacity: 0;
   transform: translateY(20px);
+  position: relative;
+  z-index: 1;
+  transform-origin: center center;
+  -webkit-tap-highlight-color: transparent; /* Remove default mobile highlight */
 }
 
 .ntm-nav-link:hover {

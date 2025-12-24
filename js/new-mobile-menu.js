@@ -105,9 +105,44 @@
 
     closeBtn.addEventListener('click', () => closeTl.restart());
 
+    // --- PREMIUM TAP INTERACTION ---
+    const allInteractive = [...links, cta];
+    
+    allInteractive.forEach(el => {
+      // Press
+      const handlePress = () => {
+        gsap.to(el, {
+          scale: 0.94,
+          duration: 0.15,
+          ease: "power2.out",
+          color: el.classList.contains('ntm-cta') ? 'white' : 'var(--ntm-accent)'
+        });
+      };
+
+      // Release
+      const handleRelease = () => {
+        gsap.to(el, {
+          scale: 1,
+          duration: 0.6,
+          ease: "elastic.out(1, 0.3)",
+          color: el.classList.contains('ntm-cta') ? 'white' : 'var(--ntm-text)',
+          clearProps: "scale,color" // Clean up for next open/close
+        });
+      };
+
+      el.addEventListener('mousedown', handlePress);
+      el.addEventListener('touchstart', handlePress, { passive: true });
+      el.addEventListener('mouseup', handleRelease);
+      el.addEventListener('touchend', handleRelease);
+      el.addEventListener('mouseleave', handleRelease);
+    });
+
     // Close on link click
     overlay.querySelectorAll('.ntm-nav-link, .ntm-cta').forEach(link => {
-      link.addEventListener('click', () => closeTl.restart());
+      link.addEventListener('click', () => {
+        // Small delay to allow the tap animation to be seen
+        setTimeout(() => closeTl.restart(), 100);
+      });
     });
 
     // Close on overlay click
